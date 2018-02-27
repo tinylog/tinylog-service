@@ -5,6 +5,7 @@
     "no-implicit-dependencies": [true, "dev"],
     "ordered-imports": false,
     "object-literal-sort-keys": false,
+    "member-access": false,
     "semicolon": [true, "always"]
   }
 }
