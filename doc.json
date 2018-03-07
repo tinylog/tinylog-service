@@ -1,0 +1,291 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "TinyLog API Document",
+    "description": "API Document for TinyLog-Service",
+    "version": "0.1.0"
+  },
+  "host": "api.example.com",
+  "basePath": "/v1",
+  "schemes": ["https"],
+  "paths": {
+    "/log/initialize": {
+      "post": {
+        "description": "初次连接需要进行该请求，服务端会进行 Cookie 处理，前端无需关心返回值",
+        "tags": ["log"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IInitialize"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/log/page": {
+      "post": {
+        "description":
+          "\n    当前页面的用户行为数据，如果有的话需要把前一个页面的 PageId 传回，没有 PageId 视这个页面为入口页面\n    会返回 PageId，该 PageId 在发送该页面的数据资源信息的时候需要带上，以及跳转下一个页面的时候要用\n  ",
+        "tags": ["log"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IPageInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/log/assets": {
+      "post": {
+        "description": "当前页面的所有资源数据，需要把前面的 PageId 传回来",
+        "tags": ["log"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IAssetsInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/log/exit": {
+      "post": {
+        "description": "网页退出，把当前哪个页面发送过来，以及退出时间",
+        "tags": ["log"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IExit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "description": "登录，后续认证依赖 Cookie 里处理，前端不用做任何处理",
+        "tags": ["user"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IUserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "description": "注册，注册后即自动登录，后续认证依赖 Cookie 里处理，前端不用做任何处理",
+        "tags": ["user"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/IUserRegister"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "log"
+    },
+    {
+      "name": "user"
+    }
+  ],
+  "definitions": {
+    "IInitialize": {
+      "type": "object",
+      "properties": {
+        "referer": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "ua": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        }
+      },
+      "required": ["lang", "os", "referer", "ua"]
+    },
+    "IPageInfo": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "number"
+        },
+        "prePageId": {
+          "type": "number"
+        },
+        "referrer": {
+          "type": "string"
+        },
+        "loadPage": {
+          "type": "number"
+        },
+        "domReady": {
+          "type": "number"
+        },
+        "redirect": {
+          "type": "number"
+        },
+        "lookupDomain": {
+          "type": "number"
+        },
+        "ttfb": {
+          "type": "number"
+        },
+        "request": {
+          "type": "number"
+        },
+        "tcp": {
+          "type": "number"
+        },
+        "loadEvent": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "domReady",
+        "loadEvent",
+        "loadPage",
+        "lookupDomain",
+        "redirect",
+        "referrer",
+        "request",
+        "startTime",
+        "tcp",
+        "ttfb",
+        "url"
+      ]
+    },
+    "IAssetsInfo": {
+      "type": "object",
+      "properties": {
+        "pageId": {
+          "type": "number"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entryType": {
+                "type": "string"
+              },
+              "initiatorType": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "redirect": {
+                "type": "number"
+              },
+              "lookupDomain": {
+                "type": "number"
+              },
+              "request": {
+                "type": "number"
+              },
+              "duration": {
+                "type": "number"
+              }
+            },
+            "required": ["duration", "entryType", "initiatorType", "lookupDomain", "name", "redirect", "request"]
+          }
+        }
+      },
+      "required": ["assets", "pageId"]
+    },
+    "IExit": {
+      "type": "object",
+      "properties": {
+        "pageId": {
+          "type": "number"
+        },
+        "exitTime": {
+          "type": "number"
+        }
+      },
+      "required": ["exitTime", "pageId"]
+    },
+    "IUserLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["email", "password"]
+    },
+    "IUserRegister": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["email", "password"]
+    }
+  }
+}

@@ -25,8 +25,10 @@ useKoaServer(app, {
 
 export const connection = database().then(async c => {
   return new Promise(resolve => {
-    app.listen(port, () => {
+    app.listen(port, async () => {
       console.log(`[APP] Listen on ${port} in ${config.env} enviroment`);
+      await import('./utils/doc').then(() => console.log('[Swagger] Document generated success!'));
+      process.exit(0); // TODO
       resolve(app.callback());
     });
   });

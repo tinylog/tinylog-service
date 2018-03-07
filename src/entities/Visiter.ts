@@ -13,8 +13,11 @@ export default class Visiter {
   /** 城市 */
   @Column() city: string;
 
+  /** IP 地址 */
+  @Column() ip: string;
+
   /** 浏览器信息 */
-  @Column() browser: string;
+  @Column() ua: string;
 
   /** 操作系统 */
   @Column() os: string;
