@@ -1,0 +1,10 @@
+database:
+  name: tinylog
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password:
+  logging: true
+
+env: development
+port: 8080
