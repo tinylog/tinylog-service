@@ -5,7 +5,7 @@ import Page from './Page';
 
 @Entity()
 export default class Asset {
-  @PrimaryGeneratedColumn() id: number;
+  @PrimaryGeneratedColumn('uuid') id: string;
 
   /** 请求文件 */
   @Column() name: string;
@@ -29,13 +29,13 @@ export default class Asset {
   @Column() duration: number;
 
   /** 访客 ID */
-  @Column() visiterId: number;
+  @Column() visiterId: string;
 
   /** 访问的网站 */
-  @Column() hostId: number;
+  @Column() hostId: string;
 
   /** 所属的页面 */
-  @Column() pageId: number;
+  @Column() pageId: string;
 
   @ManyToOne(type => Visiter)
   @JoinColumn({ name: 'visiterId' })

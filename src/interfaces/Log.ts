@@ -2,47 +2,51 @@ import Session from '../entities/Session';
 import Visiter from '../entities/Visiter';
 import Page from '../entities/Page';
 import Asset from '../entities/Asset';
+import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class IInitialize implements Partial<Session>, Partial<Visiter> {
-  referer: string;
-  lang: string;
-  ua: string;
-  os: string;
+  @IsString() referer: string;
+  @IsString() lang: string;
+  @IsString() ua: string;
+  @IsString() os: string;
 }
 
 export class IPageInfo implements Partial<Page> {
-  url: string;
-  startTime: number;
-  prePageId?: number;
-  referrer: string;
-  loadPage: number;
-  domReady: number;
-  redirect: number;
-  lookupDomain: number;
-  ttfb: number;
-  request: number;
-  tcp: number;
-  loadEvent: number;
-}
-
-export class IAssetsInterface {
-  assets: Array<Partial<Asset>>;
+  @IsString() url: string;
+  @IsNumber() startTime: number;
+  @IsOptional()
+  @IsNumber()
+  prePageId?: string;
+  @IsString() referrer: string;
+  @IsNumber() loadPage: number;
+  @IsNumber() domReady: number;
+  @IsNumber() redirect: number;
+  @IsNumber() lookupDomain: number;
+  @IsNumber() ttfb: number;
+  @IsNumber() request: number;
+  @IsNumber() tcp: number;
+  @IsNumber() loadEvent: number;
 }
 
 export class IExit {
-  pageId: number;
-  exitTime: number;
+  @IsNumber() pageId: number;
+  @IsNumber() exitTime: number;
 }
 
-export class IAssetsInfo implements IAssetsInterface {
-  pageId: number;
-  assets: Array<{
-    entryType: string;
-    initiatorType: number;
-    name: string;
-    redirect: number;
-    lookupDomain: number;
-    request: number;
-    duration: number;
-  }>;
+export class IAsset implements Partial<Asset> {
+  @IsString() entryType: string;
+  @IsNumber() initiatorType: number;
+  @IsString() name: string;
+  @IsNumber() redirect: number;
+  @IsNumber() lookupDomain: number;
+  @IsNumber() request: number;
+  @IsNumber() duration: number;
+}
+
+export class IAssetsInfo {
+  @IsNumber() pageId: number;
+  @IsArray()
+  @Type(() => IAsset)
+  assets: IAsset[];
 }

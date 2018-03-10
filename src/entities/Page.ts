@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import Asset from './Asset';
 
 @Entity()
 export default class Page {
-  @PrimaryGeneratedColumn() id: number;
+  @PrimaryGeneratedColumn('uuid') id: string;
 
   /** 当前页面 */
   @Column() url: string;
@@ -45,8 +45,11 @@ export default class Page {
   @Column({ nullable: true })
   exitTime: number;
 
+  @Column() prePageId: string;
+
   /** 上一个页面，如果是入口页面则没有该值 */
   @OneToOne(type => Page)
+  @JoinColumn({ name: 'prePageId' })
   prePage: Page;
 
   /** 当前页面下请求的资源 */

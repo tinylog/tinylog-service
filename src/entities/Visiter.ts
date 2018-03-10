@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 
 @Entity()
 export default class Visiter {
-  @PrimaryGeneratedColumn() id: number;
+  @PrimaryGeneratedColumn('uuid') id: string;
 
   /** 语言 */
   @Column() lang: string;

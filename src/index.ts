@@ -5,7 +5,8 @@ import * as config from 'config';
 import { useContainer as useContainerForRoute, useKoaServer, getMetadataArgsStorage } from 'routing-controllers';
 import { Container } from 'typedi';
 import { useContainer as useContainerForOrm } from 'typeorm';
-import { database } from './libraries/database';
+import Database from './libraries/Database';
+import Cache from './libraries/Cache';
 import docGenerator from 'routing-controllers-openapi-v3';
 
 const { port } = config;
@@ -24,10 +25,15 @@ useKoaServer(app, {
   defaultErrorHandler: true
 });
 
-export const connection = database().then(async c => {
+Cache.Instance.on('connect', () => console.log('[REDIS] Redis Connected'));
+Cache.Instance.on('disconnect', () => console.log('[REDIS] Redis Disconnected'));
+Cache.Instance.on('error', (e: Error) => console.log('[REDIS] Redis Error', e));
+
+export const connection = Database.Instance.then(async c => {
   return new Promise(resolve => {
     app.listen(port, async () => {
       console.log(`[APP] Listen on ${port} in ${config.env} enviroment`);
+
       await docGenerator(getMetadataArgsStorage(), {
         info: {
           title: 'TinyLog-Service API',
@@ -42,6 +48,7 @@ export const connection = database().then(async c => {
         ]
       });
       console.log('Swagger Document Generated Success!');
+
       resolve(app.callback());
     });
   });
