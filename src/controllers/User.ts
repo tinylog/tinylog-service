@@ -1,7 +1,7 @@
 import { JsonController, Post, Body } from 'routing-controllers';
 import { Service } from 'typedi';
 import { IUserLogin, IUserRegister } from '../interfaces/User';
-import { Description } from '../utils/docHelper';
+import { Description } from 'routing-controllers-openapi-v3';
 
 @Service()
 @JsonController('/user')

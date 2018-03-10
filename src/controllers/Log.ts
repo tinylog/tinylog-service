@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { JsonController, Post, Body } from 'routing-controllers';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
-import { Description } from '../utils/docHelper';
+import { Description } from 'routing-controllers-openapi-v3';
 
 @Service()
 @JsonController('/log')

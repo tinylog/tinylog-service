@@ -1,30 +1,42 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
-    "title": "TinyLog API Document",
-    "description": "API Document for TinyLog-Service",
+    "title": "TinyLog-Service API",
+    "description": "API Document for TinyLog",
     "version": "0.1.0"
   },
-  "host": "api.example.com",
-  "basePath": "/v1",
-  "schemes": ["https"],
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "test"
+    }
+  ],
   "paths": {
     "/log/initialize": {
       "post": {
         "description": "初次连接需要进行该请求，服务端会进行 Cookie 处理，前端无需关心返回值",
         "tags": ["log"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IInitialize"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IInitialize"
+              }
+            }
           }
         }
       }
@@ -34,18 +46,27 @@
         "description":
           "\n    当前页面的用户行为数据，如果有的话需要把前一个页面的 PageId 传回，没有 PageId 视这个页面为入口页面\n    会返回 PageId，该 PageId 在发送该页面的数据资源信息的时候需要带上，以及跳转下一个页面的时候要用\n  ",
         "tags": ["log"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IPageInfo"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IPageInfo"
+              }
+            }
           }
         }
       }
@@ -54,18 +75,27 @@
       "post": {
         "description": "当前页面的所有资源数据，需要把前面的 PageId 传回来",
         "tags": ["log"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IAssetsInfo"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IAssetsInfo"
+              }
+            }
           }
         }
       }
@@ -74,18 +104,27 @@
       "post": {
         "description": "网页退出，把当前哪个页面发送过来，以及退出时间",
         "tags": ["log"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IExit"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IExit"
+              }
+            }
           }
         }
       }
@@ -94,18 +133,27 @@
       "post": {
         "description": "登录，后续认证依赖 Cookie 里处理，前端不用做任何处理",
         "tags": ["user"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IUserLogin"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IUserLogin"
+              }
+            }
           }
         }
       }
@@ -114,18 +162,27 @@
       "post": {
         "description": "注册，注册后即自动登录，后续认证依赖 Cookie 里处理，前端不用做任何处理",
         "tags": ["user"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/IUserRegister"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "ok"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "applicaton/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IUserRegister"
+              }
+            }
           }
         }
       }
@@ -139,153 +196,165 @@
       "name": "user"
     }
   ],
-  "definitions": {
-    "IInitialize": {
-      "type": "object",
-      "properties": {
-        "referer": {
-          "type": "string"
-        },
-        "lang": {
-          "type": "string"
-        },
-        "ua": {
-          "type": "string"
-        },
-        "os": {
-          "type": "string"
-        }
-      },
-      "required": ["lang", "os", "referer", "ua"]
-    },
-    "IPageInfo": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string"
-        },
-        "startTime": {
-          "type": "number"
-        },
-        "prePageId": {
-          "type": "number"
-        },
-        "referrer": {
-          "type": "string"
-        },
-        "loadPage": {
-          "type": "number"
-        },
-        "domReady": {
-          "type": "number"
-        },
-        "redirect": {
-          "type": "number"
-        },
-        "lookupDomain": {
-          "type": "number"
-        },
-        "ttfb": {
-          "type": "number"
-        },
-        "request": {
-          "type": "number"
-        },
-        "tcp": {
-          "type": "number"
-        },
-        "loadEvent": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "domReady",
-        "loadEvent",
-        "loadPage",
-        "lookupDomain",
-        "redirect",
-        "referrer",
-        "request",
-        "startTime",
-        "tcp",
-        "ttfb",
-        "url"
-      ]
-    },
-    "IAssetsInfo": {
-      "type": "object",
-      "properties": {
-        "pageId": {
-          "type": "number"
-        },
-        "assets": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "entryType": {
-                "type": "string"
-              },
-              "initiatorType": {
-                "type": "number"
-              },
-              "name": {
-                "type": "string"
-              },
-              "redirect": {
-                "type": "number"
-              },
-              "lookupDomain": {
-                "type": "number"
-              },
-              "request": {
-                "type": "number"
-              },
-              "duration": {
-                "type": "number"
-              }
-            },
-            "required": ["duration", "entryType", "initiatorType", "lookupDomain", "name", "redirect", "request"]
+  "components": {
+    "schemas": {
+      "DefaultSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [true]
           }
-        }
-      },
-      "required": ["assets", "pageId"]
-    },
-    "IExit": {
-      "type": "object",
-      "properties": {
-        "pageId": {
-          "type": "number"
         },
-        "exitTime": {
-          "type": "number"
-        }
+        "required": ["success"]
       },
-      "required": ["exitTime", "pageId"]
-    },
-    "IUserLogin": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
+      "IInitialize": {
+        "type": "object",
+        "properties": {
+          "referer": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          },
+          "ua": {
+            "type": "string"
+          },
+          "os": {
+            "type": "string"
+          }
         },
-        "password": {
-          "type": "string"
-        }
+        "required": ["lang", "os", "referer", "ua"]
       },
-      "required": ["email", "password"]
-    },
-    "IUserRegister": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
+      "IPageInfo": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "number"
+          },
+          "prePageId": {
+            "type": "number"
+          },
+          "referrer": {
+            "type": "string"
+          },
+          "loadPage": {
+            "type": "number"
+          },
+          "domReady": {
+            "type": "number"
+          },
+          "redirect": {
+            "type": "number"
+          },
+          "lookupDomain": {
+            "type": "number"
+          },
+          "ttfb": {
+            "type": "number"
+          },
+          "request": {
+            "type": "number"
+          },
+          "tcp": {
+            "type": "number"
+          },
+          "loadEvent": {
+            "type": "number"
+          }
         },
-        "password": {
-          "type": "string"
-        }
+        "required": [
+          "domReady",
+          "loadEvent",
+          "loadPage",
+          "lookupDomain",
+          "redirect",
+          "referrer",
+          "request",
+          "startTime",
+          "tcp",
+          "ttfb",
+          "url"
+        ]
       },
-      "required": ["email", "password"]
+      "IAssetsInfo": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "number"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "entryType": {
+                  "type": "string"
+                },
+                "initiatorType": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "redirect": {
+                  "type": "number"
+                },
+                "lookupDomain": {
+                  "type": "number"
+                },
+                "request": {
+                  "type": "number"
+                },
+                "duration": {
+                  "type": "number"
+                }
+              },
+              "required": ["duration", "entryType", "initiatorType", "lookupDomain", "name", "redirect", "request"]
+            }
+          }
+        },
+        "required": ["assets", "pageId"]
+      },
+      "IExit": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "number"
+          },
+          "exitTime": {
+            "type": "number"
+          }
+        },
+        "required": ["exitTime", "pageId"]
+      },
+      "IUserLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "IUserRegister": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      }
     }
   }
 }
