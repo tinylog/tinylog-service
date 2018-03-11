@@ -10,6 +10,7 @@ import Database from './libraries/Database';
 import Cache from './libraries/Cache';
 import docGenerator from 'routing-controllers-openapi-v3';
 import { IDefaultSuccessResponse } from './interfaces/Helper';
+import errorCatch from './middlewares/errorCatch';
 
 const { port } = config;
 
@@ -19,10 +20,10 @@ useContainerForOrm(Container);
 const app = new Koa();
 
 app.use(logger());
+app.use(errorCatch());
 
 useKoaServer(app, {
   cors: true,
-  routePrefix: '/',
   controllers: [`${__dirname}/controllers/*.{js,ts}`],
   defaultErrorHandler: true
 });
