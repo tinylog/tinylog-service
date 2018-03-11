@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import './utils/env';
 import * as Koa from 'koa';
 import * as logger from 'koa-logger';
 import * as config from 'config';
@@ -55,7 +56,7 @@ if (config.env === 'development') {
     ],
     defaultSuccessResponse: IDefaultSuccessResponse
   }).then(() => {
-    console.log('OpenAPI Document Generated Success!');
+    console.log('OpenAPI Document Generated Success');
   });
 }
 

@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node ./build/src/index.js",
+    "start": "node ./build/index.js",
     "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
     "build": "tsc",
     "test:run": "./node_modules/.bin/mocha --require espower-typescript/guess 'test/**/*.ts' --timeout=10000",
