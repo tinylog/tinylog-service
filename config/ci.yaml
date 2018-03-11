@@ -1,0 +1,15 @@
+database:
+  name: test
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password:
+  logging: false
+
+cache:
+  host: redis
+  port: 6379
+  db: 0
+
+env: ci
+port: 8000

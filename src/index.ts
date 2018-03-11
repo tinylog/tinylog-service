@@ -40,7 +40,7 @@ export const connection = Database.Instance.then(async c => {
   });
 });
 
-if (['production', 'test'].includes(config.env)) {
+if (config.env === 'development') {
   docGenerator(getMetadataArgsStorage(), {
     info: {
       title: 'TinyLog-Service API',
