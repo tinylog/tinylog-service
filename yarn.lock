@@ -4691,9 +4691,9 @@ rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.
   dependencies:
     glob "^7.0.5"
 
-routing-controllers-openapi-v3@^0.0.1-alpha4:
-  version "0.0.1-alpha4"
-  resolved "https://registry.yarnpkg.com/routing-controllers-openapi-v3/-/routing-controllers-openapi-v3-0.0.1-alpha4.tgz#4e5780d239c289fac423bde244db7080f9d661ac"
+routing-controllers-openapi-v3@^0.0.1-alpha5:
+  version "0.0.1-alpha5"
+  resolved "https://registry.yarnpkg.com/routing-controllers-openapi-v3/-/routing-controllers-openapi-v3-0.0.1-alpha5.tgz#a676e08718c8bcd62d2ceff371f7176ce73be563"
   dependencies:
     "@loopback/openapi-v3-types" "^0.2.2"
     "@types/glob" "^5.0.35"

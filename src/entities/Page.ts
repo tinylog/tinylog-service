@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import Asset from './Asset';
+import Visiter from './Visiter';
+import Host from './Host';
 
 @Entity()
 export default class Page {
@@ -55,4 +57,18 @@ export default class Page {
   /** 当前页面下请求的资源 */
   @OneToMany(type => Asset, asset => asset.page)
   assets?: Asset[];
+
+  /** 访问的网站 */
+  @Column() hostId: string;
+
+  /** 访客 */
+  @Column() visiterId: string;
+
+  @ManyToOne(type => Visiter)
+  @JoinColumn({ name: 'visiterId' })
+  visiter: Visiter;
+
+  @ManyToOne(type => Host)
+  @JoinColumn({ name: 'hostId' })
+  host: Host;
 }

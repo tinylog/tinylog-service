@@ -8,6 +8,7 @@ import { useContainer as useContainerForOrm } from 'typeorm';
 import Database from './libraries/Database';
 import Cache from './libraries/Cache';
 import docGenerator from 'routing-controllers-openapi-v3';
+import { IDefaultSuccessResponse } from './interfaces/Helper';
 
 const { port } = config;
 
@@ -20,7 +21,7 @@ app.use(logger());
 
 useKoaServer(app, {
   cors: true,
-  routePrefix: '/v1',
+  routePrefix: '/',
   controllers: [`${__dirname}/controllers/*.{js,ts}`],
   defaultErrorHandler: true
 });
@@ -45,9 +46,10 @@ export const connection = Database.Instance.then(async c => {
             url: 'https://api.example.com/v1',
             description: 'test'
           }
-        ]
+        ],
+        defaultSuccessResponse: IDefaultSuccessResponse
       });
-      console.log('Swagger Document Generated Success!');
+      console.log('OpenAPI Document Generated Success!');
 
       resolve(app.callback());
     });

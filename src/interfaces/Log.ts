@@ -6,7 +6,7 @@ import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class IInitialize implements Partial<Session>, Partial<Visiter> {
-  @IsString() referer: string;
+  @IsString() referrer: string;
   @IsString() lang: string;
   @IsString() ua: string;
   @IsString() os: string;
@@ -30,7 +30,7 @@ export class IPageInfo implements Partial<Page> {
 }
 
 export class IExit {
-  @IsNumber() pageId: number;
+  @IsString() pageId: string;
   @IsNumber() exitTime: number;
 }
 
@@ -45,7 +45,7 @@ export class IAsset implements Partial<Asset> {
 }
 
 export class IAssetsInfo {
-  @IsNumber() pageId: number;
+  @IsString() pageId: string;
   @IsArray()
   @Type(() => IAsset)
   assets: IAsset[];

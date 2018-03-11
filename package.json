@@ -40,7 +40,7 @@
     "mysql": "^2.15.0",
     "reflect-metadata": "^0.1.12",
     "routing-controllers": "^0.7.7",
-    "routing-controllers-openapi-v3": "^0.0.1-alpha4",
+    "routing-controllers-openapi-v3": "^0.0.1-alpha5",
     "typedi": "^0.7.1",
     "typeorm": "^0.1.13"
   },

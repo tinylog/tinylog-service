@@ -1,7 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import Visiter from '../entities/Visiter';
 import Cache from '../libraries/Cache';
-import { IInitialize } from '../interfaces/Log';
 
 @EntityRepository(Visiter)
 export class VisiterRepository extends Repository<Visiter> {
