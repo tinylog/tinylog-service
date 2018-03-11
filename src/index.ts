@@ -34,24 +34,26 @@ export const connection = Database.Instance.then(async c => {
   return new Promise(resolve => {
     app.listen(port, async () => {
       console.log(`[APP] Listen on ${port} in ${config.env} enviroment`);
-
-      await docGenerator(getMetadataArgsStorage(), {
-        info: {
-          title: 'TinyLog-Service API',
-          description: 'API Document for TinyLog',
-          version: '0.1.0'
-        },
-        servers: [
-          {
-            url: 'https://api.example.com/v1',
-            description: 'test'
-          }
-        ],
-        defaultSuccessResponse: IDefaultSuccessResponse
-      });
-      console.log('OpenAPI Document Generated Success!');
-
       resolve(app.callback());
     });
   });
 });
+
+if (['production', 'test'].includes(config.env)) {
+  docGenerator(getMetadataArgsStorage(), {
+    info: {
+      title: 'TinyLog-Service API',
+      description: 'API Document for TinyLog',
+      version: '0.1.0'
+    },
+    servers: [
+      {
+        url: 'https://api.example.com/v1',
+        description: 'test'
+      }
+    ],
+    defaultSuccessResponse: IDefaultSuccessResponse
+  }).then(() => {
+    console.log('OpenAPI Document Generated Success!');
+  });
+}

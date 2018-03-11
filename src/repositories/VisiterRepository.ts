@@ -10,6 +10,6 @@ export class VisiterRepository extends Repository<Visiter> {
       return undefined;
     }
 
-    return await this.findOneById(visiterId);
+    return await this.findOne(visiterId);
   }
 }

@@ -18,7 +18,7 @@ export class LogService {
   assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
   async initialize(body: IInitialize, hostId: string, preToken?: string): Promise<IToken> {
-    const host = await this.hostRepository.findOneById(hostId);
+    const host = await this.hostRepository.findOne(hostId);
 
     if (!host) {
       throw new BadRequestError('Host is not registed');
@@ -65,7 +65,7 @@ export class LogService {
   }
 
   async saveAssetsInfo(body: IAssetsInfo, visiterId: string, hostId: string) {
-    const page = await this.pageRepository.findOneById({
+    const page = await this.pageRepository.findOne({
       id: body.pageId,
       visiterId,
       hostId
@@ -86,7 +86,7 @@ export class LogService {
   }
 
   async exit(body: IExit, visiterId: string, hostId: string) {
-    const page = await this.pageRepository.findOneById({
+    const page = await this.pageRepository.findOne({
       id: body.pageId
     });
 
@@ -94,7 +94,7 @@ export class LogService {
       throw new BadRequestError('Request Page Not Found');
     }
 
-    await this.pageRepository.updateById(body.pageId, {
+    await this.pageRepository.update(body.pageId, {
       exitTime: body.exitTime
     });
   }
