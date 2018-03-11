@@ -34,6 +34,7 @@ export const connection = Database.Instance.then(async c => {
   return new Promise(resolve => {
     app.listen(port, async () => {
       console.log(`[APP] Listen on ${port} in ${config.env} enviroment`);
+      server = app.callback();
       resolve(app.callback());
     });
   });
@@ -57,3 +58,6 @@ if (['production', 'test'].includes(config.env)) {
     console.log('OpenAPI Document Generated Success!');
   });
 }
+
+// For supertest
+export let server: any;

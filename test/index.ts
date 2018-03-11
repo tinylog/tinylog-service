@@ -1,5 +1,12 @@
-import * as assert from 'power-assert'
+import 'mocha';
+import '../src/utils/env';
+import { getConnection } from 'typeorm';
 
-it('test', () => {
-  assert([1, 2, 3].includes(2))
-})
+before('before all', async () => {
+  const { connection } = await import('../src/index');
+  await connection;
+});
+
+after('after all', async () => {
+  await getConnection().close();
+});
