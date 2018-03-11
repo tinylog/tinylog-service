@@ -1,4 +1,7 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, getCustomRepository } from 'typeorm';
+import { HostRepository } from '../repositories/HostRepository';
+import { UserRepository } from '../repositories/UserRepository';
+import { SHA256 } from 'crypto-js';
 
 export class Initialize1520751870576 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -46,6 +49,21 @@ export class Initialize1520751870576 implements MigrationInterface {
     );
     await queryRunner.query(
       'ALTER TABLE `session` ADD CONSTRAINT `FK_f87d0e39c746e717783510f20f2` FOREIGN KEY (`hostId`) REFERENCES `host`(`id`)'
+    );
+
+    const userRepository = getCustomRepository(UserRepository);
+    const hostRepository = getCustomRepository(HostRepository);
+    const user = await userRepository.save(
+      userRepository.create({
+        email: 'qq@qq.com',
+        password: SHA256('qqqqqqqq').toString()
+      })
+    );
+    await hostRepository.save(
+      hostRepository.create({
+        website: 'https://www.qq.com',
+        user
+      })
     );
   }
 
