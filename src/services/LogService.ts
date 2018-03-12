@@ -56,13 +56,17 @@ export class LogService {
     const prePage =
       body.prePageId &&
       (await this.pageRepository.findOne({
-        prePageId: body.prePageId,
+        id: body.prePageId,
         visiterId,
         hostId
       }));
 
     if (body.prePageId && !prePage) {
       throw new BadRequestError('PrePageId is not found');
+    } else if (body.prePageId && prePage) {
+      // 更新 prePage 的访问结束时间
+      prePage.endTime = body.startTime;
+      await this.pageRepository.save(prePage);
     }
 
     const page = await this.pageRepository.save(
@@ -84,7 +88,6 @@ export class LogService {
       visiterId,
       hostId
     });
-
     if (!page) {
       throw new BadRequestError('Request Page Not Found');
     }
@@ -111,7 +114,8 @@ export class LogService {
     }
 
     await this.pageRepository.updateById(body.pageId, {
-      exitTime: body.exitTime
+      exitTime: body.exitTime,
+      endTime: body.exitTime
     });
   }
 }

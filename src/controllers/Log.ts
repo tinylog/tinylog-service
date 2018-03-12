@@ -42,13 +42,15 @@ export class LogController {
   @Post('/assets')
   @UseBefore(sessionInject())
   async assetsInfo(@Body() body: IAssetsInfo, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
-    return await this.logService.saveAssetsInfo(body, visiterId, hostId);
+    await this.logService.saveAssetsInfo(body, visiterId, hostId);
+    return { success: true };
   }
 
   @Description('网页退出')
   @Post('/exit')
   @UseBefore(sessionInject())
   async exit(@Body() body: IExit, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
-    return await this.logService.exit(body, visiterId, hostId);
+    await this.logService.exit(body, visiterId, hostId);
+    return { success: true };
   }
 }

@@ -10,7 +10,7 @@
     "dev": "nodemon --ignore doc.json --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
     "build": "tsc",
     "test:run": "./node_modules/.bin/mocha --require espower-typescript/guess 'test/**/*.ts' --timeout=10000",
-    "test:coverage": "nyc npm run test:run",
+    "test:coverage": "nyc npm run test:run -- --exit",
     "test:watch": "NODE_ENV=test npm run test:run -- --watch --watch-extensions ts",
     "test:ci": "NODE_ENV=ci npm run test:coverage",
     "test": "NODE_ENV=test npm run test:run",
