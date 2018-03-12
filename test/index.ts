@@ -1,12 +1,12 @@
+import 'reflect-metadata';
 import 'mocha';
 import '../src/utils/env';
-import { getConnection } from 'typeorm';
+import Test from '../src/utils/Test';
 
 before('before all', async () => {
-  const { connection } = await import('../src/index');
-  await connection;
+  await Test.Instance.connect();
 });
 
 after('after all', async () => {
-  await getConnection().close();
+  await Test.Instance.close();
 });
