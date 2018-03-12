@@ -19,6 +19,7 @@ useContainerForOrm(Container);
 
 const app = new Koa();
 
+app.proxy = true;
 app.use(logger());
 app.use(errorCatch());
 

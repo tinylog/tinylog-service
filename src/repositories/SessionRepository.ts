@@ -6,7 +6,7 @@ import { MD5 } from 'crypto-js';
 import Host from '../entities/Host';
 
 @EntityRepository(Session)
-export class SessionRepository extends Repository<Session> {
+export default class SessionRepository extends Repository<Session> {
   async newSession(visiter: Visiter, host: Host, referrer: string) {
     const token = MD5(visiter.id + host.id + Date.now().toString()).toString();
     const session = await this.create({

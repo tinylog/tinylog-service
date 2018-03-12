@@ -8,7 +8,16 @@ export default class Visiter {
   @Column() lang: string;
 
   /** 地区 */
-  @Column() location: string;
+  @Column() region: string;
+
+  /** 国家 */
+  @Column() country: string;
+
+  /** LL */
+  @Column('json') ll: string[];
+
+  /** range */
+  @Column('json') range: string[];
 
   /** 城市 */
   @Column() city: string;

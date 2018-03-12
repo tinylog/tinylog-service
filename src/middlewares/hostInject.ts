@@ -1,7 +1,7 @@
 import { Context } from 'koa';
 import Cache from '../libraries/Cache';
 import { getCustomRepository } from 'typeorm';
-import { HostRepository } from '../repositories/HostRepository';
+import HostRepository from '../repositories/HostRepository';
 import { BadRequestError } from 'routing-controllers';
 
 /**

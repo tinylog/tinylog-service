@@ -1,13 +1,14 @@
 import { Service } from 'typedi';
+import * as geoip from 'geoip-lite';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
-import { SessionRepository } from '../repositories/SessionRepository';
+import SessionRepository from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { VisiterRepository } from '../repositories/VisiterRepository';
+import VisiterRepository from '../repositories/VisiterRepository';
 import { IToken, IPageId } from '../interfaces/Helper';
-import { PageRepository } from '../repositories/PageRepository';
+import PageRepository from '../repositories/PageRepository';
 import { BadRequestError } from 'routing-controllers';
-import { HostRepository } from '../repositories/HostRepository';
-import { AssetRepository } from '../repositories/AssetRepository';
+import HostRepository from '../repositories/HostRepository';
+import AssetRepository from '../repositories/AssetRepository';
 
 @Service()
 export class LogService {
@@ -17,14 +18,15 @@ export class LogService {
   hostRepository: HostRepository = getCustomRepository(HostRepository);
   assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
-  async initialize(body: IInitialize, hostId: string, preToken?: string): Promise<IToken> {
+  async initialize(body: IInitialize, ip: string, hostId: string, preToken?: string): Promise<IToken> {
     const host = await this.hostRepository.findOne(hostId);
 
     if (!host) {
       throw new BadRequestError('Host is not registed');
     }
 
-    const visiter = preToken && (await this.visiterRepository.getVisiterByToken(preToken));
+    // TOKEN 有效（复用 Visiter）前提是 Token 正确且对应的 Visiter 的 IP 地址和现在的相同
+    const visiter = preToken && (await this.visiterRepository.getVisiterByToken(preToken, ip));
 
     if (visiter) {
       const token = await this.sessionRepository.newSession(visiter, host, body.referrer);
@@ -32,7 +34,13 @@ export class LogService {
         token
       };
     } else {
-      const newVisiter = await this.visiterRepository.create(body);
+      const geo = geoip.lookup(ip);
+      const newVisiter = await this.visiterRepository.create({
+        lang: body.lang,
+        ua: body.ua,
+        os: body.os,
+        ...geo
+      });
       const token = await this.sessionRepository.newSession(newVisiter, host, body.referrer);
       return {
         token
