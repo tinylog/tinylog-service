@@ -3,10 +3,10 @@ import HostRepository from '../repositories/HostRepository';
 import UserRepository from '../repositories/UserRepository';
 import { SHA256 } from 'crypto-js';
 
-export class Initialize1520751870576 implements MigrationInterface {
+export class Update1520836070176 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      'CREATE TABLE `visiter` (`id` varchar(36) NOT NULL, `lang` varchar(255) NOT NULL, `location` varchar(255) NOT NULL, `city` varchar(255) NOT NULL, `ip` varchar(255) NOT NULL, `ua` varchar(255) NOT NULL, `os` varchar(255) NOT NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), PRIMARY KEY (`id`)) ENGINE=InnoDB'
+      'CREATE TABLE `visiter` (`id` varchar(36) NOT NULL, `lang` varchar(255) NOT NULL, `region` varchar(255), `country` varchar(255), `ll` json, `range` json, `city` varchar(255), `ip` varchar(255) NOT NULL, `ua` varchar(255) NOT NULL, `os` varchar(255) NOT NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), PRIMARY KEY (`id`)) ENGINE=InnoDB'
     );
     await queryRunner.query(
       'CREATE TABLE `user` (`id` varchar(36) NOT NULL, `email` varchar(255) NOT NULL, `password` varchar(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB'
@@ -51,6 +51,7 @@ export class Initialize1520751870576 implements MigrationInterface {
       'ALTER TABLE `session` ADD CONSTRAINT `FK_f87d0e39c746e717783510f20f2` FOREIGN KEY (`hostId`) REFERENCES `host`(`id`)'
     );
 
+    /** init data */
     const userRepository = getCustomRepository(UserRepository);
     const hostRepository = getCustomRepository(HostRepository);
     const user = await userRepository.save(
