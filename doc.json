@@ -228,7 +228,7 @@
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "number"
           }
         },
         "required": ["pageId"]
@@ -240,10 +240,12 @@
             "type": "string"
           },
           "startTime": {
-            "type": "number"
+            "description": "Enables basic storage and retrieval of dates and times.",
+            "type": "string",
+            "format": "date-time"
           },
           "prePageId": {
-            "type": "string"
+            "type": "number"
           },
           "referrer": {
             "type": "string"
@@ -321,7 +323,7 @@
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "number"
           },
           "assets": {
             "type": "array",
@@ -336,10 +338,10 @@
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "number"
           },
           "exitTime": {
-            "type": "number"
+            "type": "string"
           }
         },
         "required": ["exitTime", "pageId"]

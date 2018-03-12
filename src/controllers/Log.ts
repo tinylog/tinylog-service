@@ -20,7 +20,7 @@ export class LogController {
   async initialize(
     @Ctx() ctx: Context,
     @Body() body: IInitialize,
-    @State('hostId') hostId: string,
+    @State('hostId') hostId: number,
     @HeaderParam('Authorization') token?: string
   ): Promise<IToken> {
     return await this.logService.initialize(body, ctx.ip, hostId, token);
@@ -32,8 +32,8 @@ export class LogController {
   @UseBefore(sessionInject())
   async pageInfo(
     @Body() body: IPageInfo,
-    @State('visiterId') visiterId: string,
-    @State('hostId') hostId: string
+    @State('visiterId') visiterId: number,
+    @State('hostId') hostId: number
   ): Promise<IPageId> {
     return await this.logService.savePageInfo(body, visiterId, hostId);
   }
@@ -41,14 +41,14 @@ export class LogController {
   @Description('页面资源数据')
   @Post('/assets')
   @UseBefore(sessionInject())
-  async assetsInfo(@Body() body: IAssetsInfo, @State('visiterId') visiterId: string, @State('hostId') hostId: string) {
+  async assetsInfo(@Body() body: IAssetsInfo, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
     return await this.logService.saveAssetsInfo(body, visiterId, hostId);
   }
 
   @Description('网页退出')
   @Post('/exit')
   @UseBefore(sessionInject())
-  async exit(@Body() body: IExit, @State('visiterId') visiterId: string, @State('hostId') hostId: string) {
+  async exit(@Body() body: IExit, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
     return await this.logService.exit(body, visiterId, hostId);
   }
 }

@@ -8,6 +8,7 @@ import { IToken, IPageId } from '../interfaces/Helper';
 import PageRepository from '../repositories/PageRepository';
 import { BadRequestError } from 'routing-controllers';
 import HostRepository from '../repositories/HostRepository';
+import Cache from '../libraries/Cache';
 import AssetRepository from '../repositories/AssetRepository';
 
 @Service()
@@ -18,8 +19,8 @@ export class LogService {
   hostRepository: HostRepository = getCustomRepository(HostRepository);
   assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
-  async initialize(body: IInitialize, ip: string, hostId: string, preToken?: string): Promise<IToken> {
-    const host = await this.hostRepository.findOne(hostId);
+  async initialize(body: IInitialize, ip: string, hostId: number, preToken?: string): Promise<IToken> {
+    const host = await this.hostRepository.findOneById(hostId);
 
     if (!host) {
       throw new BadRequestError('Host is not registed');
@@ -29,18 +30,21 @@ export class LogService {
     const visiter = preToken && (await this.visiterRepository.getVisiterByToken(preToken, ip));
 
     if (visiter) {
-      const token = await this.sessionRepository.newSession(visiter, host, body.referrer);
+      const token = await this.sessionRepository.updateSession(visiter, host, preToken!);
       return {
         token
       };
     } else {
       const geo = geoip.lookup(ip);
-      const newVisiter = await this.visiterRepository.create({
-        lang: body.lang,
-        ua: body.ua,
-        os: body.os,
-        ...geo
-      });
+      const newVisiter = await this.visiterRepository.save(
+        this.visiterRepository.create({
+          lang: body.lang,
+          ua: body.ua,
+          os: body.os,
+          ip,
+          ...geo
+        })
+      );
       const token = await this.sessionRepository.newSession(newVisiter, host, body.referrer);
       return {
         token
@@ -48,7 +52,7 @@ export class LogService {
     }
   }
 
-  async savePageInfo(body: IPageInfo, visiterId: string, hostId: string): Promise<IPageId> {
+  async savePageInfo(body: IPageInfo, visiterId: number, hostId: number): Promise<IPageId> {
     const prePage =
       body.prePageId &&
       (await this.pageRepository.findOne({
@@ -57,22 +61,24 @@ export class LogService {
         hostId
       }));
 
-    if (!prePage) {
+    if (body.prePageId && !prePage) {
       throw new BadRequestError('PrePageId is not found');
     }
 
-    const page = await this.pageRepository.create({
-      ...body,
-      visiterId,
-      hostId
-    });
+    const page = await this.pageRepository.save(
+      this.pageRepository.create({
+        ...body,
+        visiterId,
+        hostId
+      })
+    );
 
     return {
       pageId: page.id
     };
   }
 
-  async saveAssetsInfo(body: IAssetsInfo, visiterId: string, hostId: string) {
+  async saveAssetsInfo(body: IAssetsInfo, visiterId: number, hostId: number) {
     const page = await this.pageRepository.findOne({
       id: body.pageId,
       visiterId,
@@ -83,17 +89,19 @@ export class LogService {
       throw new BadRequestError('Request Page Not Found');
     }
 
-    await this.assetRepository.create(
-      body.assets.map(asset => ({
-        ...asset,
-        pageId: body.pageId,
-        hostId,
-        visiterId
-      }))
+    await this.assetRepository.save(
+      this.assetRepository.create(
+        body.assets.map(asset => ({
+          ...asset,
+          pageId: body.pageId,
+          hostId,
+          visiterId
+        }))
+      )
     );
   }
 
-  async exit(body: IExit, visiterId: string, hostId: string) {
+  async exit(body: IExit, visiterId: number, hostId: number) {
     const page = await this.pageRepository.findOne({
       id: body.pageId
     });
@@ -102,7 +110,7 @@ export class LogService {
       throw new BadRequestError('Request Page Not Found');
     }
 
-    await this.pageRepository.update(body.pageId, {
+    await this.pageRepository.updateById(body.pageId, {
       exitTime: body.exitTime
     });
   }

@@ -15,7 +15,7 @@ export default function sessionInject() {
     }
 
     // TODO: hostId compare with http host
-    const [hostId, visiterId] = session.split(':');
+    const [hostId, visiterId] = session.split(':').map(i => +i);
 
     ctx.state.hostId = hostId;
     ctx.state.visiterId = visiterId;

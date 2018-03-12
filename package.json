@@ -11,7 +11,7 @@
     "build": "tsc",
     "test:run": "./node_modules/.bin/mocha --require espower-typescript/guess 'test/**/*.ts' --timeout=10000",
     "test:coverage": "nyc npm run test:run",
-    "test:watch": "npm run test:run -- --watch",
+    "test:watch": "NODE_ENV=test npm run test:run -- --watch --watch-extensions ts",
     "test:ci": "NODE_ENV=ci npm run test:coverage",
     "test": "NODE_ENV=test npm run test:run",
     "report-coverage": "NODE_ENV=test nyc report --reporter=text-lcov > coverage.lcov && codecov",
@@ -44,7 +44,7 @@
     "routing-controllers": "^0.7.7",
     "routing-controllers-openapi-v3": "^0.0.1-alpha5",
     "typedi": "^0.7.1",
-    "typeorm": "^0.2.0-alpha.28"
+    "typeorm": "^0.1.16"
   },
   "devDependencies": {
     "@types/faker": "^4.1.2",

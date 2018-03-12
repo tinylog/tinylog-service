@@ -3,7 +3,7 @@ export class IToken {
 }
 
 export class IPageId {
-  pageId: string;
+  pageId: number;
 }
 
 export class IDefaultSuccessResponse {}

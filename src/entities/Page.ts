@@ -5,7 +5,7 @@ import Host from './Host';
 
 @Entity()
 export default class Page {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @PrimaryGeneratedColumn() id: number;
 
   /** 当前页面 */
   @Column() url: string;
@@ -38,16 +38,19 @@ export default class Page {
   @Column() loadEvent: number;
 
   /** 当前页面的访问开始时间 */
-  @Column() startTime: number;
+  @Column({ type: 'datetime' })
+  startTime: Date;
 
   /** 当前页面的访问结束时间 */
-  @Column() endTime: number;
+  @Column({ type: 'datetime', nullable: true })
+  endTime: Date;
 
   /** 退出时间，只有退出时才有 */
-  @Column({ nullable: true })
-  exitTime: number;
+  @Column({ type: 'datetime', nullable: true })
+  exitTime: Date;
 
-  @Column() prePageId: string;
+  @Column({ nullable: true })
+  prePageId: number;
 
   /** 上一个页面，如果是入口页面则没有该值 */
   @OneToOne(type => Page)
@@ -59,10 +62,10 @@ export default class Page {
   assets?: Asset[];
 
   /** 访问的网站 */
-  @Column() hostId: string;
+  @Column() hostId: number;
 
   /** 访客 */
-  @Column() visiterId: string;
+  @Column() visiterId: number;
 
   @ManyToOne(type => Visiter)
   @JoinColumn({ name: 'visiterId' })

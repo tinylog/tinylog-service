@@ -2,7 +2,7 @@ import Session from '../entities/Session';
 import Visiter from '../entities/Visiter';
 import Page from '../entities/Page';
 import Asset from '../entities/Asset';
-import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsArray, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class IInitialize implements Partial<Session>, Partial<Visiter> {
@@ -14,10 +14,10 @@ export class IInitialize implements Partial<Session>, Partial<Visiter> {
 
 export class IPageInfo implements Partial<Page> {
   @IsString() url: string;
-  @IsNumber() startTime: number;
+  @IsDateString() startTime: Date;
   @IsOptional()
   @IsNumber()
-  prePageId?: string;
+  prePageId?: number;
   @IsString() referrer: string;
   @IsNumber() loadPage: number;
   @IsNumber() domReady: number;
@@ -30,8 +30,8 @@ export class IPageInfo implements Partial<Page> {
 }
 
 export class IExit {
-  @IsString() pageId: string;
-  @IsNumber() exitTime: number;
+  @IsNumber() pageId: number;
+  @IsDateString() exitTime: string;
 }
 
 export class IAsset implements Partial<Asset> {
@@ -45,7 +45,7 @@ export class IAsset implements Partial<Asset> {
 }
 
 export class IAssetsInfo {
-  @IsString() pageId: string;
+  @IsNumber() pageId: number;
   @IsArray()
   @Type(() => IAsset)
   assets: IAsset[];

@@ -1,2 +1,5 @@
+database:
+  logging: false
+
 env: test
 port: 0

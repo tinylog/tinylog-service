@@ -9,9 +9,8 @@ export default class VisiterRepository extends Repository<Visiter> {
     if (!visiterId) {
       return undefined;
     }
-
     return await this.findOne({
-      id: visiterId,
+      id: +visiterId.split(':')[1],
       ip
     });
   }

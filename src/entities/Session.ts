@@ -4,9 +4,9 @@ import Host from './Host';
 
 @Entity()
 export default class Session {
-  @PrimaryColumn() visiterId: string;
+  @PrimaryColumn() visiterId: number;
 
-  @PrimaryColumn() hostId: string;
+  @PrimaryColumn() hostId: number;
 
   /** referrer */
   @Column() referrer: string;

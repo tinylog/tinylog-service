@@ -836,7 +836,7 @@ cli-cursor@^2.1.0:
   dependencies:
     restore-cursor "^2.0.0"
 
-cli-highlight@^1.2.3:
+cli-highlight@^1.1.4:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/cli-highlight/-/cli-highlight-1.2.3.tgz#b200f97ed0e43d24633e89de0f489a48bb87d2bf"
   dependencies:
@@ -2972,9 +2972,16 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.7.0, js-yaml@^3.8.4, js-yaml@^3.9.0:
+js-yaml@^3.7.0, js-yaml@^3.9.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.8.4:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.11.0.tgz#597c1a8bd57152f26d622ce4117851a51f5ebaef"
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -5563,13 +5570,13 @@ typedi@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.7.1.tgz#7fd9d54e3ccbe9dce49e47651ff03a7b8a515b16"
 
-typeorm@^0.2.0-alpha.28:
-  version "0.2.0-alpha.28"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.0-alpha.28.tgz#377e5c0778bc84edcb9e2537ec0f48c4653680bc"
+typeorm@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.1.16.tgz#52a9251f4394c07ce1f4e14d2c8b6cfca89535fc"
   dependencies:
     app-root-path "^2.0.1"
     chalk "^2.0.1"
-    cli-highlight "^1.2.3"
+    cli-highlight "^1.1.4"
     debug "^3.1.0"
     dotenv "^4.0.0"
     glob "^7.1.2"
