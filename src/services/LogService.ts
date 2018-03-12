@@ -8,7 +8,6 @@ import { IToken, IPageId } from '../interfaces/Helper';
 import PageRepository from '../repositories/PageRepository';
 import { BadRequestError } from 'routing-controllers';
 import HostRepository from '../repositories/HostRepository';
-import Cache from '../libraries/Cache';
 import AssetRepository from '../repositories/AssetRepository';
 
 @Service()
