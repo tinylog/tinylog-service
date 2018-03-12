@@ -8,7 +8,7 @@ import { BadRequestError } from 'routing-controllers';
  */
 export default function sessionInject() {
   return async (ctx: Context, next: () => Promise<{}>) => {
-    const session = await Cache.Instance.get(`TOKEN:${ctx.headers.Authorization}`);
+    const session = await Cache.Instance.get(`TOKEN:${ctx.headers.authorization}`);
 
     if (!session) {
       throw new BadRequestError('Initialize Is Required');
@@ -19,5 +19,6 @@ export default function sessionInject() {
 
     ctx.state.hostId = hostId;
     ctx.state.visiterId = visiterId;
+    await next();
   };
 }

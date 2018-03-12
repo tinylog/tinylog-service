@@ -24,7 +24,6 @@ export default function hostInject() {
     } else {
       ctx.state.hostId = cacheHostId;
     }
-
-    //
+    await next();
   };
 }
