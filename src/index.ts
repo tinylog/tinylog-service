@@ -52,8 +52,8 @@ if (config.env === 'development') {
     },
     servers: [
       {
-        url: 'https://api.example.com/v1',
-        description: 'test'
+        url: 'https://tinylog.ruiming.me/',
+        description: 'Production Server'
       }
     ],
     defaultSuccessResponse: IDefaultSuccessResponse
