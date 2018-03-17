@@ -62,7 +62,7 @@ export class LogService {
         hostId
       }));
 
-    if (body.prePageId && !prePage) {
+    if (body.prePageId !== undefined && !prePage) {
       throw new BadRequestError('PrePageId is not found');
     } else if (body.prePageId && prePage) {
       // 更新 prePage 的访问结束时间
