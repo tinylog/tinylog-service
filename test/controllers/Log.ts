@@ -28,16 +28,15 @@ describe('LogController', () => {
       });
 
     assert(res.status === 400);
-    assert(res.body.message === 'Request Host Not Found');
   });
 
   it('建立会话，无 TOKEN', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/initialize')
-      .set('t-host', host.website)
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
+        host: host.website,
         ua: faker.internet.userAgent(),
         os: 'linux'
       });
@@ -52,10 +51,10 @@ describe('LogController', () => {
     const res = await request(Test.Instance.app)
       .post('/log/initialize')
       .set('authorization', token)
-      .set('t-host', host.website)
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
+        host: host.website,
         ua: faker.internet.userAgent(),
         os: 'linux'
       });
@@ -69,7 +68,6 @@ describe('LogController', () => {
   it('发送页面数据，没有 TOKEN', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
-      .set('t-host', host.website)
       .send(Test.Instance.mockPage());
 
     assert(res.status === 400);
@@ -79,7 +77,6 @@ describe('LogController', () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
       .set('authorization', token)
-      .set('t-host', host.website)
       .send(
         Test.Instance.mockPage({
           url: 'https://ruiming.me'
@@ -96,7 +93,6 @@ describe('LogController', () => {
     const res = await request(Test.Instance.app)
       .post('/log/assets')
       .set('authorization', token)
-      .set('t-host', host.website)
       .send({
         pageId,
         assets: [Test.Instance.mockAsset({ name: name1 }), Test.Instance.mockAsset({ name: name2 })]
@@ -115,7 +111,6 @@ describe('LogController', () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
       .set('authorization', token)
-      .set('t-host', host.website)
       .send(
         Test.Instance.mockPage({
           url: 'https://ruiming.me',
@@ -132,7 +127,6 @@ describe('LogController', () => {
     const res = await request(Test.Instance.app)
       .post('/log/exit')
       .set('authorization', token)
-      .set('t-host', host.website)
       .send({
         pageId: nextPageId,
         exitTime: new Date()

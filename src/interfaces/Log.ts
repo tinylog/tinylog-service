@@ -1,15 +1,15 @@
-import Session from '../entities/Session';
 import Visiter from '../entities/Visiter';
 import Page from '../entities/Page';
 import Asset from '../entities/Asset';
 import { IsString, IsNumber, IsOptional, IsArray, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class IInitialize implements Partial<Session>, Partial<Visiter> {
+export class IInitialize implements Partial<Visiter> {
   @IsString() referrer: string;
   @IsString() lang: string;
   @IsString() ua: string;
   @IsString() os: string;
+  @IsString() host: string;
 }
 
 export class IPageInfo implements Partial<Page> {

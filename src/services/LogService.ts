@@ -18,8 +18,10 @@ export class LogService {
   hostRepository: HostRepository = getCustomRepository(HostRepository);
   assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
-  async initialize(body: IInitialize, ip: string, hostId: number, preToken?: string): Promise<IToken> {
-    const host = await this.hostRepository.findOneById(hostId);
+  async initialize(body: IInitialize, ip: string, preToken?: string): Promise<IToken> {
+    const website = body.host;
+
+    const host = await this.hostRepository.findOne({ website });
 
     if (!host) {
       throw new BadRequestError('Host is not registed');

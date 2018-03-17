@@ -4,7 +4,6 @@ import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
 import { Description, ResType } from 'routing-controllers-openapi-v3';
 import { LogService } from '../services/LogService';
 import { IToken, IPageId } from '../interfaces/Helper';
-import hostInject from '../middlewares/hostInject';
 import sessionInject from '../middlewares/sessionInject';
 import { Context } from 'koa';
 
@@ -16,14 +15,12 @@ export class LogController {
   @Description('建立会话')
   @ResType(IToken)
   @Post('/initialize')
-  @UseBefore(hostInject())
   async initialize(
     @Ctx() ctx: Context,
     @Body() body: IInitialize,
-    @State('hostId') hostId: number,
     @HeaderParam('Authorization') token?: string
   ): Promise<IToken> {
-    return await this.logService.initialize(body, ctx.ip, hostId, token);
+    return await this.logService.initialize(body, ctx.ip, token);
   }
 
   @Description(`页面数据`)
