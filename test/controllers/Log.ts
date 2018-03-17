@@ -34,7 +34,7 @@ describe('LogController', () => {
   it('建立会话，无 TOKEN', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/initialize')
-      .set('Host', host.website)
+      .set('t-host', host.website)
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
@@ -51,8 +51,8 @@ describe('LogController', () => {
   it('建立会话，复用 TOKEN', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/initialize')
-      .set('Authorization', token)
-      .set('Host', host.website)
+      .set('authorization', token)
+      .set('t-host', host.website)
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
@@ -69,7 +69,7 @@ describe('LogController', () => {
   it('发送页面数据，没有 TOKEN', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
-      .set('Host', host.website)
+      .set('t-host', host.website)
       .send(Test.Instance.mockPage());
 
     assert(res.status === 400);
@@ -78,8 +78,8 @@ describe('LogController', () => {
   it('正确发送页面数据', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
-      .set('Authorization', token)
-      .set('Host', host.website)
+      .set('authorization', token)
+      .set('t-host', host.website)
       .send(
         Test.Instance.mockPage({
           url: 'https://ruiming.me'
@@ -95,8 +95,8 @@ describe('LogController', () => {
     const [name1, name2] = [faker.lorem.word(), faker.lorem.word()];
     const res = await request(Test.Instance.app)
       .post('/log/assets')
-      .set('Authorization', token)
-      .set('Host', host.website)
+      .set('authorization', token)
+      .set('t-host', host.website)
       .send({
         pageId,
         assets: [Test.Instance.mockAsset({ name: name1 }), Test.Instance.mockAsset({ name: name2 })]
@@ -114,8 +114,8 @@ describe('LogController', () => {
   it('跳转下一个页面', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/page')
-      .set('Authorization', token)
-      .set('Host', host.website)
+      .set('authorization', token)
+      .set('t-host', host.website)
       .send(
         Test.Instance.mockPage({
           url: 'https://ruiming.me',
@@ -131,8 +131,8 @@ describe('LogController', () => {
   it('网页退出', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/exit')
-      .set('Authorization', token)
-      .set('Host', host.website)
+      .set('authorization', token)
+      .set('t-host', host.website)
       .send({
         pageId: nextPageId,
         exitTime: new Date()

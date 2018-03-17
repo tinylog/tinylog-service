@@ -9,16 +9,17 @@ import { BadRequestError } from 'routing-controllers';
  */
 export default function hostInject() {
   return async (ctx: Context, next: () => Promise<{}>) => {
+    const fromHost = ctx.headers['t-host'];
     // host validate
-    const cacheHostId = await Cache.Instance.get(`HOST:${ctx.host}`);
+    const cacheHostId = await Cache.Instance.get(`HOST:${fromHost}`);
     if (!cacheHostId) {
       const host = await getCustomRepository(HostRepository).findOne({
-        website: ctx.host
+        website: fromHost
       });
       if (!host) {
         throw new BadRequestError('Request Host Not Found');
       } else {
-        await Cache.Instance.set(`HOST:${ctx.host}`, host.id);
+        await Cache.Instance.set(`HOST:${fromHost}`, host.id);
         ctx.state.hostId = host.id;
       }
     } else {
