@@ -220,9 +220,12 @@
           },
           "os": {
             "type": "string"
+          },
+          "host": {
+            "type": "string"
           }
         },
-        "required": ["lang", "os", "referrer", "ua"]
+        "required": ["host", "lang", "os", "referrer", "ua"]
       },
       "IPageId": {
         "type": "object",
