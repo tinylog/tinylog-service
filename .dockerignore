@@ -4,4 +4,4 @@ test
 tslint.json
 README.md
 doc.json
-circle.yml
+.circleci
