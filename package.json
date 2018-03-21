@@ -12,7 +12,7 @@
     "test:run": "./node_modules/.bin/mocha --require espower-typescript/guess 'test/**/*.ts' --timeout=10000",
     "test:coverage": "nyc npm run test:run -- --exit",
     "test:watch": "NODE_ENV=test npm run test:run -- --watch --watch-extensions ts",
-    "test:ci": "NODE_ENV=ci npm run test:coverage",
+    "test:ci": "NODE_ENV=test npm run test:coverage",
     "test": "NODE_ENV=test npm run test:run",
     "report-coverage": "NODE_ENV=test nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "tslint --fix --project tsconfig.json '{src,test}/**/*.ts'",
