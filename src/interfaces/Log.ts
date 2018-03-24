@@ -10,6 +10,7 @@ export class IInitialize {
   @IsString() os: string;
   @IsString() host: string;
   @IsString() fingerprint: string;
+  @IsDateString() createdAt: string;
 }
 
 export class IPageInfo implements Partial<Page> {

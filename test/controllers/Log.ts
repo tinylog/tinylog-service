@@ -8,7 +8,6 @@ import { getCache } from '../../src/libraries/cache';
 
 let host: Host;
 let token: string;
-let val: string;
 let pageId: number;
 let nextPageId: number;
 
@@ -17,20 +16,7 @@ describe('LogController', () => {
     host = (await Test.Instance.hostRepository.findOne())!;
   });
 
-  it('建立会话，未注册 HOST', async () => {
-    const res = await request(Test.Instance.app)
-      .post('/log/initialize')
-      .send({
-        referrer: 'https://ruiming.me',
-        lang: 'zh-cn',
-        ua: faker.internet.userAgent(),
-        os: 'linux'
-      });
-
-    assert(res.status === 400);
-  });
-
-  it('建立会话，无 TOKEN', async () => {
+  it('建立会话', async () => {
     const res = await request(Test.Instance.app)
       .post('/log/initialize')
       .send({
@@ -38,30 +24,13 @@ describe('LogController', () => {
         lang: 'zh-cn',
         host: host.website,
         ua: faker.internet.userAgent(),
-        os: 'linux'
+        os: 'linux',
+        fingerprint: 'test',
+        createdAt: new Date().toISOString()
       });
 
     assert(res.status === 200);
     assert(res.body.token);
-    token = res.body.token;
-    val = await getCache().get(`TOKEN:${token}`);
-  });
-
-  it('建立会话，复用 TOKEN', async () => {
-    const res = await request(Test.Instance.app)
-      .post('/log/initialize')
-      .set('authorization', token)
-      .send({
-        referrer: 'https://ruiming.me',
-        lang: 'zh-cn',
-        host: host.website,
-        ua: faker.internet.userAgent(),
-        os: 'linux'
-      });
-
-    assert(res.status === 200);
-    const newVal = await getCache().get(`TOKEN:${res.body.token}`);
-    assert(val === newVal);
     token = res.body.token;
   });
 

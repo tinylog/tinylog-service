@@ -45,7 +45,7 @@ if (config.env === 'development') {
     info: {
       title: 'TinyLog-Service API',
       description: 'API Document for TinyLog',
-      version: '0.1.0'
+      version: '0.2.0'
     },
     servers: [
       {

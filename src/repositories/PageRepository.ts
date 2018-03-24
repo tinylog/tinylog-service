@@ -29,14 +29,11 @@ export default class PageRepository extends Repository<Page> {
    * 将一个页面标记为当前会话的退出页面
    * @param pageId 页面 ID
    * @param time 客户端时间
-   * TODO: updateResult?
    */
   async exitPage(pageId: number, time: string): Promise<void> {
-    const updateResult = await this.updateById(pageId, {
+    return await this.updateById(pageId, {
       exitTime: time,
       endTime: time
     });
-    console.log(updateResult);
-    return;
   }
 }

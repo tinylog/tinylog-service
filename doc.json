@@ -3,7 +3,7 @@
   "info": {
     "title": "TinyLog-Service API",
     "description": "API Document for TinyLog",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "servers": [
     {
@@ -226,9 +226,12 @@
           },
           "fingerprint": {
             "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
           }
         },
-        "required": ["fingerprint", "host", "lang", "os", "referrer", "ua"]
+        "required": ["createdAt", "fingerprint", "host", "lang", "os", "referrer", "ua"]
       },
       "IPageId": {
         "type": "object",

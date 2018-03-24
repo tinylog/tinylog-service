@@ -16,12 +16,14 @@ export default class SessionRepository extends Repository<Session> {
   async createNewSession(body: IInitialize, ip: string, host: Host): Promise<string> {
     const session = await this.save(
       this.create({
+        ip,
         hostId: host.id,
         referrer: body.referrer,
         lang: body.lang,
         ua: body.ua,
         os: body.os,
-        fingerprint: body.fingerprint
+        fingerprint: body.fingerprint,
+        createdAt: body.createdAt
       })
     );
 

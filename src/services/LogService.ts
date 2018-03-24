@@ -53,6 +53,7 @@ export class LogService {
 
     const page = await this.pageRepository.createPage({
       ...body,
+      hostId,
       sessionId
     });
 
