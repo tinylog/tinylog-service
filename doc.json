@@ -7,14 +7,14 @@
   },
   "servers": [
     {
-      "url": "https://api.example.com/v1",
-      "description": "test"
+      "url": "https://tinylog.ruiming.me/",
+      "description": "Production Server"
     }
   ],
   "paths": {
     "/log/initialize": {
       "post": {
-        "description": "初次连接需要进行该请求，服务端会进行 Cookie 处理，前端无需关心返回值",
+        "description": "建立会话",
         "tags": ["log"],
         "parameters": [],
         "responses": {
@@ -23,7 +23,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IToken"
                 }
               }
             }
@@ -43,8 +43,7 @@
     },
     "/log/page": {
       "post": {
-        "description":
-          "\n    当前页面的用户行为数据，如果有的话需要把前一个页面的 PageId 传回，没有 PageId 视这个页面为入口页面\n    会返回 PageId，该 PageId 在发送该页面的数据资源信息的时候需要带上，以及跳转下一个页面的时候要用\n  ",
+        "description": "页面数据",
         "tags": ["log"],
         "parameters": [],
         "responses": {
@@ -53,7 +52,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IPageId"
                 }
               }
             }
@@ -73,7 +72,7 @@
     },
     "/log/assets": {
       "post": {
-        "description": "当前页面的所有资源数据，需要把前面的 PageId 传回来",
+        "description": "页面资源数据",
         "tags": ["log"],
         "parameters": [],
         "responses": {
@@ -82,7 +81,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IDefaultSuccessResponse"
                 }
               }
             }
@@ -102,7 +101,7 @@
     },
     "/log/exit": {
       "post": {
-        "description": "网页退出，把当前哪个页面发送过来，以及退出时间",
+        "description": "网页退出",
         "tags": ["log"],
         "parameters": [],
         "responses": {
@@ -111,7 +110,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IDefaultSuccessResponse"
                 }
               }
             }
@@ -140,7 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IDefaultSuccessResponse"
                 }
               }
             }
@@ -169,7 +168,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultSuccessResponse"
+                  "$ref": "#/components/schemas/IDefaultSuccessResponse"
                 }
               }
             }
@@ -198,20 +197,19 @@
   ],
   "components": {
     "schemas": {
-      "DefaultSuccessResponse": {
+      "IToken": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean",
-            "enum": [true]
+          "token": {
+            "type": "string"
           }
         },
-        "required": ["success"]
+        "required": ["token"]
       },
       "IInitialize": {
         "type": "object",
         "properties": {
-          "referer": {
+          "referrer": {
             "type": "string"
           },
           "lang": {
@@ -222,9 +220,21 @@
           },
           "os": {
             "type": "string"
+          },
+          "host": {
+            "type": "string"
           }
         },
-        "required": ["lang", "os", "referer", "ua"]
+        "required": ["host", "lang", "os", "referrer", "ua"]
+      },
+      "IPageId": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "number"
+          }
+        },
+        "required": ["pageId"]
       },
       "IPageInfo": {
         "type": "object",
@@ -233,7 +243,9 @@
             "type": "string"
           },
           "startTime": {
-            "type": "number"
+            "description": "Enables basic storage and retrieval of dates and times.",
+            "type": "string",
+            "format": "date-time"
           },
           "prePageId": {
             "type": "number"
@@ -280,6 +292,36 @@
           "url"
         ]
       },
+      "IDefaultSuccessResponse": {
+        "type": "object"
+      },
+      "IAsset": {
+        "type": "object",
+        "properties": {
+          "entryType": {
+            "type": "string"
+          },
+          "initiatorType": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "redirect": {
+            "type": "number"
+          },
+          "lookupDomain": {
+            "type": "number"
+          },
+          "request": {
+            "type": "number"
+          },
+          "duration": {
+            "type": "number"
+          }
+        },
+        "required": ["duration", "entryType", "initiatorType", "lookupDomain", "name", "redirect", "request"]
+      },
       "IAssetsInfo": {
         "type": "object",
         "properties": {
@@ -289,31 +331,7 @@
           "assets": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "entryType": {
-                  "type": "string"
-                },
-                "initiatorType": {
-                  "type": "number"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "redirect": {
-                  "type": "number"
-                },
-                "lookupDomain": {
-                  "type": "number"
-                },
-                "request": {
-                  "type": "number"
-                },
-                "duration": {
-                  "type": "number"
-                }
-              },
-              "required": ["duration", "entryType", "initiatorType", "lookupDomain", "name", "redirect", "request"]
+              "$ref": "#/components/schemas/IAsset"
             }
           }
         },
@@ -326,7 +344,7 @@
             "type": "number"
           },
           "exitTime": {
-            "type": "number"
+            "type": "string"
           }
         },
         "required": ["exitTime", "pageId"]

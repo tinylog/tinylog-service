@@ -9,6 +9,14 @@ declare module 'config' {
     logging: boolean;
   };
 
+  export const cache: {
+    host: string;
+    port: number;
+    db: number;
+    prefix: string;
+    password: string;
+  };
+
   export const env: string;
   export const port: number;
 }

@@ -1,35 +1,53 @@
-import { Service } from 'typedi';
-import { JsonController, Post, Body } from 'routing-controllers';
+import { Service, Inject } from 'typedi';
+import { JsonController, Post, Body, HeaderParam, State, UseBefore, Ctx } from 'routing-controllers';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
-import { Description } from 'routing-controllers-openapi-v3';
+import { Description, ResType } from 'routing-controllers-openapi-v3';
+import { LogService } from '../services/LogService';
+import { IToken, IPageId } from '../interfaces/Helper';
+import sessionInject from '../middlewares/sessionInject';
+import { Context } from 'koa';
 
 @Service()
 @JsonController('/log')
 export class LogController {
-  @Description('初次连接需要进行该请求，服务端会进行 Cookie 处理，前端无需关心返回值')
+  @Inject() logService: LogService;
+
+  @Description('建立会话')
+  @ResType(IToken)
   @Post('/initialize')
-  async initialize(@Body() body: IInitialize) {
-    // todo
+  async initialize(
+    @Ctx() ctx: Context,
+    @Body() body: IInitialize,
+    @HeaderParam('Authorization') token?: string
+  ): Promise<IToken> {
+    return await this.logService.initialize(body, ctx.ip, token);
   }
 
-  @Description(`
-    当前页面的用户行为数据，如果有的话需要把前一个页面的 PageId 传回，没有 PageId 视这个页面为入口页面
-    会返回 PageId，该 PageId 在发送该页面的数据资源信息的时候需要带上，以及跳转下一个页面的时候要用
-  `)
+  @Description(`页面数据`)
+  @ResType(IPageId)
   @Post('/page')
-  async pageInfo(@Body() body: IPageInfo) {
-    // todo
+  @UseBefore(sessionInject())
+  async pageInfo(
+    @Body() body: IPageInfo,
+    @State('visiterId') visiterId: number,
+    @State('hostId') hostId: number
+  ): Promise<IPageId> {
+    return await this.logService.savePageInfo(body, visiterId, hostId);
   }
 
-  @Description('当前页面的所有资源数据，需要把前面的 PageId 传回来')
+  @Description('页面资源数据')
   @Post('/assets')
-  async assetsInfo(@Body() body: IAssetsInfo) {
-    // todo
+  @UseBefore(sessionInject())
+  async assetsInfo(@Body() body: IAssetsInfo, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
+    await this.logService.saveAssetsInfo(body, visiterId, hostId);
+    return { success: true };
   }
 
-  @Description('网页退出，把当前哪个页面发送过来，以及退出时间')
+  @Description('网页退出')
   @Post('/exit')
-  async exit(@Body() body: IExit) {
-    // todo
+  @UseBefore(sessionInject())
+  async exit(@Body() body: IExit, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
+    await this.logService.exit(body, visiterId, hostId);
+    return { success: true };
   }
 }

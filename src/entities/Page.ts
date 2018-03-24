@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import Asset from './Asset';
+import Visiter from './Visiter';
+import Host from './Host';
 
 @Entity()
 export default class Page {
@@ -36,20 +38,40 @@ export default class Page {
   @Column() loadEvent: number;
 
   /** 当前页面的访问开始时间 */
-  @Column() startTime: number;
+  @Column({ type: 'datetime' })
+  startTime: Date;
 
   /** 当前页面的访问结束时间 */
-  @Column() endTime: number;
+  @Column({ type: 'datetime', nullable: true })
+  endTime: Date;
 
   /** 退出时间，只有退出时才有 */
+  @Column({ type: 'datetime', nullable: true })
+  exitTime: Date;
+
   @Column({ nullable: true })
-  exitTime: number;
+  prePageId: number;
 
   /** 上一个页面，如果是入口页面则没有该值 */
   @OneToOne(type => Page)
+  @JoinColumn({ name: 'prePageId' })
   prePage: Page;
 
   /** 当前页面下请求的资源 */
   @OneToMany(type => Asset, asset => asset.page)
   assets?: Asset[];
+
+  /** 访问的网站 */
+  @Column() hostId: number;
+
+  /** 访客 */
+  @Column() visiterId: number;
+
+  @ManyToOne(type => Visiter)
+  @JoinColumn({ name: 'visiterId' })
+  visiter: Visiter;
+
+  @ManyToOne(type => Host)
+  @JoinColumn({ name: 'hostId' })
+  host: Host;
 }

@@ -1,0 +1,16 @@
+database:
+  name: ENV:DB_NAME
+  host: ENV:DB_HOST
+  port: ENV:DB_PORT
+  username: ENV:DB_USERNAME
+  password: ENV:DB_PASSWORD
+  logging: ["error", "schema", "warn"]
+
+cache:
+  host: ENV:CACHE_HOST
+  port: ENV:CACHE_PORT
+  db: ENV:CACHE_DB
+  password: ENV:CACHE_PASSWORD
+
+env: production
+port: 8000

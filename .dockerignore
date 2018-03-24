@@ -2,3 +2,6 @@
 .gitignore
 test
 tslint.json
+README.md
+doc.json
+.circleci

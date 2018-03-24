@@ -8,8 +8,8 @@ export default class Session {
 
   @PrimaryColumn() hostId: number;
 
-  /** referer */
-  @Column() referer: string;
+  /** referrer */
+  @Column() referrer: string;
 
   /** 访问时间 */
   @CreateDateColumn() createdAt: string;

@@ -8,10 +8,24 @@ export default class Visiter {
   @Column() lang: string;
 
   /** 地区 */
-  @Column() location: string;
+  @Column({ nullable: true })
+  region?: string;
+
+  /** 国家 */
+  @Column({ nullable: true })
+  country?: string;
+
+  /** LL */
+  @Column('json', { nullable: true })
+  ll?: string[];
+
+  /** range */
+  @Column('json', { nullable: true })
+  range?: string[];
 
   /** 城市 */
-  @Column() city: string;
+  @Column({ nullable: true })
+  city?: string;
 
   /** IP 地址 */
   @Column() ip: string;
