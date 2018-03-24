@@ -13,6 +13,10 @@ cache:
 
 zookeeper: 127.0.0.1:2181
 
+jwt:
+  secret: 8tma9c55apv1yhds
+  exp: 2592000  # 30 day
+
 mq:
   host: 127.0.0.1
   port: 9092

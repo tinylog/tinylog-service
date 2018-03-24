@@ -11,6 +11,7 @@ import { cache } from './libraries/cache';
 import docGenerator from 'routing-controllers-openapi-v3';
 import { IDefaultSuccessResponse } from './interfaces/Helper';
 import errorCatch from './middlewares/errorCatch';
+import * as jwt from 'koa-jwt';
 
 const { port } = config;
 
@@ -22,6 +23,17 @@ const app = new Koa();
 app.proxy = true;
 app.use(logger());
 app.use(errorCatch());
+
+if (config.env === 'production') {
+  app.use(
+    jwt({
+      secret: config.jwt.secret,
+      cookie: 'jwt'
+    }).unless({
+      path: [/^\/log/] // ignore controller_scripts
+    })
+  );
+}
 
 useKoaServer(app, {
   cors: true,
@@ -40,6 +52,7 @@ export const connection = Promise.all([Database.Instance, cache]).then(([c]) => 
   });
 });
 
+// Create document only in development environment
 if (config.env === 'development') {
   docGenerator(getMetadataArgsStorage(), {
     info: {

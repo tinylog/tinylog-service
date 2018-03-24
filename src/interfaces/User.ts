@@ -9,3 +9,9 @@ export class IUserRegister implements Partial<User> {
   email: string;
   password: string;
 }
+
+export class ILoginOrRegisterRes {
+  id: number;
+  email: string;
+  xsrfToken: string;
+}
