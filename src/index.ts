@@ -25,7 +25,7 @@ app.use(errorCatch());
 
 useKoaServer(app, {
   cors: true,
-  controllers: [`${__dirname}/controllers/*.{js,ts}`],
+  controllers: [`${__dirname}/controllers*/*.{js,ts}`],
   defaultErrorHandler: true
 });
 
