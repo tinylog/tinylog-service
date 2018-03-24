@@ -42,6 +42,10 @@ export class UserService {
     }
 
     const user = await this.userRepository.getUser(body);
+    if (!user) {
+      throw new BadRequestError('密码错误');
+    }
+
     const xsrfToken = SHA256(user.id + Date.now().toString()).toString();
     const jwt = sign(user.id, user.email, xsrfToken);
     return {
