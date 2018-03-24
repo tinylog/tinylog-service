@@ -5,6 +5,9 @@ import User from './User';
 export default class Host {
   @PrimaryGeneratedColumn() id: number;
 
+  /** 时区，PV UV 计算需要 */
+  @Column() timezone: string;
+
   /** 网站 */
   @Column() website: string;
 

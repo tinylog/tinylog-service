@@ -4,7 +4,7 @@ import * as faker from 'faker';
 import * as request from 'supertest';
 import Host from '../../src/entities/Host';
 import Test from '../../src/utils/Test';
-import Cache from '../../src/libraries/Cache';
+import { getCache } from '../../src/libraries/cache';
 
 let host: Host;
 let token: string;
@@ -44,7 +44,7 @@ describe('LogController', () => {
     assert(res.status === 200);
     assert(res.body.token);
     token = res.body.token;
-    val = await Cache.Instance.get(`TOKEN:${token}`);
+    val = await getCache().get(`TOKEN:${token}`);
   });
 
   it('建立会话，复用 TOKEN', async () => {
@@ -60,7 +60,7 @@ describe('LogController', () => {
       });
 
     assert(res.status === 200);
-    const newVal = await Cache.Instance.get(`TOKEN:${res.body.token}`);
+    const newVal = await getCache().get(`TOKEN:${res.body.token}`);
     assert(val === newVal);
     token = res.body.token;
   });

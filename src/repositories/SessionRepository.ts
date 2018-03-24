@@ -1,31 +1,36 @@
 import { EntityRepository, Repository } from 'typeorm';
 import Session from '../entities/Session';
-import Cache from '../libraries/Cache';
-import Visiter from '../entities/Visiter';
+import { getCache } from '../libraries/cache';
+import { TOKEN_KEY } from '../constants';
 import { MD5 } from 'crypto-js';
 import Host from '../entities/Host';
+import { IInitialize } from '../interfaces/Log';
 
 @EntityRepository(Session)
 export default class SessionRepository extends Repository<Session> {
-  async newSession(visiter: Visiter, host: Host, referrer: string) {
-    const token = MD5(visiter.id + host.id + Date.now().toString()).toString();
+  /**
+   * 生成一个新的会话，并据此签发一个 Token 返回给前端。
+   * @param body 客户端信息
+   * @param host 客户端所访问的网站信息
+   */
+  async createNewSession(body: IInitialize, ip: string, host: Host): Promise<string> {
     const session = await this.save(
       this.create({
-        visiterId: visiter.id,
         hostId: host.id,
-        referrer
+        referrer: body.referrer,
+        lang: body.lang,
+        ua: body.ua,
+        os: body.os,
+        fingerprint: body.fingerprint
       })
     );
 
-    await Cache.Instance.set(`TOKEN:${token}`, `${session.hostId}:${session.visiterId}`);
+    const token = MD5(session.id + ':' + session.fingerprint).toString();
 
-    return token;
-  }
+    // 存储 Redis 并设置一天过时
+    await getCache().set(TOKEN_KEY(token), `${session.id}: ${host.id}`);
+    await getCache().expire(TOKEN_KEY(token), 864e5);
 
-  async updateSession(visiter: Visiter, host: Host, preToken: string) {
-    const token = MD5(visiter.id + host.id + Date.now().toString()).toString();
-    await Cache.Instance.set(`TOKEN:${token}`, `${host.id}:${visiter.id}`);
-    await Cache.Instance.del(`TOKEN:${preToken}`);
     return token;
   }
 }

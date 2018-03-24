@@ -1,23 +1,23 @@
 import { Context } from 'koa';
-import Cache from '../libraries/Cache';
+import { getCache } from '../libraries/cache';
 import { BadRequestError } from 'routing-controllers';
+import { TOKEN_KEY } from '../constants';
 
 /**
- * 检查 token 是否可用，可用的话注入 visiterId 和 hostId 到 state 中
- * 注意： token 即包含了有效 visiterId 和 hostId 的信息
+ * 检查 token 是否可用，可用的话注入 sessionId 和 hostId 到 state 中
+ * 注意： token 即包含了有效 sessionId 和 hostId 的信息
  */
 export default function sessionInject() {
   return async (ctx: Context, next: () => Promise<{}>) => {
-    const session = await Cache.Instance.get(`TOKEN:${ctx.headers.authorization}`);
+    const session = await getCache().get(TOKEN_KEY(ctx.headers.authorization));
 
     if (!session) {
-      throw new BadRequestError('Initialize Is Required');
+      throw new BadRequestError('非法请求');
     }
 
-    // TODO: hostId compare with http host
-    const [hostId, visiterId] = session.split(':').map(i => +i);
+    const [sessionId, hostId] = session.split(':').map(i => +i);
     ctx.state.hostId = hostId;
-    ctx.state.visiterId = visiterId;
+    ctx.state.sessionId = sessionId;
 
     await next();
   };

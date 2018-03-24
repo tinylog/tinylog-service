@@ -223,9 +223,12 @@
           },
           "host": {
             "type": "string"
+          },
+          "fingerprint": {
+            "type": "string"
           }
         },
-        "required": ["host", "lang", "os", "referrer", "ua"]
+        "required": ["fingerprint", "host", "lang", "os", "referrer", "ua"]
       },
       "IPageId": {
         "type": "object",

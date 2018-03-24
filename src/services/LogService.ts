@@ -1,122 +1,99 @@
 import { Service } from 'typedi';
-import * as geoip from 'geoip-lite';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
 import SessionRepository from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import VisiterRepository from '../repositories/VisiterRepository';
+import IPStatsRepository from '../repositories/IPStatsRepository';
 import { IToken, IPageId } from '../interfaces/Helper';
 import PageRepository from '../repositories/PageRepository';
-import { BadRequestError } from 'routing-controllers';
 import HostRepository from '../repositories/HostRepository';
 import AssetRepository from '../repositories/AssetRepository';
 
 @Service()
 export class LogService {
   sessionRepository: SessionRepository = getCustomRepository(SessionRepository);
-  visiterRepository: VisiterRepository = getCustomRepository(VisiterRepository);
+  ipStatsRepository: IPStatsRepository = getCustomRepository(IPStatsRepository);
   pageRepository: PageRepository = getCustomRepository(PageRepository);
   hostRepository: HostRepository = getCustomRepository(HostRepository);
   assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
-  async initialize(body: IInitialize, ip: string, preToken?: string): Promise<IToken> {
+  /**
+   * 根据客户端信息初始化连接，生成一个新的 TOKEN 给客户端。
+   *
+   * @param body 客户端信息
+   * @param ip 客户端的 IP 地址
+   */
+  async initialize(body: IInitialize, ip: string): Promise<IToken> {
     const website = body.host;
 
-    const host = await this.hostRepository.findOne({ website });
+    const host = await this.hostRepository.validateHost(website);
 
-    if (!host) {
-      throw new BadRequestError('Host is not registed');
-    }
+    const [, token] = await Promise.all([
+      this.ipStatsRepository.getIPStats(ip),
+      this.sessionRepository.createNewSession(body, ip, host)
+    ]);
 
-    // TOKEN 有效（复用 Visiter）前提是 Token 正确且对应的 Visiter 的 IP 地址和现在的相同
-    const visiter = preToken && (await this.visiterRepository.getVisiterByToken(preToken, ip));
-
-    if (visiter) {
-      const token = await this.sessionRepository.updateSession(visiter, host, preToken!);
-      return {
-        token
-      };
-    } else {
-      const geo = geoip.lookup(ip);
-      const newVisiter = await this.visiterRepository.save(
-        this.visiterRepository.create({
-          lang: body.lang,
-          ua: body.ua,
-          os: body.os,
-          ip,
-          ...geo
-        })
-      );
-      const token = await this.sessionRepository.newSession(newVisiter, host, body.referrer);
-      return {
-        token
-      };
-    }
+    return { token };
   }
 
-  async savePageInfo(body: IPageInfo, visiterId: number, hostId: number): Promise<IPageId> {
-    const prePage =
-      body.prePageId &&
-      (await this.pageRepository.findOne({
+  /**
+   * 保存页面信息，并返回该页面 ID
+   * @param body 页面信息
+   * @param sessionId 会话 ID
+   * @param hostId 网站 ID
+   */
+  async savePageInfo(body: IPageInfo, sessionId: number, hostId: number): Promise<IPageId> {
+    if (body.prePageId !== undefined) {
+      const prePage = await this.pageRepository.getPage({
         id: body.prePageId,
-        visiterId,
-        hostId
-      }));
-
-    if (body.prePageId !== undefined && !prePage) {
-      throw new BadRequestError('PrePageId is not found');
-    } else if (body.prePageId && prePage) {
-      // 更新 prePage 的访问结束时间
+        sessionId
+      });
       prePage.endTime = body.startTime;
       await this.pageRepository.save(prePage);
     }
 
-    const page = await this.pageRepository.save(
-      this.pageRepository.create({
-        ...body,
-        visiterId,
-        hostId
-      })
-    );
+    const page = await this.pageRepository.createPage({
+      ...body,
+      sessionId
+    });
 
     return {
       pageId: page.id
     };
   }
 
-  async saveAssetsInfo(body: IAssetsInfo, visiterId: number, hostId: number) {
-    const page = await this.pageRepository.findOne({
+  /**
+   * 保存当前页面的资源加载信息
+   * @param body 资源列表数据
+   * @param sessionId 当前会话 ID
+   * @param hostId 当前所访问的网站 ID
+   */
+  async saveAssetsInfo(body: IAssetsInfo, sessionId: number, hostId: number) {
+    const page = await this.pageRepository.getPage({
       id: body.pageId,
-      visiterId,
-      hostId
+      sessionId
     });
-    if (!page) {
-      throw new BadRequestError('Request Page Not Found');
-    }
 
-    await this.assetRepository.save(
-      this.assetRepository.create(
-        body.assets.map(asset => ({
-          ...asset,
-          pageId: body.pageId,
-          hostId,
-          visiterId
-        }))
-      )
+    await this.assetRepository.createAssets(
+      body.assets.map(asset => ({
+        ...asset,
+        pageId: page.id,
+        hostId,
+        sessionId
+      }))
     );
   }
 
-  async exit(body: IExit, visiterId: number, hostId: number) {
-    const page = await this.pageRepository.findOne({
+  /**
+   * 标记一个页面为退出页面
+   * @param body 当前页面的信息
+   * @param sessionId 会话 ID
+   * @param hostId 当前所访问的网站 ID
+   */
+  async exit(body: IExit, sessionId: number, hostId: number) {
+    const page = await this.pageRepository.getPage({
       id: body.pageId
     });
 
-    if (!page) {
-      throw new BadRequestError('Request Page Not Found');
-    }
-
-    await this.pageRepository.updateById(body.pageId, {
-      exitTime: body.exitTime,
-      endTime: body.exitTime
-    });
+    await this.pageRepository.exitPage(page.id, body.exitTime);
   }
 }

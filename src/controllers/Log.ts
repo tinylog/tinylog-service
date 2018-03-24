@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import { JsonController, Post, Body, HeaderParam, State, UseBefore, Ctx } from 'routing-controllers';
+import { JsonController, Post, Body, State, UseBefore, Ctx } from 'routing-controllers';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
 import { Description, ResType } from 'routing-controllers-openapi-v3';
 import { LogService } from '../services/LogService';
@@ -15,12 +15,8 @@ export class LogController {
   @Description('建立会话')
   @ResType(IToken)
   @Post('/initialize')
-  async initialize(
-    @Ctx() ctx: Context,
-    @Body() body: IInitialize,
-    @HeaderParam('Authorization') token?: string
-  ): Promise<IToken> {
-    return await this.logService.initialize(body, ctx.ip, token);
+  async initialize(@Ctx() ctx: Context, @Body() body: IInitialize): Promise<IToken> {
+    return await this.logService.initialize(body, ctx.ip);
   }
 
   @Description(`页面数据`)
@@ -29,25 +25,25 @@ export class LogController {
   @UseBefore(sessionInject())
   async pageInfo(
     @Body() body: IPageInfo,
-    @State('visiterId') visiterId: number,
+    @State('sessionId') sessionId: number,
     @State('hostId') hostId: number
   ): Promise<IPageId> {
-    return await this.logService.savePageInfo(body, visiterId, hostId);
+    return await this.logService.savePageInfo(body, sessionId, hostId);
   }
 
   @Description('页面资源数据')
   @Post('/assets')
   @UseBefore(sessionInject())
-  async assetsInfo(@Body() body: IAssetsInfo, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
-    await this.logService.saveAssetsInfo(body, visiterId, hostId);
+  async assetsInfo(@Body() body: IAssetsInfo, @State('sessionId') sessionId: number, @State('hostId') hostId: number) {
+    await this.logService.saveAssetsInfo(body, sessionId, hostId);
     return { success: true };
   }
 
   @Description('网页退出')
   @Post('/exit')
   @UseBefore(sessionInject())
-  async exit(@Body() body: IExit, @State('visiterId') visiterId: number, @State('hostId') hostId: number) {
-    await this.logService.exit(body, visiterId, hostId);
+  async exit(@Body() body: IExit, @State('sessionId') sessionId: number, @State('hostId') hostId: number) {
+    await this.logService.exit(body, sessionId, hostId);
     return { success: true };
   }
 }

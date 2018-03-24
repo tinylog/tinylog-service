@@ -5,11 +5,9 @@ import HostRepository from '../repositories/HostRepository';
 import PageRepository from '../repositories/PageRepository';
 import SessionRepository from '../repositories/SessionRepository';
 import UserRepository from '../repositories/UserRepository';
-import VisiterRepository from '../repositories/VisiterRepository';
 import { getConnection, getManager, getCustomRepository, EntityManager } from 'typeorm';
 import Asset from '../entities/Asset';
 import Page from '../entities/Page';
-import Visiter from '../entities/Visiter';
 
 export default class Test {
   private static instance: Test;
@@ -19,7 +17,6 @@ export default class Test {
   pageRepository: PageRepository;
   sessionRepository: SessionRepository;
   userRepository: UserRepository;
-  visiterRepository: VisiterRepository;
   app: any;
 
   private constructor() {}
@@ -44,7 +41,6 @@ export default class Test {
     this.pageRepository = getCustomRepository(PageRepository);
     this.sessionRepository = getCustomRepository(SessionRepository);
     this.userRepository = getCustomRepository(UserRepository);
-    this.visiterRepository = getCustomRepository(VisiterRepository);
     this.hostRepository = getCustomRepository(HostRepository);
   }
 
@@ -59,10 +55,6 @@ export default class Test {
       duration: faker.random.number(1000),
       ...data
     };
-  }
-
-  mockVisiter(data?: Partial<Visiter>): Partial<Visiter> {
-    return {};
   }
 
   mockPage(data?: Partial<Page>): Partial<Page> {

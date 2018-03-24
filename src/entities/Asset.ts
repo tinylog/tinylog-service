@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import Visiter from './Visiter';
+import Session from './Session';
 import Host from './Host';
 import Page from './Page';
 
@@ -28,8 +28,8 @@ export default class Asset {
   /** 资源的耗时 */
   @Column() duration: number;
 
-  /** 访客 ID */
-  @Column() visiterId: number;
+  /** 会话 ID */
+  @Column() sessionId: number;
 
   /** 访问的网站 */
   @Column() hostId: number;
@@ -37,9 +37,13 @@ export default class Asset {
   /** 所属的页面 */
   @Column() pageId: number;
 
-  @ManyToOne(type => Visiter)
-  @JoinColumn({ name: 'visiterId' })
-  visiter: Visiter;
+  /**
+   * JoinColumn
+   */
+
+  @ManyToOne(type => Session)
+  @JoinColumn({ name: 'sessionId' })
+  session: Session;
 
   @ManyToOne(type => Host)
   @JoinColumn({ name: 'hostId' })

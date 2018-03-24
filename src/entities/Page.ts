@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import Asset from './Asset';
-import Visiter from './Visiter';
+import Session from './Session';
 import Host from './Host';
 
 @Entity()
@@ -64,12 +64,16 @@ export default class Page {
   /** 访问的网站 */
   @Column() hostId: number;
 
-  /** 访客 */
-  @Column() visiterId: number;
+  /** 关联会话 */
+  @Column() sessionId: number;
 
-  @ManyToOne(type => Visiter)
-  @JoinColumn({ name: 'visiterId' })
-  visiter: Visiter;
+  /**
+   * JoinColumn
+   */
+
+  @ManyToOne(type => Session)
+  @JoinColumn({ name: 'sessionId' })
+  session: Session;
 
   @ManyToOne(type => Host)
   @JoinColumn({ name: 'hostId' })

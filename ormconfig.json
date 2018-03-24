@@ -4,10 +4,15 @@
   "port": 3306,
   "username": "root",
   "database": "tinylog",
+  "synchronize": false,
+  "logging": false,
   "entities": ["src/entities/**/*.ts"],
   "migrations": ["src/migrations/**/*.ts"],
+  "migrationsTableName": "migrations",
+  "subscribers": ["src/subscribers/**/*.ts"],
   "cli": {
-    "entitiesDir": "./src/entities",
-    "migrationsDir": "./src/migrations"
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migrations",
+    "subscribersDir": "src/subscribers"
   }
 }

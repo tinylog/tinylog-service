@@ -17,6 +17,13 @@ declare module 'config' {
     password: string;
   };
 
+  export const zookeeper: string;
+
+  export const mq: {
+    host: string;
+    port: number;
+  };
+
   export const env: string;
   export const port: number;
 }
