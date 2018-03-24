@@ -17,4 +17,8 @@ export default class HostRepository extends Repository<Host> {
 
     return host;
   }
+
+  async getHost(query: Partial<Host>) {
+    return await this.findOne(query);
+  }
 }

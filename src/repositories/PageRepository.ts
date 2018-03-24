@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import Page from '../entities/Page';
 import { BadRequestError } from 'routing-controllers';
+import { ISimpleFilter } from '../interfaces/Host';
 
 @EntityRepository(Page)
 export default class PageRepository extends Repository<Page> {
@@ -32,8 +33,21 @@ export default class PageRepository extends Repository<Page> {
    */
   async exitPage(pageId: number, time: string): Promise<void> {
     return await this.updateById(pageId, {
-      exitTime: time,
       endTime: time
     });
+  }
+
+  /**
+   * 获取网站的 PV，计算方式是根据 page count 计算
+   * @param filter 筛选条件
+   * @todo step 支持
+   */
+  async getHostPV(hostId: number, filter: ISimpleFilter) {
+    return await this.createQueryBuilder('page')
+      .select('SUM(page.id)', 'pv')
+      .where('page.hostId = :hostId', { hostId })
+      .andWhere('page.startTime between :from and :to', filter)
+      .groupBy('DATE(page.startTime)')
+      .getMany();
   }
 }

@@ -93,6 +93,9 @@ export class LogService {
       id: body.pageId
     });
 
-    await this.pageRepository.exitPage(page.id, body.exitTime);
+    await Promise.all([
+      this.pageRepository.exitPage(page.id, body.exitTime),
+      this.sessionRepository.endSession(page.id, body.exitTime)
+    ]);
   }
 }

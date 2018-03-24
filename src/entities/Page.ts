@@ -45,10 +45,6 @@ export default class Page {
   @Column({ type: 'datetime', nullable: true })
   endTime: Date;
 
-  /** 退出时间，只有退出时才有 */
-  @Column({ type: 'datetime', nullable: true })
-  exitTime: Date;
-
   @Column({ nullable: true })
   prePageId: number;
 

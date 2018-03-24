@@ -5,6 +5,7 @@ import { TOKEN_KEY } from '../constants';
 import { MD5 } from 'crypto-js';
 import Host from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
+import { ISimpleFilter } from '../interfaces/Host';
 
 @EntityRepository(Session)
 export default class SessionRepository extends Repository<Session> {
@@ -34,5 +35,27 @@ export default class SessionRepository extends Repository<Session> {
     await getCache().expire(TOKEN_KEY(token), 864e5);
 
     return token;
+  }
+
+  async endSession(pageId: number, time: string) {
+    return await this.updateById(pageId, {
+      endAt: time
+    });
+  }
+
+  /**
+   * 查询网站时间段内的 UV 以及平均访问时间
+   * @param hostId 网站 ID
+   * @param filter 过滤条件
+   * @todo step 支持
+   */
+  async getHostUV(hostId: number, filter: ISimpleFilter) {
+    return await this.createQueryBuilder('session')
+      .select('SUM(session.fingerprint)', 'uv')
+      .select('session.endAt - session.createdAt', 'time')
+      .where('session.hostId = :hostId', { hostId })
+      .andWhere('session.createdAt between :from and :to', filter)
+      .groupBy('DATE(session.createdAt)')
+      .getMany();
   }
 }
