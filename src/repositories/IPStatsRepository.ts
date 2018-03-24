@@ -13,11 +13,9 @@ export default class IPStatsRepository extends Repository<IPStats> {
   async getIPStats(ip: string): Promise<IPStats> {
     const stats = await this.findOne({ ip });
     if (stats) {
-      console.log(ip, stats);
       return stats;
     }
     const geo = geoip.lookup(ip);
-    console.log(ip, geo);
 
     return await this.save(
       this.create({
