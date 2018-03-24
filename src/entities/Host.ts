@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import User from './User';
+import { User } from './User';
 
 @Entity()
-export default class Host {
+export class Host {
   @PrimaryGeneratedColumn() id: number;
 
   /** 时区，PV UV 计算需要 */

@@ -2,9 +2,8 @@ import 'mocha';
 import * as assert from 'power-assert';
 import * as faker from 'faker';
 import * as request from 'supertest';
-import Host from '../../src/entities/Host';
-import Test from '../../src/utils/Test';
-import { getCache } from '../../src/libraries/cache';
+import { Host } from '../../src/entities/Host';
+import { Test } from '../../src/utils/Test';
 
 let host: Host;
 let token: string;

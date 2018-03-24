@@ -1,15 +1,15 @@
 import 'reflect-metadata';
 import * as faker from 'faker';
-import AssetRepository from '../repositories/AssetRepository';
-import HostRepository from '../repositories/HostRepository';
-import PageRepository from '../repositories/PageRepository';
-import SessionRepository from '../repositories/SessionRepository';
-import UserRepository from '../repositories/UserRepository';
+import { AssetRepository } from '../repositories/AssetRepository';
+import { HostRepository } from '../repositories/HostRepository';
+import { PageRepository } from '../repositories/PageRepository';
+import { SessionRepository } from '../repositories/SessionRepository';
+import { UserRepository } from '../repositories/UserRepository';
 import { getConnection, getManager, getCustomRepository, EntityManager } from 'typeorm';
-import Asset from '../entities/Asset';
-import Page from '../entities/Page';
+import { Asset } from '../entities/Asset';
+import { Page } from '../entities/Page';
 
-export default class Test {
+export class Test {
   private static instance: Test;
   manager: EntityManager;
   assetRepository: AssetRepository;

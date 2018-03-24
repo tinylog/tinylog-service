@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, getCustomRepository } from 'typeorm';
-import UserRepository from '../repositories/UserRepository';
-import HostRepository from '../repositories/HostRepository';
+import { UserRepository } from '../repositories/UserRepository';
+import { HostRepository } from '../repositories/HostRepository';
 import { SHA256 } from 'crypto-js';
 
 export class Update1521877510571 implements MigrationInterface {

@@ -2,7 +2,7 @@ import 'mocha';
 import * as assert from 'power-assert';
 import * as request from 'supertest';
 import * as faker from 'faker';
-import Test from '../../src/utils/Test';
+import { Test } from '../../src/utils/Test';
 
 const email = faker.internet.email();
 const password = faker.internet.password();

@@ -45,7 +45,7 @@ const root = path.resolve(__dirname, '..');
 const entityPath = `${root}/entities/*.{js,ts}`;
 const migrationPath = `${root}/migrations/*.{js,ts}`;
 
-class Database {
+export class Database {
   private static instance: any;
 
   private constructor() {
@@ -71,5 +71,3 @@ class Database {
     return this.instance || (this.instance = new this());
   }
 }
-
-export default Database;

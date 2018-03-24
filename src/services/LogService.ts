@@ -1,12 +1,12 @@
 import { Service } from 'typedi';
 import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
-import SessionRepository from '../repositories/SessionRepository';
+import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import IPStatsRepository from '../repositories/IPStatsRepository';
+import { IPStatsRepository } from '../repositories/IPStatsRepository';
 import { IToken, IPageId } from '../interfaces/Helper';
-import PageRepository from '../repositories/PageRepository';
-import HostRepository from '../repositories/HostRepository';
-import AssetRepository from '../repositories/AssetRepository';
+import { PageRepository } from '../repositories/PageRepository';
+import { HostRepository } from '../repositories/HostRepository';
+import { AssetRepository } from '../repositories/AssetRepository';
 
 @Service()
 export class LogService {

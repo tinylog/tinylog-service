@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
-import Asset from './Asset';
-import Session from './Session';
-import Host from './Host';
+import { Asset } from './Asset';
+import { Session } from './Session';
+import { Host } from './Host';
 
 @Entity()
-export default class Page {
+export class Page {
   @PrimaryGeneratedColumn() id: number;
 
   /** 当前页面 */

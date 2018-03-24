@@ -2,7 +2,7 @@ import { ValidationError } from 'class-validator';
 import { Context } from 'koa';
 import { BadRequestError, InternalServerError } from 'routing-controllers';
 
-export default function errorCatch(): (ctx: Context, next: () => Promise<{}>) => Promise<void> {
+export function errorCatch(): (ctx: Context, next: () => Promise<{}>) => Promise<void> {
   return async (ctx: Context, next: () => Promise<{}>) => {
     try {
       await next();

@@ -1,14 +1,14 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Session from '../entities/Session';
+import { Session } from '../entities/Session';
 import { getCache } from '../libraries/cache';
 import { TOKEN_KEY } from '../constants';
 import { MD5 } from 'crypto-js';
-import Host from '../entities/Host';
+import { Host } from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
 import { ISimpleFilter } from '../interfaces/Host';
 
 @EntityRepository(Session)
-export default class SessionRepository extends Repository<Session> {
+export class SessionRepository extends Repository<Session> {
   /**
    * 生成一个新的会话，并据此签发一个 Token 返回给前端。
    * @param body 客户端信息

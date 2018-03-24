@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
-import IPStats from './IPStats';
-import Host from './Host';
+import { IPStats } from './IPStats';
+import { Host } from './Host';
 
 @Entity()
-export default class Session {
+export class Session {
   @PrimaryGeneratedColumn() id: number;
 
   @Column('varchar', { length: 36 })

@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
-import HostRepository from '../repositories/HostRepository';
-import PageRepository from '../repositories/PageRepository';
-import SessionRepository from '../repositories/SessionRepository';
+import { HostRepository } from '../repositories/HostRepository';
+import { PageRepository } from '../repositories/PageRepository';
+import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
 import { IHostBasicInfoQuery } from '../interfaces/Host';
 import { BadRequestError } from 'routing-controllers';
@@ -36,6 +36,6 @@ export class HostService {
       })
     ]);
 
-    return [pvList, uvList];
+    console.log(pvList, uvList);
   }
 }

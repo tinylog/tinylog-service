@@ -1,4 +1,4 @@
-import User from '../entities/User';
+import { User } from '../entities/User';
 
 export class IUserLogin implements Partial<User> {
   email: string;

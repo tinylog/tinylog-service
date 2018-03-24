@@ -4,7 +4,7 @@ import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
 import { Description, ResType } from 'routing-controllers-openapi-v3';
 import { LogService } from '../services/LogService';
 import { IToken, IPageId } from '../interfaces/Helper';
-import sessionInject from '../middlewares/sessionInject';
+import { sessionInject } from '../middlewares/sessionInject';
 import { Context } from 'koa';
 
 @Service()

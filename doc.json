@@ -136,6 +136,56 @@
                 }
             }
         },
+        "/host/basic": {
+            "get": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "hostId",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "step",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDefaultSuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "用户登录，服务端返回的 xsrf-token 需要前端设置到名为 xsrf-token 的头部中",
@@ -202,6 +252,9 @@
     "tags": [
         {
             "name": "log"
+        },
+        {
+            "name": "host"
         },
         {
             "name": "user"
@@ -272,7 +325,7 @@
                     "url": {
                         "type": "string"
                     },
-                    "startTime": {
+                    "createdAt": {
                         "description": "Enables basic storage and retrieval of dates and times.",
                         "type": "string",
                         "format": "date-time"
@@ -309,6 +362,7 @@
                     }
                 },
                 "required": [
+                    "createdAt",
                     "domReady",
                     "loadEvent",
                     "loadPage",
@@ -316,7 +370,6 @@
                     "redirect",
                     "referrer",
                     "request",
-                    "startTime",
                     "tcp",
                     "ttfb",
                     "url"

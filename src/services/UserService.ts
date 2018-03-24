@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import UserRepository from '../repositories/UserRepository';
+import { UserRepository } from '../repositories/UserRepository';
 import { getCustomRepository } from 'typeorm';
 import { IUserRegister, IUserLogin } from '../interfaces/User';
 import { sign } from '../libraries/jwt';

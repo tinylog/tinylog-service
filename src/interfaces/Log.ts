@@ -1,5 +1,5 @@
-import Page from '../entities/Page';
-import Asset from '../entities/Asset';
+import { Page } from '../entities/Page';
+import { Asset } from '../entities/Asset';
 import { IsString, IsNumber, IsOptional, IsArray, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 

@@ -6,12 +6,12 @@ import * as config from 'config';
 import { useContainer as useContainerForRoute, useKoaServer, getMetadataArgsStorage } from 'routing-controllers';
 import { Container } from 'typedi';
 import { useContainer as useContainerForOrm } from 'typeorm';
-import Database from './libraries/Database';
+import { Database } from './libraries/Database';
 import { cache } from './libraries/cache';
-import docGenerator from 'routing-controllers-openapi-v3';
 import { IDefaultSuccessResponse } from './interfaces/Helper';
-import errorCatch from './middlewares/errorCatch';
+import { errorCatch } from './middlewares/errorCatch';
 import * as jwt from 'koa-jwt';
+import docGenerator from 'routing-controllers-openapi-v3';
 
 const { port } = config;
 

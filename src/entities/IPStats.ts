@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity({ name: 'ip_stats' })
-export default class IPStats {
+export class IPStats {
   @PrimaryColumn('varchar', { length: 36 })
   ip: string;
 

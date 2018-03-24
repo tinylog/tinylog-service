@@ -1,10 +1,10 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Page from '../entities/Page';
+import { Page } from '../entities/Page';
 import { BadRequestError } from 'routing-controllers';
 import { ISimpleFilter } from '../interfaces/Host';
 
 @EntityRepository(Page)
-export default class PageRepository extends Repository<Page> {
+export class PageRepository extends Repository<Page> {
   /**
    * 根据条件查询一条 Page 记录，查找不到会抛出错误
    * @param pageQuery 页面筛选条件

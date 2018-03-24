@@ -9,6 +9,7 @@
     "semicolon": [true, "always"],
     "max-classes-per-file": false,
     "no-console": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "no-default-export": true
   }
 }
