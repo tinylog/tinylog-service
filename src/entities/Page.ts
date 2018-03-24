@@ -39,11 +39,11 @@ export default class Page {
 
   /** 当前页面的访问开始时间 */
   @Column({ type: 'datetime' })
-  startTime: Date;
+  createdAt: Date;
 
   /** 当前页面的访问结束时间 */
   @Column({ type: 'datetime', nullable: true })
-  endTime: Date;
+  endAt: Date;
 
   @Column({ nullable: true })
   prePageId: number;

@@ -15,7 +15,7 @@ export class IInitialize {
 
 export class IPageInfo implements Partial<Page> {
   @IsString() url: string;
-  @IsDateString() startTime: Date;
+  @IsDateString() createdAt: Date;
   @IsOptional()
   @IsNumber()
   prePageId?: number;

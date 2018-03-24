@@ -69,7 +69,7 @@ export default class Test {
       request: faker.random.number(1000),
       tcp: faker.random.number(1000),
       loadEvent: faker.random.number(1000),
-      startTime: faker.date.past(),
+      createdAt: faker.date.past(),
       ...data
     };
   }

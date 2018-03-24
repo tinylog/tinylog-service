@@ -17,6 +17,7 @@
     "report-coverage": "NODE_ENV=test nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "tslint --fix --project tsconfig.json '{src,test}/**/*.ts'",
     "migration": "ts-node ./node_modules/.bin/typeorm migrations:generate -n Update",
+    "migration:revert": "ts-node ./node_modules/.bin/typeorm migrations:revert",
     "publish": "np",
     "precommit": "lint-staged",
     "commit": "git-cz",

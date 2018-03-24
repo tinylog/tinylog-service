@@ -45,7 +45,7 @@ export class LogService {
         id: body.prePageId,
         sessionId
       });
-      prePage.endTime = body.startTime;
+      prePage.endAt = body.createdAt;
       await this.pageRepository.save(prePage);
     }
 

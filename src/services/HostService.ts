@@ -35,5 +35,7 @@ export class HostService {
         step: query.step
       })
     ]);
+
+    return [pvList, uvList];
   }
 }

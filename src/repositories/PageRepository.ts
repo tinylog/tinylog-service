@@ -33,7 +33,7 @@ export default class PageRepository extends Repository<Page> {
    */
   async exitPage(pageId: number, time: string): Promise<void> {
     return await this.updateById(pageId, {
-      endTime: time
+      endAt: time
     });
   }
 
@@ -46,8 +46,8 @@ export default class PageRepository extends Repository<Page> {
     return await this.createQueryBuilder('page')
       .select('SUM(page.id)', 'pv')
       .where('page.hostId = :hostId', { hostId })
-      .andWhere('page.startTime between :from and :to', filter)
-      .groupBy('DATE(page.startTime)')
+      .andWhere('page.createdAt between :from and :to', filter)
+      .groupBy('DATE(page.createdAt)')
       .getMany();
   }
 }

@@ -28,8 +28,8 @@ export default class Session {
   createdAt: Date;
 
   /** 会话结束时间（客户端传递） */
-  @Column({ type: 'datetime' })
-  endAt: Date;
+  @Column({ type: 'datetime', nullable: true })
+  endAt?: Date;
 
   /**
    * 用户指纹（用来辨识是不是同一个主机访问）
