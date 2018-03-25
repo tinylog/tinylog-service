@@ -12,6 +12,7 @@ import { IDefaultSuccessResponse } from './interfaces/Helper';
 import { errorCatch } from './middlewares/errorCatch';
 import * as jwt from 'koa-jwt';
 import docGenerator from 'routing-controllers-openapi-v3';
+import { debug } from './middlewares/debug';
 
 const { port } = config;
 
@@ -21,6 +22,9 @@ useContainerForOrm(Container);
 const app = new Koa();
 
 app.proxy = true;
+
+app.use(debug()); // for test only
+
 app.use(logger());
 app.use(errorCatch());
 
