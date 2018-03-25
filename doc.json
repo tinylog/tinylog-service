@@ -136,19 +136,12 @@
                 }
             }
         },
-        "/host/basic": {
+        "/host/{id}([0-9]+)/basic": {
             "get": {
                 "tags": [
                     "host"
                 ],
                 "parameters": [
-                    {
-                        "in": "query",
-                        "name": "hostId",
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
                     {
                         "in": "query",
                         "name": "from",
@@ -169,6 +162,14 @@
                         "schema": {
                             "type": "number",
                             "default": 1
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
                         }
                     }
                 ],

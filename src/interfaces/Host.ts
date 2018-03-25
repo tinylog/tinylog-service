@@ -7,7 +7,3 @@ export class ISimpleFilter {
   @IsNumber()
   step: number = 1;
 }
-
-export class IHostBasicInfoQuery extends ISimpleFilter {
-  @IsNumber() hostId: number;
-}
