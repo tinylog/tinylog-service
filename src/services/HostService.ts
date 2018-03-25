@@ -12,7 +12,7 @@ export class HostService {
   pageRepository: PageRepository = getCustomRepository(PageRepository);
   sessionRepository: SessionRepository = getCustomRepository(SessionRepository);
 
-  async getHostBasicInfo(hostId: number, filter: ISimpleFilter, userId: number) {
+  async getPVUVList(hostId: number, filter: ISimpleFilter, userId: number) {
     const host = await this.hostRepository.getHost({
       id: hostId,
       userId
@@ -22,12 +22,14 @@ export class HostService {
       throw new BadRequestError('你无权限查询或者目标网站不存在');
     }
 
-    // TODO: no test yet
     const [pvList, uvList] = await Promise.all([
-      this.pageRepository.getHostPV(host, filter)
-      // this.sessionRepository.getHostUV(host.id, filter)
+      this.pageRepository.getHostPV(host, filter),
+      this.sessionRepository.getHostUV(host, filter)
     ]);
 
-    console.log(pvList, uvList);
+    return pvList.map(pvItem => ({
+      ...pvItem,
+      ...uvList.find(uvItem => uvItem.date.getTime() === pvItem.date.getTime())
+    }));
   }
 }

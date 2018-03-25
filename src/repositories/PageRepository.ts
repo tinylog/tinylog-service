@@ -40,6 +40,7 @@ export class PageRepository extends Repository<Page> {
 
   /**
    * 获取网站的 PV，计算方式是根据 page count 计算
+   * @param host 网站信息
    * @param filter 筛选条件
    * @todo step 支持
    */

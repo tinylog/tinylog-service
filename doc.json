@@ -136,7 +136,7 @@
                 }
             }
         },
-        "/host/{id}([0-9]+)/basic": {
+        "/host/{id}([0-9]+)/pvuv": {
             "get": {
                 "tags": [
                     "host"

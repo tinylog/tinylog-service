@@ -10,7 +10,7 @@ let xsrfToken: string;
 let token: string;
 let host: Host;
 
-describe.skip('HostController', () => {
+describe('HostController', () => {
   before(async () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 
@@ -27,7 +27,7 @@ describe.skip('HostController', () => {
 
   it('获取网站基本数据信息', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/basic`)
+      .get(`/host/${host.id}/pvuv`)
       .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -36,6 +36,9 @@ describe.skip('HostController', () => {
           .format(),
         to: moment().format()
       });
-    console.log(res.body);
+    assert(Array.isArray(res.body));
+    assert(res.body[0].date);
+    assert(typeof res.body[0].pv === 'number');
+    assert(typeof res.body[0].uv === 'number');
   });
 });

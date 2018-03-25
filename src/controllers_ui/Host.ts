@@ -9,12 +9,8 @@ import { IContextState } from '../interfaces/User';
 export class HostController {
   @Inject() hostService: HostService;
 
-  @Get('/:id([0-9]+)/basic')
-  async getHostBasicInfo(
-    @State('user') user: IContextState,
-    @Param('id') id: number,
-    @QueryParams() query: ISimpleFilter
-  ) {
-    return await this.hostService.getHostBasicInfo(id, query, user.id);
+  @Get('/:id([0-9]+)/pvuv')
+  async getPVUVList(@State('user') user: IContextState, @Param('id') id: number, @QueryParams() query: ISimpleFilter) {
+    return await this.hostService.getPVUVList(id, query, user.id);
   }
 }

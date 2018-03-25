@@ -45,17 +45,28 @@ export class SessionRepository extends Repository<Session> {
 
   /**
    * 查询网站时间段内的 UV 以及平均访问时间
-   * @param hostId 网站 ID
+   * @param host 网站信息
    * @param filter 过滤条件
    * @todo step 支持
    */
-  async getHostUV(hostId: number, filter: ISimpleFilter) {
-    return await this.createQueryBuilder('session')
-      .select('SUM(session.fingerprint)', 'uv')
-      .select('session.endAt - session.createdAt', 'time')
-      .where('session.hostId = :hostId', { hostId })
-      .andWhere('session.createdAt between :from and :to', filter)
-      .groupBy('DATE(session.createdAt)')
-      .getMany();
+  async getHostUV(
+    host: Host,
+    filter: ISimpleFilter
+  ): Promise<
+    Array<{
+      uv: number;
+      date: Date;
+    }>
+  > {
+    return await this.query(
+      `
+      SELECT DATE(CONVERT_TZ(session.createdAt, 'UTC', ?)) as date, COUNT(DISTINCT session.fingerprint) as uv
+      FROM session
+      WHERE session.hostId = ?
+        AND session.createdAt between ? and ?
+      GROUP BY date
+      `,
+      [host.timezone, host.id, filter.from, filter.to]
+    );
   }
 }
