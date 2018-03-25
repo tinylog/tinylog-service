@@ -37,8 +37,8 @@ export class SessionRepository extends Repository<Session> {
     return token;
   }
 
-  async endSession(pageId: number, time: string) {
-    return await this.updateById(pageId, {
+  async endSession(sessioId: number, time: string) {
+    return await this.updateById(sessioId, {
       endAt: time
     });
   }
