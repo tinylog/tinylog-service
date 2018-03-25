@@ -46,7 +46,7 @@ export class Test {
 
   mockAsset(data?: Partial<Asset>): Partial<Asset> {
     return {
-      name: faker.internet.userName(),
+      name: faker.internet.url(),
       entryType: faker.lorem.word(),
       initiatorType: faker.random.number(1000),
       redirect: faker.random.number(1000),
