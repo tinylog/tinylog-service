@@ -15,3 +15,9 @@ export class ILoginOrRegisterRes {
   email: string;
   xsrfToken: string;
 }
+
+export class IContextState {
+  id: number;
+  email: string;
+  xsrfToken: string;
+}

@@ -12,7 +12,7 @@ export function errorCatch(): (ctx: Context, next: () => Promise<{}>) => Promise
         message = Object.values(e.errors[0].constraints).join(';');
         e.status = 400;
       } else if (e instanceof BadRequestError) {
-        // console.log('『捕获 BadRequestError 』\n', e)
+        console.log('『捕获 BadRequestError 』\n', e);
       } else if (e instanceof InternalServerError) {
         console.error('『捕获 InternalServerError 』\n', e);
       } else if (e.httpCode === 401 || e.status === 401) {

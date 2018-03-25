@@ -24,8 +24,8 @@ export class HostService {
 
     // TODO: no test yet
     const [pvList, uvList] = await Promise.all([
-      this.pageRepository.getHostPV(host.id, filter),
-      this.sessionRepository.getHostUV(host.id, filter)
+      this.pageRepository.getHostPV(host, filter)
+      // this.sessionRepository.getHostUV(host.id, filter)
     ]);
 
     console.log(pvList, uvList);

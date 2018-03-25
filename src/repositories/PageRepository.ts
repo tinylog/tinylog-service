@@ -2,6 +2,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Page } from '../entities/Page';
 import { BadRequestError } from 'routing-controllers';
 import { ISimpleFilter } from '../interfaces/Host';
+import { Host } from '../entities/Host';
 
 @EntityRepository(Page)
 export class PageRepository extends Repository<Page> {
@@ -42,12 +43,24 @@ export class PageRepository extends Repository<Page> {
    * @param filter 筛选条件
    * @todo step 支持
    */
-  async getHostPV(hostId: number, filter: ISimpleFilter) {
-    return await this.createQueryBuilder('page')
-      .select('SUM(page.id)', 'pv')
-      .where('page.hostId = :hostId', { hostId })
-      .andWhere('page.createdAt between :from and :to', filter)
-      .groupBy('DATE(page.createdAt)')
-      .getMany();
+  async getHostPV(
+    host: Host,
+    filter: ISimpleFilter
+  ): Promise<
+    Array<{
+      pv: number;
+      date: Date;
+    }>
+  > {
+    return await this.query(
+      `
+      SELECT DATE(CONVERT_TZ(page.createdAt, 'UTC', ?)) as date, COUNT(*) as pv
+      FROM   page
+      WHERE  page.hostId = ?
+        AND  page.createdAt between ? and ?
+      GROUP BY date
+    `,
+      [host.timezone, host.id, filter.from, filter.to]
+    );
   }
 }

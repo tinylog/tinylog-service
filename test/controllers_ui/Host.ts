@@ -3,9 +3,39 @@ import * as assert from 'power-assert';
 import * as request from 'supertest';
 import * as faker from 'faker';
 import { Test } from '../../src/utils/Test';
+import { Host } from '../../src/entities/Host';
+import * as moment from 'moment';
 
-describe('HostController', () => {
+let xsrfToken: string;
+let token: string;
+let host: Host;
+
+describe.skip('HostController', () => {
+  before(async () => {
+    host = (await Test.Instance.hostRepository.findOne())!;
+
+    const res = await request(Test.Instance.app)
+      .post('/user/login')
+      .send({
+        email: 'admin@tinylog.com',
+        password: '12345678'
+      });
+
+    xsrfToken = res.body.xsrfToken;
+    token = res.body.token; // IN PRODUCTION ENV, THIS TOKEN WON'T RETURN
+  });
+
   it('获取网站基本数据信息', async () => {
-    // const res = await request(Test.Instance.app).get('/host');
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/basic`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(7, 'day')
+          .format(),
+        to: moment().format()
+      });
+    console.log(res.body);
   });
 });

@@ -2,6 +2,7 @@ import { JsonController, Get, QueryParams, State, Param } from 'routing-controll
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
 import { ISimpleFilter } from '../interfaces/Host';
+import { IContextState } from '../interfaces/User';
 
 @Service()
 @JsonController('/host')
@@ -10,10 +11,10 @@ export class HostController {
 
   @Get('/:id([0-9]+)/basic')
   async getHostBasicInfo(
-    @State('userId') userId: number,
+    @State('user') user: IContextState,
     @Param('id') id: number,
     @QueryParams() query: ISimpleFilter
   ) {
-    return await this.hostService.getHostBasicInfo(id, query, userId);
+    return await this.hostService.getHostBasicInfo(id, query, user.id);
   }
 }
