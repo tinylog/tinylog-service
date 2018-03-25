@@ -30,7 +30,11 @@ if (config.env === 'production') {
       secret: config.jwt.secret,
       cookie: 'jwt'
     }).unless({
-      path: [/^\/log/] // ignore controller_scripts
+      path: [
+        /^\/log/, // ignore controller_scripts
+        /^\/user\/register/, // register page
+        /^\/user\/login/ // login page
+      ]
     })
   );
 }
