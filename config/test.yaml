@@ -1,5 +1,5 @@
 database:
-  logging: true
+  logging: false
 
 env: test
 port: 0

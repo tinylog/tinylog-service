@@ -27,6 +27,8 @@ jobs:
           paths:
             - node_modules
       
+      - run: npx ts-node ./src/utils/DataGenerator.ts
+
       - run: yarn run test:ci
 
       - run: yarn run report-coverage

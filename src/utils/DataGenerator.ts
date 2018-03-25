@@ -1,3 +1,7 @@
+/**
+ * 生成测试数据，需要的时候运行
+ */
+
 import { Test } from './Test';
 import * as request from 'supertest';
 import * as faker from 'faker';
@@ -116,7 +120,7 @@ class DataGenerator {
 
 (async () => {
   await DataGenerator.connect();
-  let n = 20;
+  let n = 10;
   while (n--) {
     await Promise.all([
       DataGenerator.fake(),
@@ -131,4 +135,5 @@ class DataGenerator {
       DataGenerator.fake()
     ]);
   }
+  process.exit(0);
 })();
