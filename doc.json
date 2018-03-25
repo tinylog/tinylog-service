@@ -136,6 +136,29 @@
                 }
             }
         },
+        "/host/": {
+            "get": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Host"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/host/{id}([0-9]+)/pvuv": {
             "get": {
                 "tags": [
@@ -179,7 +202,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/IDefaultSuccessResponse"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/IHostPVUVItem"
+                                    }
                                 }
                             }
                         }
@@ -445,6 +471,79 @@
                 "required": [
                     "exitTime",
                     "pageId"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "email": {
+                        "description": "用户邮箱",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "用户密码",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "id",
+                    "password"
+                ]
+            },
+            "Host": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "timezone": {
+                        "description": "时区，PV UV 计算需要",
+                        "type": "string"
+                    },
+                    "website": {
+                        "description": "网站",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "所属用户 ID",
+                        "type": "number"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User",
+                        "description": "所属用户"
+                    }
+                },
+                "required": [
+                    "id",
+                    "timezone",
+                    "user",
+                    "userId",
+                    "website"
+                ]
+            },
+            "IHostPVUVItem": {
+                "type": "object",
+                "properties": {
+                    "pv": {
+                        "type": "number"
+                    },
+                    "uv": {
+                        "type": "number"
+                    },
+                    "date": {
+                        "description": "Enables basic storage and retrieval of dates and times.",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "date",
+                    "pv",
+                    "uv"
                 ]
             },
             "ILoginOrRegisterRes": {

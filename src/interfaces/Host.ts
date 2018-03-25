@@ -7,3 +7,9 @@ export class ISimpleFilter {
   @IsNumber()
   step: number = 1;
 }
+
+export class IHostPVUVItem {
+  pv: number;
+  uv: number;
+  date: Date;
+}

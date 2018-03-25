@@ -21,4 +21,8 @@ export class HostRepository extends Repository<Host> {
   async getHost(query: Partial<Host>) {
     return await this.findOne(query);
   }
+
+  async getHostList(query: Partial<Host>) {
+    return await this.find(query);
+  }
 }

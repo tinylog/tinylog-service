@@ -25,6 +25,18 @@ describe('HostController', () => {
     token = res.body.token; // IN PRODUCTION ENV, THIS TOKEN WON'T RETURN
   });
 
+  it('获取网站列表', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken);
+    assert(Array.isArray(res.body));
+    assert(res.body[0].timezone);
+    assert(res.body[0].website);
+    assert(typeof res.body[0].id === 'number');
+    assert(typeof res.body[0].userId === 'number');
+  });
+
   it('获取网站基本数据信息', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/pvuv`)

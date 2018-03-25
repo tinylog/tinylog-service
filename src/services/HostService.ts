@@ -3,8 +3,9 @@ import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter } from '../interfaces/Host';
+import { ISimpleFilter, IHostPVUVItem } from '../interfaces/Host';
 import { BadRequestError } from 'routing-controllers';
+import { Host } from '../entities/Host';
 
 @Service()
 export class HostService {
@@ -12,7 +13,11 @@ export class HostService {
   pageRepository: PageRepository = getCustomRepository(PageRepository);
   sessionRepository: SessionRepository = getCustomRepository(SessionRepository);
 
-  async getPVUVList(hostId: number, filter: ISimpleFilter, userId: number) {
+  async getHostList(userId: number): Promise<Host[]> {
+    return await this.hostRepository.getHostList({ userId });
+  }
+
+  async getPVUVList(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostPVUVItem[]> {
     const host = await this.hostRepository.getHost({
       id: hostId,
       userId
@@ -29,7 +34,7 @@ export class HostService {
 
     return pvList.map(pvItem => ({
       ...pvItem,
-      ...uvList.find(uvItem => uvItem.date.getTime() === pvItem.date.getTime())
+      ...uvList.find(uvItem => uvItem.date.getTime() === pvItem.date.getTime())!
     }));
   }
 }
