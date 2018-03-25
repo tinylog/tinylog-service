@@ -37,6 +37,7 @@ describe('UserController', () => {
         email,
         password
       });
+    assert(res.status === 200);
     assert(Reflect.has(res.body, 'id'));
     assert(Reflect.has(res.body, 'email'));
     assert(Reflect.has(res.body, 'xsrfToken'));

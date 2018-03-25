@@ -28,20 +28,18 @@ app.use(debug()); // for test only
 app.use(logger());
 app.use(errorCatch());
 
-if (config.env === 'production') {
-  app.use(
-    jwt({
-      secret: config.jwt.secret,
-      cookie: 'jwt'
-    }).unless({
-      path: [
-        /^\/log/, // ignore controller_scripts
-        /^\/user\/register/, // register page
-        /^\/user\/login/ // login page
-      ]
-    })
-  );
-}
+app.use(
+  jwt({
+    secret: config.jwt.secret,
+    cookie: 'jwt'
+  }).unless({
+    path: [
+      /^\/log/, // ignore controller_scripts
+      /^\/user\/register/, // register page
+      /^\/user\/login/ // login page
+    ]
+  })
+);
 
 useKoaServer(app, {
   cors: true,

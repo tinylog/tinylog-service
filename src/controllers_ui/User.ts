@@ -21,11 +21,13 @@ export class UserController {
       maxAge: +config.jwt.exp * 1000,
       overwrite: true
     });
+
     return {
       id: data.id,
       email: data.email,
-      xsrfToken: data.xsrfToken
-    };
+      xsrfToken: data.xsrfToken,
+      token: config.env === 'production' ? undefined : data.jwt // DEBUG MESSAGE
+    } as ILoginOrRegisterRes;
   }
 
   @Post('/register')

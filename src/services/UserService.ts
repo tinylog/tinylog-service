@@ -20,7 +20,10 @@ export class UserService {
       throw new BadRequestError('邮箱已经被注册了');
     }
 
-    const user = await this.userRepository.newUser(body);
+    const user = await this.userRepository.newUser({
+      email: body.email,
+      password: SHA256(body.password).toString()
+    });
     const xsrfToken = SHA256(user.id + Date.now().toString()).toString();
     const jwt = sign(user.id, user.email, xsrfToken);
     return {
@@ -41,7 +44,11 @@ export class UserService {
       throw new BadRequestError('邮箱不存在');
     }
 
-    const user = await this.userRepository.getUser(body);
+    const user = await this.userRepository.getUser({
+      email: body.email,
+      password: SHA256(body.password).toString()
+    });
+
     if (!user) {
       throw new BadRequestError('密码错误');
     }
