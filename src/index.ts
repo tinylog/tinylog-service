@@ -59,7 +59,7 @@ export const connection = Promise.all([Database.Instance, cache]).then(([c]) => 
 });
 
 // Create document only in development environment
-if (config.env === 'development') {
+if (config.env !== 'production') {
   docGenerator(getMetadataArgsStorage(), {
     info: {
       title: 'TinyLog-Service API',

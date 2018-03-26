@@ -159,7 +159,7 @@
                 }
             }
         },
-        "/host/{id}([0-9]+)/pvuv": {
+        "/host/{id}([0-9]+)/overview": {
             "get": {
                 "tags": [
                     "host"
@@ -204,7 +204,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/IHostPVUVItem"
+                                        "$ref": "#/components/schemas/IHostOverviewItem"
                                     }
                                 }
                             }
@@ -525,13 +525,23 @@
                     "website"
                 ]
             },
-            "IHostPVUVItem": {
+            "IHostOverviewItem": {
                 "type": "object",
                 "properties": {
                     "pv": {
+                        "description": "页面访问数",
                         "type": "number"
                     },
                     "uv": {
+                        "description": "独立访问数",
+                        "type": "number"
+                    },
+                    "vv": {
+                        "description": "会话数",
+                        "type": "number"
+                    },
+                    "avgTime": {
+                        "description": "平均访问时间",
                         "type": "number"
                     },
                     "date": {
@@ -541,9 +551,11 @@
                     }
                 },
                 "required": [
+                    "avgTime",
                     "date",
                     "pv",
-                    "uv"
+                    "uv",
+                    "vv"
                 ]
             },
             "ILoginOrRegisterRes": {

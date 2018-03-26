@@ -1,7 +1,7 @@
 import { JsonController, Get, QueryParams, State, Param } from 'routing-controllers';
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
-import { ISimpleFilter, IHostPVUVItem } from '../interfaces/Host';
+import { ISimpleFilter, IHostOverviewItem } from '../interfaces/Host';
 import { IContextState } from '../interfaces/User';
 import { ResType } from 'routing-controllers-openapi-v3';
 import { Host } from '../entities/Host';
@@ -18,12 +18,12 @@ export class HostController {
   }
 
   @Get('/:id([0-9]+)/overview')
-  @ResType([IHostPVUVItem])
+  @ResType([IHostOverviewItem])
   async getPVUVList(
     @State('user') user: IContextState,
     @Param('id') id: number,
     @QueryParams() query: ISimpleFilter
-  ): Promise<IHostPVUVItem[]> {
+  ): Promise<IHostOverviewItem[]> {
     return await this.hostService.getOverview(id, query, user.id);
   }
 }

@@ -3,7 +3,7 @@ import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter, IHostPVUVItem } from '../interfaces/Host';
+import { ISimpleFilter, IHostOverviewItem } from '../interfaces/Host';
 import { BadRequestError } from 'routing-controllers';
 import { Host } from '../entities/Host';
 
@@ -17,7 +17,7 @@ export class HostService {
     return await this.hostRepository.getHostList({ userId });
   }
 
-  async getOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostPVUVItem[]> {
+  async getOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostOverviewItem[]> {
     const host = await this.hostRepository.getHost({
       id: hostId,
       userId
