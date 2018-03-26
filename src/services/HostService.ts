@@ -30,7 +30,7 @@ export class HostService {
     const [pvList, uvList, vvList] = await Promise.all([
       this.pageRepository.getHostPV(host, filter),
       this.sessionRepository.getHostUV(host, filter),
-      this.sessionRepository.getHostVV(host, filter)
+      this.sessionRepository.getHostVVData(host, filter)
     ]);
 
     return pvList.map(pvItem => ({

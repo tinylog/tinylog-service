@@ -9,13 +9,15 @@ export class ISimpleFilter {
 }
 
 export class IHostOverviewItem {
-  /** 页面访问数 */
+  /** 页面访问数（网页浏览量） */
   pv: number;
-  /** 独立访问数 */
+  /** 独立访问数（用户数） */
   uv: number;
   /** 会话数 */
   vv: number;
   /** 平均访问时间 */
   avgTime: number;
+  /** 平均会话访问页面 */
+  pageCount: number;
   date: Date;
 }

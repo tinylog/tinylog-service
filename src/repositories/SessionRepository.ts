@@ -73,7 +73,7 @@ export class SessionRepository extends Repository<Session> {
   /**
    * 会话数（VV）和会话信息如平均会话时长
    */
-  async getHostVV(
+  async getHostVVData(
     host: Host,
     filter: ISimpleFilter
   ): Promise<
@@ -81,13 +81,19 @@ export class SessionRepository extends Repository<Session> {
       vv: number;
       date: Date;
       avgTime: number;
+      pageCount: number;
     }>
   > {
     return await this.query(
       `
       SELECT DATE(CONVERT_TZ(session.createdAt, 'UTC', ?)) as date,
              COUNT(session.id) as vv,
-             AVG(TIMESTAMPDIFF(SECOND, session.createdAt, session.endAt)) as avgTime
+             ROUND(AVG(TIMESTAMPDIFF(SECOND, session.createdAt, session.endAt))) as avgTime,
+             AVG((
+               SELECT COUNT(*)
+               FROM page
+               WHERE page.sessionId = session.id
+             )) as pageCount
       FROM session
       WHERE session.hostId = ?
         AND session.createdAt between ? and ?

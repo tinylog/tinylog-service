@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IPStats } from './IPStats';
 import { Host } from './Host';
+import { Page } from './Page';
 
 @Entity()
 export class Session {
@@ -47,4 +48,7 @@ export class Session {
   @ManyToOne(type => IPStats)
   @JoinColumn({ name: 'ip' })
   ipStats: IPStats;
+
+  @OneToMany(type => Page, page => page.session)
+  pages: Page[];
 }

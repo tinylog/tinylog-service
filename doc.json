@@ -529,11 +529,11 @@
                 "type": "object",
                 "properties": {
                     "pv": {
-                        "description": "页面访问数",
+                        "description": "页面访问数（网页浏览量）",
                         "type": "number"
                     },
                     "uv": {
-                        "description": "独立访问数",
+                        "description": "独立访问数（用户数）",
                         "type": "number"
                     },
                     "vv": {
@@ -542,6 +542,10 @@
                     },
                     "avgTime": {
                         "description": "平均访问时间",
+                        "type": "number"
+                    },
+                    "pageCount": {
+                        "description": "平均会话访问页面",
                         "type": "number"
                     },
                     "date": {
@@ -553,6 +557,7 @@
                 "required": [
                     "avgTime",
                     "date",
+                    "pageCount",
                     "pv",
                     "uv",
                     "vv"
