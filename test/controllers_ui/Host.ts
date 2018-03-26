@@ -39,7 +39,7 @@ describe('HostController', () => {
 
   it('获取网站基本数据信息', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/pvuv`)
+      .get(`/host/${host.id}/overview`)
       .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -52,5 +52,6 @@ describe('HostController', () => {
     assert(res.body[0].date);
     assert(typeof res.body[0].pv === 'number');
     assert(typeof res.body[0].uv === 'number');
+    assert(typeof res.body[0].vv === 'number');
   });
 });

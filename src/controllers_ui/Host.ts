@@ -17,13 +17,13 @@ export class HostController {
     return await this.hostService.getHostList(user.id);
   }
 
-  @Get('/:id([0-9]+)/pvuv')
+  @Get('/:id([0-9]+)/overview')
   @ResType([IHostPVUVItem])
   async getPVUVList(
     @State('user') user: IContextState,
     @Param('id') id: number,
     @QueryParams() query: ISimpleFilter
   ): Promise<IHostPVUVItem[]> {
-    return await this.hostService.getPVUVList(id, query, user.id);
+    return await this.hostService.getOverview(id, query, user.id);
   }
 }

@@ -69,4 +69,31 @@ export class SessionRepository extends Repository<Session> {
       [host.timezone, host.id, filter.from, filter.to]
     );
   }
+
+  /**
+   * 会话数（VV）和会话信息如平均会话时长
+   */
+  async getHostVV(
+    host: Host,
+    filter: ISimpleFilter
+  ): Promise<
+    Array<{
+      vv: number;
+      date: Date;
+      avgTime: number;
+    }>
+  > {
+    return await this.query(
+      `
+      SELECT DATE(CONVERT_TZ(session.createdAt, 'UTC', ?)) as date,
+             COUNT(session.id) as vv,
+             AVG(TIMESTAMPDIFF(SECOND, session.createdAt, session.endAt)) as avgTime
+      FROM session
+      WHERE session.hostId = ?
+        AND session.createdAt between ? and ?
+      GROUP BY date
+      `,
+      [host.timezone, host.id, filter.from, filter.to]
+    );
+  }
 }
