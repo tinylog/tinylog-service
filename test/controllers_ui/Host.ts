@@ -70,9 +70,9 @@ describe('HostController', () => {
     assert(Reflect.has(res.body[0], 'count'));
   });
 
-  it('获取会话的国家分布', async () => {
+  it('获取会话的 referrer 分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/country`)
+      .get(`/host/${host.id}/distribution/referrer`)
       .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -82,7 +82,7 @@ describe('HostController', () => {
         to: moment().format()
       });
     assert(Array.isArray(res.body));
-    assert(Reflect.has(res.body[0], 'country'));
+    assert(Reflect.has(res.body[0], 'referrer'));
     assert(Reflect.has(res.body[0], 'count'));
   });
 

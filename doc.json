@@ -213,7 +213,7 @@
                 }
             }
         },
-        "/host/{id}([0-9]+)/distribution/{item}(lang|country|region|city|osName|browserName|engineName|hostname|org)": {
+        "/host/{id}([0-9]+)/distribution/{item}(referrer|lang|country|region|city|osName|browserName|engineName|hostname|org)": {
             "get": {
                 "tags": [
                     "host"
@@ -624,6 +624,9 @@
             "IDistributionItem": {
                 "type": "object",
                 "properties": {
+                    "referrer": {
+                        "type": "string"
+                    },
                     "country": {
                         "type": "string"
                     },

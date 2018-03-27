@@ -27,7 +27,7 @@ export class HostController {
     return await this.hostService.getHostOverview(id, query, user.id);
   }
 
-  @Get('/:id([0-9]+)/distribution/:item(lang|country|region|city|osName|browserName|engineName|hostname|org)')
+  @Get('/:id([0-9]+)/distribution/:item(referrer|lang|country|region|city|osName|browserName|engineName|hostname|org)')
   @ResType([IDistributionItem])
   async getDistribution(
     @State('user') user: IContextState,

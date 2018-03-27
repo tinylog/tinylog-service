@@ -23,6 +23,7 @@ export class IHostOverviewItem {
 }
 
 export class IDistributionItem {
+  referrer?: string;
   country?: string;
   lang?: string;
   region?: string;
