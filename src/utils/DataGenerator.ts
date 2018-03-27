@@ -13,7 +13,7 @@ class DataGenerator {
 
   static async connect() {
     await Test.Instance.connect();
-    this.host = await Test.Instance.hostRepository.findOne();
+    this.host = (await Test.Instance.hostRepository.findOne())!;
   }
 
   /**
@@ -120,7 +120,7 @@ class DataGenerator {
 
 (async () => {
   await DataGenerator.connect();
-  let n = 50;
+  let n = 5;
   while (n--) {
     await Promise.all([
       DataGenerator.fake(),

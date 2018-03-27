@@ -7,6 +7,7 @@ import { Host } from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
 import { ISimpleFilter, IDistributionItem } from '../interfaces/Host';
 import { IPStats } from '../entities/IPStats';
+import * as UAParser from 'ua-parser-js';
 
 @EntityRepository(Session)
 export class SessionRepository extends Repository<Session> {
@@ -16,17 +17,24 @@ export class SessionRepository extends Repository<Session> {
    * @param host 客户端所访问的网站信息
    */
   async createNewSession(body: IInitialize, ipStats: IPStats, host: Host): Promise<string> {
+    const uaParser = new UAParser(body.ua);
+    const result = uaParser.getResult();
     const session = await this.save(
       this.create({
-        ip: ipStats.ip,
-        country: ipStats.country,
-        region: ipStats.region,
-        city: ipStats.city,
+        ...ipStats,
+        browserName: result.browser.name,
+        browserVersion: result.browser.version,
+        deviceType: result.device.type,
+        deviceVendor: result.device.vendor,
+        deviceModel: result.device.model,
+        engineName: result.engine.name,
+        engineVersion: result.engine.version,
+        osName: result.os.name,
+        osVersion: result.os.version,
         hostId: host.id,
         referrer: body.referrer,
         lang: body.lang,
         ua: body.ua,
-        os: body.os,
         fingerprint: body.fingerprint,
         createdAt: body.createdAt
       })

@@ -118,9 +118,9 @@ describe('HostController', () => {
     assert(Reflect.has(res.body[0], 'count'));
   });
 
-  it('获取会话的系统分布', async () => {
+  it('获取会话的 ORG 分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/os`)
+      .get(`/host/${host.id}/distribution/org`)
       .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -130,7 +130,7 @@ describe('HostController', () => {
         to: moment().format()
       });
     assert(Array.isArray(res.body));
-    assert(Reflect.has(res.body[0], 'os'));
+    assert(Reflect.has(res.body[0], 'org'));
     assert(Reflect.has(res.body[0], 'count'));
   });
 });

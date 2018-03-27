@@ -27,6 +27,10 @@ export class IDistributionItem {
   lang?: string;
   region?: string;
   city?: string;
-  os?: string;
+  osName?: string;
+  browserName?: string;
+  engineName?: string;
+  hostname?: string;
+  org?: string;
   count: number;
 }

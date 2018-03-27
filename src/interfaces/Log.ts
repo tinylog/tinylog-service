@@ -7,7 +7,6 @@ export class IInitialize {
   @IsString() referrer: string;
   @IsString() lang: string;
   @IsString() ua: string;
-  @IsString() os: string;
   @IsString() host: string;
   @IsString() fingerprint: string;
   @IsDateString() createdAt: string;

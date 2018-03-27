@@ -19,9 +19,6 @@ export class Session {
   /** 浏览器信息 */
   @Column() ua: string;
 
-  /** 操作系统 */
-  @Column() os: string;
-
   /** 语言 */
   @Column() lang: string;
 
@@ -41,6 +38,36 @@ export class Session {
   fingerprint: string;
 
   /**
+   * UA 解析
+   */
+  @Column({ nullable: true })
+  browserName?: string;
+
+  @Column({ nullable: true })
+  browserVersion?: string;
+
+  @Column({ nullable: true })
+  deviceType?: string;
+
+  @Column({ nullable: true })
+  deviceVendor?: string;
+
+  @Column({ nullable: true })
+  deviceModel?: string;
+
+  @Column({ nullable: true })
+  engineName?: string;
+
+  @Column({ nullable: true })
+  engineVersion?: string;
+
+  @Column({ nullable: true })
+  osName?: string;
+
+  @Column({ nullable: true })
+  osVersion?: string;
+
+  /**
    * 为了方便查询，提升效率，此处牺牲空间换去时间，把需要查询的
    * 地区，国家，城市拷贝进 Session 表中
    */
@@ -55,6 +82,18 @@ export class Session {
   /** 城市 */
   @Column({ nullable: true })
   city?: string;
+
+  /** hostname */
+  @Column({ nullable: true })
+  hostname?: string;
+
+  /** org */
+  @Column({ nullable: true })
+  org?: string;
+
+  /** 坐标 */
+  @Column({ nullable: true })
+  loc?: string;
 
   /**
    * JoinColumn

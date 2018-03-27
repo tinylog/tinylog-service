@@ -1,6 +1,13 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { IPStats } from '../entities/IPStats';
-import * as geoip from 'geoip-lite';
+import * as ipinfo from 'ipinfo';
+
+const ipInfoAsync = (ip: string) =>
+  new Promise((resolve, reject) =>
+    ipinfo(ip, (err: {}, cloc: IPStats) => {
+      resolve(err ? {} : cloc);
+    })
+  );
 
 @EntityRepository(IPStats)
 export class IPStatsRepository extends Repository<IPStats> {
@@ -15,8 +22,7 @@ export class IPStatsRepository extends Repository<IPStats> {
     if (stats) {
       return stats;
     }
-    const geo = geoip.lookup(ip);
-
+    const geo = await ipInfoAsync(ip);
     return await this.save(
       this.create({
         ip,

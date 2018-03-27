@@ -213,7 +213,7 @@
                 }
             }
         },
-        "/host/{id}([0-9]+)/distribution/{item}(lang|country|region|city|os)": {
+        "/host/{id}([0-9]+)/distribution/{item}(lang|country|region|city|osName|browserName|engineName|hostname|org)": {
             "get": {
                 "tags": [
                     "host"
@@ -374,9 +374,6 @@
                     "ua": {
                         "type": "string"
                     },
-                    "os": {
-                        "type": "string"
-                    },
                     "host": {
                         "type": "string"
                     },
@@ -392,7 +389,6 @@
                     "fingerprint",
                     "host",
                     "lang",
-                    "os",
                     "referrer",
                     "ua"
                 ]
@@ -640,7 +636,19 @@
                     "city": {
                         "type": "string"
                     },
-                    "os": {
+                    "osName": {
+                        "type": "string"
+                    },
+                    "browserName": {
+                        "type": "string"
+                    },
+                    "engineName": {
+                        "type": "string"
+                    },
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "org": {
                         "type": "string"
                     },
                     "count": {
