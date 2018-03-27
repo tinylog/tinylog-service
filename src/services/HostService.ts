@@ -3,8 +3,7 @@ import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter, IHostOverviewItem } from '../interfaces/Host';
-import { BadRequestError } from 'routing-controllers';
+import { ISimpleFilter, IHostOverviewItem, ILangItem } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 
 @Service()
@@ -17,15 +16,11 @@ export class HostService {
     return await this.hostRepository.getHostList({ userId });
   }
 
-  async getOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostOverviewItem[]> {
-    const host = await this.hostRepository.getHost({
+  async getHostOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostOverviewItem[]> {
+    const host = await this.hostRepository.getHostOrThrow({
       id: hostId,
       userId
     });
-
-    if (!host) {
-      throw new BadRequestError('你无权限查询或者目标网站不存在');
-    }
 
     const [pvList, uvList, vvList] = await Promise.all([
       this.pageRepository.getHostPV(host, filter),
@@ -38,5 +33,13 @@ export class HostService {
       ...uvList.find(uvItem => uvItem.date.getTime() === pvItem.date.getTime())!,
       ...vvList.find(vvItem => vvItem.date.getTime() === pvItem.date.getTime())!
     }));
+  }
+
+  async getLangAnalysis(hostId: number, filter: ISimpleFilter, userId: number): Promise<ILangItem[]> {
+    const host = await this.hostRepository.getHostOrThrow({
+      id: hostId,
+      userId
+    });
+    return await this.sessionRepository.getLangAnalysis(host, filter);
   }
 }

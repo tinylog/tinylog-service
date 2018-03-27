@@ -213,6 +213,60 @@
                 }
             }
         },
+        "/host/{id}([0-9]+)/lang": {
+            "get": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "step",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ILangItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "用户登录，服务端返回的 xsrf-token 需要前端设置到名为 xsrf-token 的头部中",
@@ -561,6 +615,21 @@
                     "pv",
                     "uv",
                     "vv"
+                ]
+            },
+            "ILangItem": {
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string"
+                    },
+                    "count": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "count",
+                    "lang"
                 ]
             },
             "ILoginOrRegisterRes": {

@@ -1,7 +1,7 @@
 import { JsonController, Get, QueryParams, State, Param } from 'routing-controllers';
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
-import { ISimpleFilter, IHostOverviewItem } from '../interfaces/Host';
+import { ISimpleFilter, IHostOverviewItem, ILangItem } from '../interfaces/Host';
 import { IContextState } from '../interfaces/User';
 import { ResType } from 'routing-controllers-openapi-v3';
 import { Host } from '../entities/Host';
@@ -24,6 +24,16 @@ export class HostController {
     @Param('id') id: number,
     @QueryParams() query: ISimpleFilter
   ): Promise<IHostOverviewItem[]> {
-    return await this.hostService.getOverview(id, query, user.id);
+    return await this.hostService.getHostOverview(id, query, user.id);
+  }
+
+  @Get('/:id([0-9]+)/lang')
+  @ResType([ILangItem])
+  async getSessionOverview(
+    @State('user') user: IContextState,
+    @Param('id') id: number,
+    @QueryParams() query: ISimpleFilter
+  ): Promise<ILangItem[]> {
+    return await this.hostService.getLangAnalysis(id, query, user.id);
   }
 }

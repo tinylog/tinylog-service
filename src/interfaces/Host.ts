@@ -21,3 +21,8 @@ export class IHostOverviewItem {
   avgPageCount: number;
   date: Date;
 }
+
+export class ILangItem {
+  lang: string;
+  count: number;
+}

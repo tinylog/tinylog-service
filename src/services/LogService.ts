@@ -25,7 +25,7 @@ export class LogService {
   async initialize(body: IInitialize, ip: string): Promise<IToken> {
     const website = body.host;
 
-    const host = await this.hostRepository.validateHost(website);
+    const host = await this.hostRepository.validateHostOrThrow(website);
 
     await this.ipStatsRepository.getIPStats(ip);
     const token = await this.sessionRepository.createNewSession(body, ip, host);

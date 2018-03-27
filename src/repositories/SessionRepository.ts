@@ -5,7 +5,7 @@ import { TOKEN_KEY } from '../constants';
 import { MD5 } from 'crypto-js';
 import { Host } from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
-import { ISimpleFilter } from '../interfaces/Host';
+import { ISimpleFilter, ILangItem } from '../interfaces/Host';
 
 @EntityRepository(Session)
 export class SessionRepository extends Repository<Session> {
@@ -100,6 +100,20 @@ export class SessionRepository extends Repository<Session> {
       GROUP BY date
       `,
       [host.timezone, host.id, filter.from, filter.to]
+    );
+  }
+
+  async getLangAnalysis(host: Host, filter: ISimpleFilter): Promise<ILangItem[]> {
+    return await this.query(
+      `
+      SELECT session.lang as lang,
+             COUNT(*) as count
+      FROM session
+      WHERE session.hostId = ?
+        AND session.createdAt between ? and ?
+      GROUP BY lang
+      `,
+      [host.id, filter.from, filter.to]
     );
   }
 }

@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn, OneToMan
 import { IPStats } from './IPStats';
 import { Host } from './Host';
 import { Page } from './Page';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Session {
@@ -35,7 +36,9 @@ export class Session {
   /**
    * 用户指纹（用来辨识是不是同一个主机访问）
    */
-  @Column() fingerprint: string;
+  @Exclude()
+  @Column()
+  fingerprint: string;
 
   /**
    * JoinColumn

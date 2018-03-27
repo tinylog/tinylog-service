@@ -54,4 +54,20 @@ describe('HostController', () => {
     assert(typeof res.body[0].uv === 'number');
     assert(typeof res.body[0].vv === 'number');
   });
+
+  it('获取会话的语言分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/lang`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'lang'));
+    assert(Reflect.has(res.body[0], 'count'));
+  });
 });
