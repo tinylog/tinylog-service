@@ -5,7 +5,7 @@ import { TOKEN_KEY } from '../constants';
 import { MD5 } from 'crypto-js';
 import { Host } from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
-import { ISimpleFilter, ILangItem } from '../interfaces/Host';
+import { ISimpleFilter, IDistributionItem } from '../interfaces/Host';
 import { IPStats } from '../entities/IPStats';
 
 @EntityRepository(Session)
@@ -107,31 +107,18 @@ export class SessionRepository extends Repository<Session> {
     );
   }
 
-  async getLangAnalysis(host: Host, filter: ISimpleFilter): Promise<ILangItem[]> {
+  async getDistribution(item: string, host: Host, filter: ISimpleFilter): Promise<IDistributionItem[]> {
     return await this.query(
       `
-      SELECT session.lang as lang,
+      SELECT ${item},
              COUNT(*) as count
       FROM session
       WHERE session.hostId = ?
         AND session.createdAt between ? and ?
-      GROUP BY lang
+      GROUP BY ${item}
+      ORDER BY count DESC
       `,
       [host.id, filter.from, filter.to]
     );
   }
-
-  // async getCountryAnalysis(host: Host, filter: ISimpleFilter): Promise<ILangItem[]> {
-  //   return await this.query(
-  //     `
-  //     SELECT session.lang as lang,
-  //            COUNT(*) as count
-  //     FROM session
-  //     WHERE session.hostId = ?
-  //       AND session.createdAt between ? and ?
-  //     GROUP BY lang
-  //     `,
-  //     [host.id, filter.from, filter.to]
-  //   );
-  // }
 }

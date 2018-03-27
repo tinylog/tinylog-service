@@ -213,7 +213,7 @@
                 }
             }
         },
-        "/host/{id}([0-9]+)/lang": {
+        "/host/{id}([0-9]+)/distribution/{item}(lang|country|region|city|os)": {
             "get": {
                 "tags": [
                     "host"
@@ -243,6 +243,14 @@
                     },
                     {
                         "in": "path",
+                        "name": "item",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
                         "name": "id",
                         "required": true,
                         "schema": {
@@ -258,7 +266,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/ILangItem"
+                                        "$ref": "#/components/schemas/IDistributionItem"
                                     }
                                 }
                             }
@@ -617,10 +625,22 @@
                     "vv"
                 ]
             },
-            "ILangItem": {
+            "IDistributionItem": {
                 "type": "object",
                 "properties": {
+                    "country": {
+                        "type": "string"
+                    },
                     "lang": {
+                        "type": "string"
+                    },
+                    "region": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "os": {
                         "type": "string"
                     },
                     "count": {
@@ -628,8 +648,7 @@
                     }
                 },
                 "required": [
-                    "count",
-                    "lang"
+                    "count"
                 ]
             },
             "ILoginOrRegisterRes": {

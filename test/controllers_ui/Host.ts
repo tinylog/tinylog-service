@@ -1,7 +1,6 @@
 import 'mocha';
 import * as assert from 'power-assert';
 import * as request from 'supertest';
-import * as faker from 'faker';
 import { Test } from '../../src/utils/Test';
 import { Host } from '../../src/entities/Host';
 import * as moment from 'moment';
@@ -57,7 +56,7 @@ describe('HostController', () => {
 
   it('获取会话的语言分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/lang`)
+      .get(`/host/${host.id}/distribution/lang`)
       .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -68,6 +67,70 @@ describe('HostController', () => {
       });
     assert(Array.isArray(res.body));
     assert(Reflect.has(res.body[0], 'lang'));
+    assert(Reflect.has(res.body[0], 'count'));
+  });
+
+  it('获取会话的国家分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/distribution/country`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'country'));
+    assert(Reflect.has(res.body[0], 'count'));
+  });
+
+  it('获取会话的城市分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/distribution/city`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'city'));
+    assert(Reflect.has(res.body[0], 'count'));
+  });
+
+  it('获取会话的地区分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/distribution/region`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'region'));
+    assert(Reflect.has(res.body[0], 'count'));
+  });
+
+  it('获取会话的系统分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/distribution/os`)
+      .set('Cookie', `jwt=${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'os'));
     assert(Reflect.has(res.body[0], 'count'));
   });
 });

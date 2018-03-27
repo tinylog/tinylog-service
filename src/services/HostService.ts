@@ -3,7 +3,7 @@ import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter, IHostOverviewItem, ILangItem } from '../interfaces/Host';
+import { ISimpleFilter, IHostOverviewItem, IDistributionItem } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 
 @Service()
@@ -35,19 +35,16 @@ export class HostService {
     }));
   }
 
-  async getLangAnalysis(hostId: number, filter: ISimpleFilter, userId: number): Promise<ILangItem[]> {
+  async getDistribution(
+    hostId: number,
+    item: string,
+    filter: ISimpleFilter,
+    userId: number
+  ): Promise<IDistributionItem[]> {
     const host = await this.hostRepository.getHostOrThrow({
       id: hostId,
       userId
     });
-    return await this.sessionRepository.getLangAnalysis(host, filter);
+    return await this.sessionRepository.getDistribution(item, host, filter);
   }
-
-  // async getCountryAnalysis(hostId: number, filter: ISimpleFilter, userId: number) {
-  //   const host = await this.hostRepository.getHostOrThrow({
-  //     id: hostId,
-  //     userId
-  //   });
-  //   return await this.sessionRepository.getCountryAnalysis(host, filter);
-  // }
 }

@@ -22,7 +22,11 @@ export class IHostOverviewItem {
   date: Date;
 }
 
-export class ILangItem {
-  lang: string;
+export class IDistributionItem {
+  country?: string;
+  lang?: string;
+  region?: string;
+  city?: string;
+  os?: string;
   count: number;
 }
