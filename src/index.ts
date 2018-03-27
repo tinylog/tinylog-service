@@ -13,6 +13,7 @@ import { errorCatch } from './middlewares/errorCatch';
 import * as jwt from 'koa-jwt';
 import docGenerator from 'routing-controllers-openapi-v3';
 import { debug } from './middlewares/debug';
+import * as kcors from 'kcors';
 
 const { port } = config;
 
@@ -23,6 +24,11 @@ const app = new Koa();
 
 app.proxy = true;
 
+app.use(
+  kcors({
+    credentials: true
+  })
+);
 app.use(debug()); // for test only
 
 app.use(logger());

@@ -114,6 +114,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/kcors@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@types/kcors/-/kcors-2.2.3.tgz#e6532132492173a8681dd85774f380834b96f571"
+  dependencies:
+    "@types/koa" "*"
+
 "@types/keygrip@*":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.1.tgz#ff540462d2fb4d0a88441ceaf27d287b01c3d878"
