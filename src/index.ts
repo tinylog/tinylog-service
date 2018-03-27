@@ -36,8 +36,8 @@ app.use(errorCatch());
 
 app.use(
   jwt({
-    secret: config.jwt.secret,
-    cookie: 'jwt'
+    secret: config.jwt.secret
+    // cookie: 'jwt'
   }).unless({
     path: [
       /^\/log/, // ignore controller_scripts

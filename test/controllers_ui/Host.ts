@@ -27,7 +27,8 @@ describe('HostController', () => {
   it('获取网站列表', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host`)
-      .set('Cookie', `jwt=${token}`)
+      // .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(Array.isArray(res.body));
     assert(res.body[0].timezone);
@@ -39,7 +40,8 @@ describe('HostController', () => {
   it('获取网站基本数据信息', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/overview`)
-      .set('Cookie', `jwt=${token}`)
+      // .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
@@ -57,7 +59,8 @@ describe('HostController', () => {
   it('获取会话的语言分布', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/distribution/lang`)
-      .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
+      // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
@@ -73,7 +76,8 @@ describe('HostController', () => {
   it('获取会话的 referrer 分布', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/distribution/referrer`)
-      .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
+      // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
@@ -89,7 +93,8 @@ describe('HostController', () => {
   it('获取会话的城市分布', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/distribution/city`)
-      .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
+      // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
@@ -105,7 +110,8 @@ describe('HostController', () => {
   it('获取会话的地区分布', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/distribution/region`)
-      .set('Cookie', `jwt=${token}`)
+      // .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
@@ -121,7 +127,8 @@ describe('HostController', () => {
   it('获取会话的 ORG 分布', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/distribution/org`)
-      .set('Cookie', `jwt=${token}`)
+      .set('Authorization', `Bearer ${token}`)
+      // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
         from: moment()
