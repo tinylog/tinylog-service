@@ -6,6 +6,7 @@ import { MD5 } from 'crypto-js';
 import { Host } from '../entities/Host';
 import { IInitialize } from '../interfaces/Log';
 import { ISimpleFilter, ILangItem } from '../interfaces/Host';
+import { IPStats } from '../entities/IPStats';
 
 @EntityRepository(Session)
 export class SessionRepository extends Repository<Session> {
@@ -14,10 +15,13 @@ export class SessionRepository extends Repository<Session> {
    * @param body 客户端信息
    * @param host 客户端所访问的网站信息
    */
-  async createNewSession(body: IInitialize, ip: string, host: Host): Promise<string> {
+  async createNewSession(body: IInitialize, ipStats: IPStats, host: Host): Promise<string> {
     const session = await this.save(
       this.create({
-        ip,
+        ip: ipStats.ip,
+        country: ipStats.country,
+        region: ipStats.region,
+        city: ipStats.city,
         hostId: host.id,
         referrer: body.referrer,
         lang: body.lang,
@@ -116,4 +120,18 @@ export class SessionRepository extends Repository<Session> {
       [host.id, filter.from, filter.to]
     );
   }
+
+  // async getCountryAnalysis(host: Host, filter: ISimpleFilter): Promise<ILangItem[]> {
+  //   return await this.query(
+  //     `
+  //     SELECT session.lang as lang,
+  //            COUNT(*) as count
+  //     FROM session
+  //     WHERE session.hostId = ?
+  //       AND session.createdAt between ? and ?
+  //     GROUP BY lang
+  //     `,
+  //     [host.id, filter.from, filter.to]
+  //   );
+  // }
 }

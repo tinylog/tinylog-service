@@ -120,7 +120,7 @@ class DataGenerator {
 
 (async () => {
   await DataGenerator.connect();
-  let n = 10;
+  let n = 50;
   while (n--) {
     await Promise.all([
       DataGenerator.fake(),

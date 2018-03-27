@@ -42,4 +42,12 @@ export class HostService {
     });
     return await this.sessionRepository.getLangAnalysis(host, filter);
   }
+
+  // async getCountryAnalysis(hostId: number, filter: ISimpleFilter, userId: number) {
+  //   const host = await this.hostRepository.getHostOrThrow({
+  //     id: hostId,
+  //     userId
+  //   });
+  //   return await this.sessionRepository.getCountryAnalysis(host, filter);
+  // }
 }

@@ -41,16 +41,32 @@ export class Session {
   fingerprint: string;
 
   /**
+   * 为了方便查询，提升效率，此处牺牲空间换去时间，把需要查询的
+   * 地区，国家，城市拷贝进 Session 表中
+   */
+  /** 地区 */
+  @Column({ nullable: true })
+  region?: string;
+
+  /** 国家 */
+  @Column({ nullable: true })
+  country?: string;
+
+  /** 城市 */
+  @Column({ nullable: true })
+  city?: string;
+
+  /**
    * JoinColumn
    */
-
-  @ManyToOne(type => Host)
-  @JoinColumn({ name: 'hostId' })
-  host: Host;
 
   @ManyToOne(type => IPStats)
   @JoinColumn({ name: 'ip' })
   ipStats: IPStats;
+
+  @ManyToOne(type => Host)
+  @JoinColumn({ name: 'hostId' })
+  host: Host;
 
   @OneToMany(type => Page, page => page.session)
   pages: Page[];

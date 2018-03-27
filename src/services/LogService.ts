@@ -27,8 +27,8 @@ export class LogService {
 
     const host = await this.hostRepository.validateHostOrThrow(website);
 
-    await this.ipStatsRepository.getIPStats(ip);
-    const token = await this.sessionRepository.createNewSession(body, ip, host);
+    const ipStats = await this.ipStatsRepository.getIPStats(ip);
+    const token = await this.sessionRepository.createNewSession(body, ipStats, host);
 
     return { token };
   }
