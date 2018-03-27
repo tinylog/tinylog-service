@@ -80,20 +80,20 @@ export class SessionRepository extends Repository<Session> {
     Array<{
       vv: number;
       date: Date;
-      avgTime: number;
-      pageCount: number;
+      avgVisitTime: number;
+      avgPageCount: number;
     }>
   > {
     return await this.query(
       `
       SELECT DATE(CONVERT_TZ(session.createdAt, 'UTC', ?)) as date,
              COUNT(session.id) as vv,
-             ROUND(AVG(TIMESTAMPDIFF(SECOND, session.createdAt, session.endAt))) as avgTime,
+             ROUND(AVG(TIMESTAMPDIFF(SECOND, session.createdAt, session.endAt))) as avgVisitTime,
              AVG((
                SELECT COUNT(*)
                FROM page
                WHERE page.sessionId = session.id
-             )) as pageCount
+             )) as avgPageCount
       FROM session
       WHERE session.hostId = ?
         AND session.createdAt between ? and ?

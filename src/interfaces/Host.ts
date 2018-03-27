@@ -16,8 +16,8 @@ export class IHostOverviewItem {
   /** 会话数 */
   vv: number;
   /** 平均访问时间 */
-  avgTime: number;
+  avgVisitTime: number;
   /** 平均会话访问页面 */
-  pageCount: number;
+  avgPageCount: number;
   date: Date;
 }

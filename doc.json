@@ -540,11 +540,11 @@
                         "description": "会话数",
                         "type": "number"
                     },
-                    "avgTime": {
+                    "avgVisitTime": {
                         "description": "平均访问时间",
                         "type": "number"
                     },
-                    "pageCount": {
+                    "avgPageCount": {
                         "description": "平均会话访问页面",
                         "type": "number"
                     },
@@ -555,9 +555,9 @@
                     }
                 },
                 "required": [
-                    "avgTime",
+                    "avgPageCount",
+                    "avgVisitTime",
                     "date",
-                    "pageCount",
                     "pv",
                     "uv",
                     "vv"
