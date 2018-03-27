@@ -49,7 +49,7 @@ useKoaServer(app, {
 
 export const connection = Promise.all([Database.Instance, cache]).then(([c]) => {
   return new Promise(resolve => {
-    app.listen(port, async () => {
+    app.listen(process.env.__DEBUG__ ? 0 : port, async () => {
       console.log(`[APP] Listen on ${port} in ${config.env} enviroment`);
       console.log('[TinyLog] Initialize Host: https://www.qq.com');
       console.log('[TinyLog] Initialize User: admin@tinylog.com 12345678');

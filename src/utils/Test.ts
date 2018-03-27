@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import './env';
 import * as faker from 'faker';
 import { AssetRepository } from '../repositories/AssetRepository';
 import { HostRepository } from '../repositories/HostRepository';
@@ -8,6 +9,9 @@ import { UserRepository } from '../repositories/UserRepository';
 import { getConnection, getManager, getCustomRepository, EntityManager } from 'typeorm';
 import { Asset } from '../entities/Asset';
 import { Page } from '../entities/Page';
+
+// This flag is to make app listen in an random port
+process.env.__DEBUG__ = 'true';
 
 export class Test {
   private static instance: Test;
