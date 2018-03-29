@@ -35,3 +35,12 @@ export class IDistributionItem {
   org?: string;
   count: number;
 }
+
+export class ISlowestAssetItem {
+  avgDuration: number;
+  avgRedirect: number;
+  avgRequest: number;
+  avgLookupDomain: number;
+  name: string;
+  entryType: string;
+}

@@ -3,7 +3,7 @@ import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter, IHostOverviewItem, IDistributionItem } from '../interfaces/Host';
+import { ISimpleFilter, IHostOverviewItem, IDistributionItem, ISlowestAssetItem } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 
 @Service()
@@ -46,5 +46,13 @@ export class HostService {
       userId
     });
     return await this.sessionRepository.getDistribution(item, host, filter);
+  }
+
+  async getSlowestAssetList(hostId: number, userId: number, filter: ISimpleFilter): Promise<ISlowestAssetItem[]> {
+    const host = await this.hostRepository.getHostOrThrow({
+      id: hostId,
+      userId
+    });
+    return await this.pageRepository.getSlowestAssetList(host, filter);
   }
 }

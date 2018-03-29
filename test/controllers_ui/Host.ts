@@ -140,4 +140,20 @@ describe('HostController', () => {
     assert(Reflect.has(res.body[0], 'org'));
     assert(Reflect.has(res.body[0], 'count'));
   });
+
+  it('获取慢连接', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/assets/slow`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    assert(Reflect.has(res.body[0], 'entryType'));
+    assert(Reflect.has(res.body[0], 'avgRedirect'));
+  });
 });

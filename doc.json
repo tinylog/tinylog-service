@@ -275,6 +275,60 @@
                 }
             }
         },
+        "/host/{id}([0-9]+)/assets/slow": {
+            "get": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "step",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ISlowestAssetItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "用户登录，服务端返回的 xsrf-token 需要前端设置到名为 xsrf-token 的头部中",
@@ -662,6 +716,37 @@
                     "count"
                 ]
             },
+            "ISlowestAssetItem": {
+                "type": "object",
+                "properties": {
+                    "avgDuration": {
+                        "type": "number"
+                    },
+                    "avgRedirect": {
+                        "type": "number"
+                    },
+                    "avgRequest": {
+                        "type": "number"
+                    },
+                    "avgLookupDomain": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "entryType": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "avgDuration",
+                    "avgLookupDomain",
+                    "avgRedirect",
+                    "avgRequest",
+                    "entryType",
+                    "name"
+                ]
+            },
             "ILoginOrRegisterRes": {
                 "type": "object",
                 "properties": {
@@ -672,6 +757,9 @@
                         "type": "string"
                     },
                     "xsrfToken": {
+                        "type": "string"
+                    },
+                    "token": {
                         "type": "string"
                     }
                 },
