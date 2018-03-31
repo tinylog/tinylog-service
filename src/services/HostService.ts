@@ -9,9 +9,11 @@ import {
   IHostOverviewItem,
   IDistributionItem,
   ISlowestAssetItem,
-  ISlowestPageItem
+  ISlowestPageItem,
+  ICreateNewHost
 } from '../interfaces/Host';
 import { Host } from '../entities/Host';
+import { BadRequestError } from 'routing-controllers';
 
 @Service()
 export class HostService {
@@ -22,6 +24,30 @@ export class HostService {
 
   async getHostList(userId: number): Promise<Host[]> {
     return await this.hostRepository.getHostList({ userId });
+  }
+
+  async createNewHost(userId: number, body: ICreateNewHost) {
+    const host = await this.hostRepository.getHost({
+      domain: body.domain,
+      userId
+    });
+
+    if (host) {
+      throw new BadRequestError('您已经注册了该网站');
+    }
+
+    const list = body.domain.split('.');
+    if (list.length < 2) {
+      throw new BadRequestError('域名有误');
+    }
+
+    return await this.hostRepository.save(
+      this.hostRepository.create({
+        domain: body.domain,
+        timezone: body.timezone,
+        userId
+      })
+    );
   }
 
   async getHostOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostOverviewItem[]> {

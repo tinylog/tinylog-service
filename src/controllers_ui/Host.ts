@@ -1,4 +1,4 @@
-import { JsonController, Get, QueryParams, State, Param } from 'routing-controllers';
+import { JsonController, Get, QueryParams, State, Param, Post, Body } from 'routing-controllers';
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
 import {
@@ -6,7 +6,8 @@ import {
   IHostOverviewItem,
   IDistributionItem,
   ISlowestAssetItem,
-  ISlowestPageItem
+  ISlowestPageItem,
+  ICreateNewHost
 } from '../interfaces/Host';
 import { IContextState } from '../interfaces/User';
 import { ResType } from 'routing-controllers-openapi-v3';
@@ -21,6 +22,12 @@ export class HostController {
   @ResType([Host])
   async getHostList(@State('user') user: IContextState): Promise<Host[]> {
     return await this.hostService.getHostList(user.id);
+  }
+
+  @Post('/create')
+  @ResType([Host])
+  async createNewHost(@State('user') user: IContextState, @Body() body: ICreateNewHost): Promise<Host> {
+    return await this.hostService.createNewHost(user.id, body);
   }
 
   @Get('/:id([0-9]+)/overview')

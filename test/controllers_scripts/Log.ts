@@ -21,7 +21,7 @@ describe('LogController', () => {
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
-        host: host.website,
+        host: host.domain,
         ua: faker.internet.userAgent(),
         os: 'linux',
         fingerprint: 'test',

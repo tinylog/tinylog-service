@@ -9,7 +9,7 @@ export class Host {
   @Column() timezone: string;
 
   /** 网站 */
-  @Column() website: string;
+  @Column() domain: string;
 
   /** 所属用户 ID */
   @Column() userId: number;

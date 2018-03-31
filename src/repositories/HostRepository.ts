@@ -6,16 +6,20 @@ import { BadRequestError } from 'routing-controllers';
 export class HostRepository extends Repository<Host> {
   /**
    * 检查这个网站是否已经加入了统计，如果加入了则返回查询结果，否则抛出错误
-   * @param website 网址
+   * @param domain 网址
    */
-  async validateHostOrThrow(website: string): Promise<Host> {
-    const host = await this.findOne({ website });
+  async validateHostOrThrow(domain: string): Promise<Host> {
+    const host = await this.findOne({ domain });
 
     if (!host) {
       throw new BadRequestError('请检查网站是否已经加入统计');
     }
 
     return host;
+  }
+
+  async getHost(query: Partial<Host>) {
+    return await this.findOne(query);
   }
 
   async getHostOrThrow(query: Partial<Host>) {

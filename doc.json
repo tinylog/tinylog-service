@@ -159,6 +159,39 @@
                 }
             }
         },
+        "/host/create": {
+            "post": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Host"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "applicaton/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ICreateNewHost"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/host/{id}([0-9]+)/overview": {
             "get": {
                 "tags": [
@@ -670,7 +703,7 @@
                         "description": "时区，PV UV 计算需要",
                         "type": "string"
                     },
-                    "website": {
+                    "domain": {
                         "description": "网站",
                         "type": "string"
                     },
@@ -684,11 +717,26 @@
                     }
                 },
                 "required": [
+                    "domain",
                     "id",
                     "timezone",
                     "user",
-                    "userId",
-                    "website"
+                    "userId"
+                ]
+            },
+            "ICreateNewHost": {
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "timezone": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "domain",
+                    "timezone"
                 ]
             },
             "IHostOverviewItem": {

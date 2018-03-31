@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber, IsOptional } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ISimpleFilter {
   @IsDateString() from: string;
@@ -55,4 +55,9 @@ export class ISlowestPageItem {
   avgTcp: number;
   avgLoadEvent: number;
   url: string;
+}
+
+export class ICreateNewHost {
+  @IsString() domain: string;
+  @IsString() timezone: string;
 }

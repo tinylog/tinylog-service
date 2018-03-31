@@ -22,7 +22,7 @@ class DataGenerator {
   static async fake() {
     // 随机一个伪造时间
     let date = faker.date.recent(30).toISOString();
-    const url = (suffix: string = '') => this.host.website + '/' + faker.lorem.word() + suffix;
+    const url = (suffix: string = '') => this.host.domain + '/' + faker.lorem.word() + suffix;
 
     // 会话 start
     const initializeRes = await request(Test.Instance.app)
@@ -30,7 +30,7 @@ class DataGenerator {
       .send({
         referrer: faker.internet.url(),
         lang: ['zh-cn', 'en', 'ru'][faker.random.number({ min: 0, max: 2 })],
-        host: this.host.website,
+        host: this.host.domain,
         ua: faker.internet.userAgent(),
         os: ['windows', 'linux', 'mac'][faker.random.number({ min: 0, max: 2 })],
         fingerprint: faker.internet.mac(),

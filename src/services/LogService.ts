@@ -23,9 +23,9 @@ export class LogService {
    * @param ip 客户端的 IP 地址
    */
   async initialize(body: IInitialize, ip: string): Promise<IToken> {
-    const website = body.host;
+    const domain = body.host;
 
-    const host = await this.hostRepository.validateHostOrThrow(website);
+    const host = await this.hostRepository.validateHostOrThrow(domain);
 
     const ipStats = await this.ipStatsRepository.getIPStats(ip);
     const token = await this.sessionRepository.createNewSession(body, ipStats, host);

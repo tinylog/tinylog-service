@@ -3,6 +3,7 @@ import * as assert from 'power-assert';
 import * as request from 'supertest';
 import { Test } from '../../src/utils/Test';
 import { Host } from '../../src/entities/Host';
+import * as faker from 'faker';
 import * as moment from 'moment';
 
 let xsrfToken: string;
@@ -31,8 +32,8 @@ describe('HostController', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(Array.isArray(res.body));
-    assert(res.body[0].timezone);
-    assert(res.body[0].website);
+    assert(Reflect.has(res.body[0], 'domain'));
+    assert(Reflect.has(res.body[0], 'timezone'));
     assert(typeof res.body[0].id === 'number');
     assert(typeof res.body[0].userId === 'number');
   });
@@ -169,8 +170,21 @@ describe('HostController', () => {
         to: moment().format()
       });
     assert(Array.isArray(res.body));
-    console.log(res.body);
     assert(Reflect.has(res.body[0], 'url'));
     assert(Reflect.has(res.body[0], 'avgLookupDomain'));
+  });
+
+  it('创建网站', async () => {
+    const domain = faker.random.word() + '.com';
+    const res = await request(Test.Instance.app)
+      .post('/host/create')
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .send({
+        domain,
+        timezone: 'Asia/Shanghai'
+      });
+    assert(res.body.domain === domain);
+    assert(res.body.timezone === 'Asia/Shanghai');
   });
 });
