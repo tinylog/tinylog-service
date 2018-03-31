@@ -2,8 +2,15 @@ import { Service } from 'typedi';
 import { HostRepository } from '../repositories/HostRepository';
 import { PageRepository } from '../repositories/PageRepository';
 import { SessionRepository } from '../repositories/SessionRepository';
+import { AssetRepository } from '../repositories/AssetRepository';
 import { getCustomRepository } from 'typeorm';
-import { ISimpleFilter, IHostOverviewItem, IDistributionItem, ISlowestAssetItem } from '../interfaces/Host';
+import {
+  ISimpleFilter,
+  IHostOverviewItem,
+  IDistributionItem,
+  ISlowestAssetItem,
+  ISlowestPageItem
+} from '../interfaces/Host';
 import { Host } from '../entities/Host';
 
 @Service()
@@ -11,6 +18,7 @@ export class HostService {
   hostRepository: HostRepository = getCustomRepository(HostRepository);
   pageRepository: PageRepository = getCustomRepository(PageRepository);
   sessionRepository: SessionRepository = getCustomRepository(SessionRepository);
+  assetRepository: AssetRepository = getCustomRepository(AssetRepository);
 
   async getHostList(userId: number): Promise<Host[]> {
     return await this.hostRepository.getHostList({ userId });
@@ -53,6 +61,14 @@ export class HostService {
       id: hostId,
       userId
     });
-    return await this.pageRepository.getSlowestAssetList(host, filter);
+    return await this.assetRepository.getSlowestAssetList(host, filter);
+  }
+
+  async getSlowestPageList(hostId: number, userId: number, filter: ISimpleFilter): Promise<ISlowestPageItem[]> {
+    const host = await this.hostRepository.getHostOrThrow({
+      id: hostId,
+      userId
+    });
+    return await this.pageRepository.getSlowestPageList(host, filter);
   }
 }

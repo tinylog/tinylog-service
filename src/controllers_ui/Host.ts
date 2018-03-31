@@ -1,7 +1,13 @@
 import { JsonController, Get, QueryParams, State, Param } from 'routing-controllers';
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
-import { ISimpleFilter, IHostOverviewItem, IDistributionItem, ISlowestAssetItem } from '../interfaces/Host';
+import {
+  ISimpleFilter,
+  IHostOverviewItem,
+  IDistributionItem,
+  ISlowestAssetItem,
+  ISlowestPageItem
+} from '../interfaces/Host';
 import { IContextState } from '../interfaces/User';
 import { ResType } from 'routing-controllers-openapi-v3';
 import { Host } from '../entities/Host';
@@ -46,5 +52,15 @@ export class HostController {
     @QueryParams() query: ISimpleFilter
   ): Promise<ISlowestAssetItem[]> {
     return await this.hostService.getSlowestAssetList(id, user.id, query);
+  }
+
+  @Get('/:id([0-9]+)/pages/slow')
+  @ResType([ISlowestPageItem])
+  async getSloestPageList(
+    @State('user') user: IContextState,
+    @Param('id') id: number,
+    @QueryParams() query: ISimpleFilter
+  ): Promise<ISlowestPageItem[]> {
+    return await this.hostService.getSlowestPageList(id, user.id, query);
   }
 }

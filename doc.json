@@ -329,6 +329,60 @@
                 }
             }
         },
+        "/host/{id}([0-9]+)/pages/slow": {
+            "get": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "step",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ISlowestPageItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "用户登录，服务端返回的 xsrf-token 需要前端设置到名为 xsrf-token 的头部中",
@@ -745,6 +799,49 @@
                     "avgRequest",
                     "entryType",
                     "name"
+                ]
+            },
+            "ISlowestPageItem": {
+                "type": "object",
+                "properties": {
+                    "avgLoadPage": {
+                        "type": "number"
+                    },
+                    "avgDomReady": {
+                        "type": "number"
+                    },
+                    "avgRedirect": {
+                        "type": "number"
+                    },
+                    "avgLookupDomain": {
+                        "type": "number"
+                    },
+                    "avgTtfb": {
+                        "type": "number"
+                    },
+                    "avgRequest": {
+                        "type": "number"
+                    },
+                    "avgTcp": {
+                        "type": "number"
+                    },
+                    "avgLoadEvent": {
+                        "type": "number"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "avgDomReady",
+                    "avgLoadEvent",
+                    "avgLoadPage",
+                    "avgLookupDomain",
+                    "avgRedirect",
+                    "avgRequest",
+                    "avgTcp",
+                    "avgTtfb",
+                    "url"
                 ]
             },
             "ILoginOrRegisterRes": {

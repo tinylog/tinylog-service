@@ -141,7 +141,7 @@ describe('HostController', () => {
     assert(Reflect.has(res.body[0], 'count'));
   });
 
-  it('获取慢连接', async () => {
+  it('获取资源慢连接', async () => {
     const res = await request(Test.Instance.app)
       .get(`/host/${host.id}/assets/slow`)
       .set('Authorization', `Bearer ${token}`)
@@ -155,5 +155,22 @@ describe('HostController', () => {
     assert(Array.isArray(res.body));
     assert(Reflect.has(res.body[0], 'entryType'));
     assert(Reflect.has(res.body[0], 'avgRedirect'));
+  });
+
+  it('获取页面慢连接', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${host.id}/pages/slow`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .query({
+        from: moment()
+          .subtract(14, 'day')
+          .format(),
+        to: moment().format()
+      });
+    assert(Array.isArray(res.body));
+    console.log(res.body);
+    assert(Reflect.has(res.body[0], 'url'));
+    assert(Reflect.has(res.body[0], 'avgLookupDomain'));
   });
 });

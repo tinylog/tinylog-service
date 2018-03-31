@@ -44,3 +44,15 @@ export class ISlowestAssetItem {
   name: string;
   entryType: string;
 }
+
+export class ISlowestPageItem {
+  avgLoadPage: number;
+  avgDomReady: number;
+  avgRedirect: number;
+  avgLookupDomain: number;
+  avgTtfb: number;
+  avgRequest: number;
+  avgTcp: number;
+  avgLoadEvent: number;
+  url: string;
+}

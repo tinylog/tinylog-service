@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Page } from '../entities/Page';
 import { BadRequestError } from 'routing-controllers';
-import { ISimpleFilter, ISlowestAssetItem } from '../interfaces/Host';
+import { ISimpleFilter, ISlowestPageItem } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 
 @EntityRepository(Page)
@@ -66,26 +66,25 @@ export class PageRepository extends Repository<Page> {
   }
 
   /**
-   * 慢连接查询
+   * 慢页面查询
    */
-  async getSlowestAssetList(host: Host, filter: ISimpleFilter): Promise<ISlowestAssetItem[]> {
+  async getSlowestPageList(host: Host, filter: ISimpleFilter): Promise<ISlowestPageItem[]> {
     return await this.query(
       `
-      SELECT AVG(asset.duration) as avgDuration,
-             AVG(asset.redirect) as avgRedirect,
-             AVG(asset.lookupDomain) as avgLookupDomain,
-             AVG(asset.request) as avgRequest,
-             asset.name as name,
-             asset.entryType as entryType
-      FROM   asset
-      WHERE  asset.pageId in (
-        SELECT id
-        FROM   page
-        WHERE  page.hostId = ?
-          AND  page.createdAt between ? and ?
-      )
-      GROUP BY name, entryType
-      ORDER BY avgDuration DESC
+      SELECT AVG(page.loadPage) as avgLoadPage,
+             AVG(page.domReady) as avgDomReady,
+             AVG(page.redirect) as avgRedirect,
+             AVG(page.lookupDomain) as avgLookupDomain,
+             AVG(page.ttfb) as avgTtfb,
+             AVG(page.request) as avgRequest,
+             AVG(page.tcp) as avgTcp,
+             AVG(page.loadEvent) as avgLoadEvent,
+             page.url as url
+      FROM   page
+      WHERE  page.hostId = ?
+        AND  page.createdAt between ? and ?
+      GROUP BY url
+      ORDER BY avgLoadPage
       LIMIT 0, 10
       `,
       [host.id, filter.from, filter.to]
