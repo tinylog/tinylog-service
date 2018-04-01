@@ -225,7 +225,16 @@
                 "tags": [
                     "host"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -538,6 +547,42 @@
         }
     },
     "tags": [
+        {
+            "name": "log"
+        },
+        {
+            "name": "host"
+        },
+        {
+            "name": "user"
+        },
+        {
+            "name": "log"
+        },
+        {
+            "name": "host"
+        },
+        {
+            "name": "user"
+        },
+        {
+            "name": "log"
+        },
+        {
+            "name": "host"
+        },
+        {
+            "name": "user"
+        },
+        {
+            "name": "log"
+        },
+        {
+            "name": "host"
+        },
+        {
+            "name": "user"
+        },
         {
             "name": "log"
         },

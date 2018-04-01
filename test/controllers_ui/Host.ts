@@ -202,6 +202,19 @@ describe.only('HostController', () => {
     assert(res.status === 400);
   });
 
+  it('更新网站', async () => {
+    const res = await request(Test.Instance.app)
+      .patch(`/host/${newHostId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .send({
+        timezone: 'Asia/HongKong'
+      });
+    assert(res.status === 200);
+    const host2 = await Test.Instance.hostRepository.findOneById(newHostId);
+    assert(host2!.timezone === 'Asia/HongKong');
+  });
+
   it('删除网站（Soft Delete）', async () => {
     const res = await request(Test.Instance.app)
       .delete('/host')
@@ -225,5 +238,7 @@ describe.only('HostController', () => {
       });
     assert(res.status === 200);
     assert(res.body.id === newHostId);
+    const host2 = await Test.Instance.hostRepository.findOneById(newHostId);
+    assert(host2!.timezone === 'Asia/Shanghai');
   });
 });

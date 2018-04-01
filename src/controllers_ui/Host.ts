@@ -44,11 +44,14 @@ export class HostController {
   }
 
   @Patch('/:id([0-9]+)')
-  async updateHost(@State('user') user: IContextState, @Body() body: IUpdateHost) {
+  async updateHost(@State('user') user: IContextState, @Param('id') id: number, @Body() body: IUpdateHost) {
     if (Object.keys(body).length === 0) {
       throw new BadRequestError('你想更新啥');
     }
-    // return await this.hostService.updateHost(user.id, body);
+    await this.hostService.updateHost(user.id, id, body);
+    return {
+      success: true
+    };
   }
 
   @Delete('/')

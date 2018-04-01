@@ -11,7 +11,8 @@ import {
   ISlowestAssetItem,
   ISlowestPageItem,
   ICreateNewHost,
-  IDeleteHost
+  IDeleteHost,
+  IUpdateHost
 } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 import { BadRequestError } from 'routing-controllers';
@@ -29,6 +30,24 @@ export class HostService {
 
   async deleteHost(userId: number, body: IDeleteHost) {
     await this.hostRepository.deleteHost(userId, body);
+  }
+
+  /**
+   * TODO: 更新失败的处理
+   */
+  async updateHost(userId: number, id: number, body: IUpdateHost) {
+    if (Object.keys(body).length === 0) {
+      throw new BadRequestError('你想更新啥');
+    }
+
+    await this.hostRepository.update(
+      {
+        id,
+        userId,
+        deletedAt: null
+      },
+      body
+    );
   }
 
   async createNewHost(userId: number, body: ICreateNewHost): Promise<Host> {
