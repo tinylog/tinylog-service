@@ -37,6 +37,12 @@ export class HostController {
     return await this.hostService.getHostList(user.id);
   }
 
+  @Get('/:id([0-9]+)')
+  @ResType(Host)
+  async getHost(@State('user') user: IContextState, @Param('id') id: number) {
+    return await this.hostService.getHost(user.id, id);
+  }
+
   @Post('/create')
   @ResType([Host])
   async createNewHost(@State('user') user: IContextState, @Body() body: ICreateNewHost): Promise<Host> {

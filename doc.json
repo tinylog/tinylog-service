@@ -187,40 +187,34 @@
                 }
             }
         },
-        "/host/create": {
-            "post": {
+        "/host/{id}([0-9]+)": {
+            "get": {
                 "tags": [
                     "host"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Host"
-                                    }
+                                    "$ref": "#/components/schemas/Host"
                                 }
                             }
                         }
                     }
-                },
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "applicaton/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ICreateNewHost"
-                            }
-                        }
-                    }
                 }
-            }
-        },
-        "/host/{id}([0-9]+)": {
+            },
             "patch": {
                 "tags": [
                     "host"
@@ -253,6 +247,39 @@
                         "applicaton/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/IUpdateHost"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/host/create": {
+            "post": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Host"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "applicaton/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ICreateNewHost"
                             }
                         }
                     }
@@ -547,42 +574,6 @@
         }
     },
     "tags": [
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "user"
-        },
         {
             "name": "log"
         },

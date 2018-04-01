@@ -38,12 +38,21 @@ export class HostRepository extends Repository<Host> {
     );
   }
 
-  async getHost(query: Partial<Host>) {
+  /**
+   * 不会过滤软删除
+   */
+  async getHostIncludeSoftDelete(query: Partial<Host>) {
     return await this.findOne(query);
   }
 
+  /**
+   * 会过滤掉软删除的
+   */
   async getHostOrThrow(query: Partial<Host>) {
-    const host = await this.findOne(query);
+    const host = await this.findOne({
+      ...query,
+      deletedAt: null
+    });
     if (!host) {
       throw new BadRequestError('你无权限查询或者目标网站不存在');
     }
@@ -51,7 +60,13 @@ export class HostRepository extends Repository<Host> {
     return host;
   }
 
+  /**
+   * 会过滤掉软删除的
+   */
   async getHostList(query: Partial<Host>) {
-    return await this.find(query);
+    return await this.find({
+      ...query,
+      deletedAt: null
+    });
   }
 }

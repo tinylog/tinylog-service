@@ -227,6 +227,14 @@ describe.only('HostController', () => {
     assert(res.body.success);
   });
 
+  it('获取单个网站信息', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${newHostId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken);
+    assert(res.status === 400);
+  });
+
   it('继续创建网站（恢复软删除）', async () => {
     const res = await request(Test.Instance.app)
       .post('/host/create')
@@ -240,5 +248,14 @@ describe.only('HostController', () => {
     assert(res.body.id === newHostId);
     const host2 = await Test.Instance.hostRepository.findOneById(newHostId);
     assert(host2!.timezone === 'Asia/Shanghai');
+  });
+
+  it('获取单个网站信息', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/host/${newHostId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken);
+    assert(res.status === 200);
+    assert(res.body.timezone === 'Asia/Shanghai');
   });
 });

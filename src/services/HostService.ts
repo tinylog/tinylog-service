@@ -28,6 +28,13 @@ export class HostService {
     return await this.hostRepository.getHostList({ userId });
   }
 
+  async getHost(userId: number, hostId: number) {
+    return await this.hostRepository.getHostOrThrow({
+      userId,
+      id: hostId
+    });
+  }
+
   async deleteHost(userId: number, body: IDeleteHost) {
     await this.hostRepository.deleteHost(userId, body);
   }
@@ -51,7 +58,7 @@ export class HostService {
   }
 
   async createNewHost(userId: number, body: ICreateNewHost): Promise<Host> {
-    const host = await this.hostRepository.getHost({
+    const host = await this.hostRepository.getHostIncludeSoftDelete({
       domain: body.domain,
       userId
     });
