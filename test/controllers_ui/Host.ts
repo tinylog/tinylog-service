@@ -12,7 +12,7 @@ let host: Host;
 let newHostId: number;
 const domain = faker.random.word() + '.com';
 
-describe.only('HostController', () => {
+describe('HostController', () => {
   before(async () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 

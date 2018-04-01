@@ -65,9 +65,9 @@ export class Update1521877510571 implements MigrationInterface {
     await hostRepository.save(
       hostRepository.create({
         timezone: 'Asia/Shanghai',
-        domain: 'https://www.qq.com',
+        website: 'https://www.qq.com',
         userId: user.id
-      })
+      } as {})
     );
   }
 

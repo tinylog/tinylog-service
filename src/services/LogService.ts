@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
+import { IInitialize, IPageInfo, IAssetsInfo } from '../interfaces/Log';
 import { SessionRepository } from '../repositories/SessionRepository';
 import { getCustomRepository } from 'typeorm';
 import { IPStatsRepository } from '../repositories/IPStatsRepository';
@@ -7,6 +7,9 @@ import { IToken, IPageId } from '../interfaces/Helper';
 import { PageRepository } from '../repositories/PageRepository';
 import { HostRepository } from '../repositories/HostRepository';
 import { AssetRepository } from '../repositories/AssetRepository';
+import { getCache } from '../libraries/cache';
+import { SESSION_DISCONNECT, SESSION_CONNECT } from '../constants';
+import { Context } from 'koa';
 
 @Service()
 export class LogService {
@@ -83,19 +86,38 @@ export class LogService {
   }
 
   /**
-   * 标记一个页面为退出页面
+   * 会话保持接口
    * @param body 当前页面的信息
    * @param sessionId 会话 ID
    * @param hostId 当前所访问的网站 ID
    */
-  async exit(body: IExit, sessionId: number, hostId: number) {
+  async alive(pageId: number, sessionId: number, hostId: number, ctx: Context) {
     const page = await this.pageRepository.getPage({
-      id: body.pageId
+      id: pageId
     });
 
-    await Promise.all([
-      this.pageRepository.exitPage(page.id, body.exitTime),
-      this.sessionRepository.endSession(sessionId, body.exitTime)
-    ]);
+    // 发布连接通告
+    await getCache().publish(
+      SESSION_CONNECT,
+      JSON.stringify({
+        hostId,
+        pageId,
+        sessionId
+      })
+    );
+    await new Promise((resolve, reject) => {
+      ctx.req.on('close', async () => {
+        // 发布失联通告
+        await getCache().publish(
+          SESSION_DISCONNECT,
+          JSON.stringify({
+            hostId,
+            pageId: page.id,
+            sessionId
+          })
+        );
+        resolve();
+      });
+    });
   }
 }

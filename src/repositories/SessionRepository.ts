@@ -49,6 +49,27 @@ export class SessionRepository extends Repository<Session> {
     return token;
   }
 
+  async getCurrentActiveSession(
+    hostId: number
+  ): Promise<
+    Array<{
+      referrer: string;
+      browserName: string;
+      deviceType: string;
+      city: string;
+    }>
+  > {
+    return await this.query(
+      `
+      SELECT referrer, browserName, deviceType, city
+      FROM session
+      WHERE hostId = ?
+        AND endAt IS NOT NULL
+
+      `
+    );
+  }
+
   async endSession(sessioId: number, time: string) {
     return await this.updateById(sessioId, {
       endAt: time

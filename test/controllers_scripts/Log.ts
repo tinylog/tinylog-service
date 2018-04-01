@@ -91,15 +91,10 @@ describe('LogController', () => {
     nextPageId = res.body.pageId;
   });
 
-  it('网页退出', async () => {
+  it.skip('会话保持', async () => {
     const res = await request(Test.Instance.app)
-      .post('/log/exit')
-      .set('authorization', token)
-      .send({
-        pageId: nextPageId,
-        exitTime: new Date()
-      });
-
-    assert(res.status === 200);
+      .post(`/log/alive/${nextPageId}`)
+      .set('authorization', token);
+    console.log('哈哈哈哈');
   });
 });

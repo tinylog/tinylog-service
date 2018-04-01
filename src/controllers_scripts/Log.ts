@@ -1,6 +1,6 @@
 import { Service, Inject } from 'typedi';
-import { JsonController, Post, Body, State, UseBefore, Ctx } from 'routing-controllers';
-import { IInitialize, IPageInfo, IAssetsInfo, IExit } from '../interfaces/Log';
+import { JsonController, Post, Body, State, UseBefore, Ctx, Param } from 'routing-controllers';
+import { IInitialize, IPageInfo, IAssetsInfo } from '../interfaces/Log';
 import { Description, ResType } from 'routing-controllers-openapi-v3';
 import { LogService } from '../services/LogService';
 import { IToken, IPageId } from '../interfaces/Helper';
@@ -39,11 +39,16 @@ export class LogController {
     return { success: true };
   }
 
-  @Description('网页退出')
-  @Post('/exit')
+  @Description('会话保持')
+  @Post('/alive/:pageId')
   @UseBefore(sessionInject())
-  async exit(@Body() body: IExit, @State('sessionId') sessionId: number, @State('hostId') hostId: number) {
-    await this.logService.exit(body, sessionId, hostId);
+  async exit(
+    @Ctx() ctx: Context,
+    @Param('pageId') pageId: number,
+    @State('sessionId') sessionId: number,
+    @State('hostId') hostId: number
+  ) {
+    await this.logService.alive(pageId, sessionId, hostId, ctx);
     return { success: true };
   }
 }

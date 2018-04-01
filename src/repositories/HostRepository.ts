@@ -12,7 +12,7 @@ export class HostRepository extends Repository<Host> {
   async validateHostOrThrow(domain: string): Promise<Host> {
     const host = await this.createQueryBuilder('host')
       .where('host.domain = :domain', { domain })
-      .andWhere('host.deletedAt IS NOT NULL')
+      .andWhere('host.deletedAt IS NULL')
       .getOne();
 
     if (!host) {
