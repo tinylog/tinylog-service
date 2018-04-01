@@ -1,4 +1,15 @@
-import { JsonController, Get, QueryParams, State, Param, Post, Body } from 'routing-controllers';
+import {
+  JsonController,
+  Get,
+  QueryParams,
+  State,
+  Param,
+  Post,
+  Body,
+  Delete,
+  Patch,
+  BadRequestError
+} from 'routing-controllers';
 import { Service, Inject } from 'typedi';
 import { HostService } from '../services/HostService';
 import {
@@ -7,7 +18,9 @@ import {
   IDistributionItem,
   ISlowestAssetItem,
   ISlowestPageItem,
-  ICreateNewHost
+  ICreateNewHost,
+  IDeleteHost,
+  IUpdateHost
 } from '../interfaces/Host';
 import { IContextState } from '../interfaces/User';
 import { ResType } from 'routing-controllers-openapi-v3';
@@ -28,6 +41,22 @@ export class HostController {
   @ResType([Host])
   async createNewHost(@State('user') user: IContextState, @Body() body: ICreateNewHost): Promise<Host> {
     return await this.hostService.createNewHost(user.id, body);
+  }
+
+  @Patch('/:id([0-9]+)')
+  async updateHost(@State('user') user: IContextState, @Body() body: IUpdateHost) {
+    if (Object.keys(body).length === 0) {
+      throw new BadRequestError('你想更新啥');
+    }
+    // return await this.hostService.updateHost(user.id, body);
+  }
+
+  @Delete('/')
+  async deleteHost(@State('user') user: IContextState, @Body() body: IDeleteHost) {
+    await this.hostService.deleteHost(user.id, body);
+    return {
+      success: true
+    };
   }
 
   @Get('/:id([0-9]+)/overview')

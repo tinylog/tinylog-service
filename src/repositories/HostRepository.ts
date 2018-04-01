@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Host } from '../entities/Host';
 import { BadRequestError } from 'routing-controllers';
+import { IDeleteHost } from '../interfaces/Host';
 
 @EntityRepository(Host)
 export class HostRepository extends Repository<Host> {
@@ -9,13 +10,32 @@ export class HostRepository extends Repository<Host> {
    * @param domain 网址
    */
   async validateHostOrThrow(domain: string): Promise<Host> {
-    const host = await this.findOne({ domain });
+    const host = await this.createQueryBuilder('host')
+      .where('host.domain = :domain', { domain })
+      .andWhere('host.deletedAt IS NOT NULL')
+      .getOne();
 
     if (!host) {
       throw new BadRequestError('请检查网站是否已经加入统计');
     }
 
     return host;
+  }
+
+  /**
+   * TODO: 无法删除的 hostId 处理
+   */
+  async deleteHost(userId: number, body: IDeleteHost) {
+    return await this.query(
+      `
+      UPDATE host
+      SET deletedAt = NOW()
+      WHERE userId = ?  
+        AND id in (?)
+        AND deletedAt IS NULL
+      `,
+      [userId, body.list.join(',')]
+    );
   }
 
   async getHost(query: Partial<Host>) {

@@ -157,6 +157,34 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDefaultSuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "applicaton/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IDeleteHost"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/host/create": {
@@ -186,6 +214,36 @@
                         "applicaton/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/ICreateNewHost"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/host/{id}([0-9]+)": {
+            "patch": {
+                "tags": [
+                    "host"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDefaultSuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "applicaton/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IUpdateHost"
                             }
                         }
                     }
@@ -707,6 +765,21 @@
                         "description": "网站",
                         "type": "string"
                     },
+                    "createdAt": {
+                        "description": "Enables basic storage and retrieval of dates and times.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "description": "Enables basic storage and retrieval of dates and times.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deletedAt": {
+                        "description": "Enables basic storage and retrieval of dates and times.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
                     "userId": {
                         "description": "所属用户 ID",
                         "type": "number"
@@ -717,9 +790,12 @@
                     }
                 },
                 "required": [
+                    "createdAt",
+                    "deletedAt",
                     "domain",
                     "id",
                     "timezone",
+                    "updatedAt",
                     "user",
                     "userId"
                 ]
@@ -737,6 +813,28 @@
                 "required": [
                     "domain",
                     "timezone"
+                ]
+            },
+            "IUpdateHost": {
+                "type": "object",
+                "properties": {
+                    "timezone": {
+                        "type": "string"
+                    }
+                }
+            },
+            "IDeleteHost": {
+                "type": "object",
+                "properties": {
+                    "list": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "required": [
+                    "list"
                 ]
             },
             "IHostOverviewItem": {

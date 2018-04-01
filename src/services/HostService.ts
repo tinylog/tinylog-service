@@ -10,7 +10,8 @@ import {
   IDistributionItem,
   ISlowestAssetItem,
   ISlowestPageItem,
-  ICreateNewHost
+  ICreateNewHost,
+  IDeleteHost
 } from '../interfaces/Host';
 import { Host } from '../entities/Host';
 import { BadRequestError } from 'routing-controllers';
@@ -26,28 +27,40 @@ export class HostService {
     return await this.hostRepository.getHostList({ userId });
   }
 
-  async createNewHost(userId: number, body: ICreateNewHost) {
+  async deleteHost(userId: number, body: IDeleteHost) {
+    await this.hostRepository.deleteHost(userId, body);
+  }
+
+  async createNewHost(userId: number, body: ICreateNewHost): Promise<Host> {
     const host = await this.hostRepository.getHost({
       domain: body.domain,
       userId
     });
 
     if (host) {
-      throw new BadRequestError('您已经注册了该网站');
-    }
+      if (host.deletedAt === null) {
+        throw new BadRequestError('您已经注册了该网站');
+      } else {
+        await this.hostRepository.updateById(host.id, {
+          timezone: body.timezone,
+          deletedAt: null
+        });
+        return Object.assign(host, body);
+      }
+    } else {
+      const list = body.domain.split('.');
+      if (list.length < 2) {
+        throw new BadRequestError('域名有误');
+      }
 
-    const list = body.domain.split('.');
-    if (list.length < 2) {
-      throw new BadRequestError('域名有误');
+      return await this.hostRepository.save(
+        this.hostRepository.create({
+          domain: body.domain,
+          timezone: body.timezone,
+          userId
+        })
+      );
     }
-
-    return await this.hostRepository.save(
-      this.hostRepository.create({
-        domain: body.domain,
-        timezone: body.timezone,
-        userId
-      })
-    );
   }
 
   async getHostOverview(hostId: number, filter: ISimpleFilter, userId: number): Promise<IHostOverviewItem[]> {

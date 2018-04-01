@@ -1,4 +1,5 @@
-import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString, IsArray } from 'class-validator';
+import { Host } from '../entities/Host';
 
 export class ISimpleFilter {
   @IsDateString() from: string;
@@ -60,4 +61,14 @@ export class ISlowestPageItem {
 export class ICreateNewHost {
   @IsString() domain: string;
   @IsString() timezone: string;
+}
+
+export class IDeleteHost {
+  @IsArray() list: number[];
+}
+
+export class IUpdateHost implements Partial<Host> {
+  @IsString()
+  @IsOptional()
+  timezone?: string;
 }

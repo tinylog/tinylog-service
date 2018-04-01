@@ -9,8 +9,10 @@ import * as moment from 'moment';
 let xsrfToken: string;
 let token: string;
 let host: Host;
+let newHostId: number;
+const domain = faker.random.word() + '.com';
 
-describe('HostController', () => {
+describe.only('HostController', () => {
   before(async () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 
@@ -175,7 +177,6 @@ describe('HostController', () => {
   });
 
   it('创建网站', async () => {
-    const domain = faker.random.word() + '.com';
     const res = await request(Test.Instance.app)
       .post('/host/create')
       .set('Authorization', `Bearer ${token}`)
@@ -186,5 +187,43 @@ describe('HostController', () => {
       });
     assert(res.body.domain === domain);
     assert(res.body.timezone === 'Asia/Shanghai');
+    newHostId = res.body.id;
+  });
+
+  it('重复创建网站', async () => {
+    const res = await request(Test.Instance.app)
+      .post('/host/create')
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .send({
+        domain,
+        timezone: 'Asia/Shanghai'
+      });
+    assert(res.status === 400);
+  });
+
+  it('删除网站（Soft Delete）', async () => {
+    const res = await request(Test.Instance.app)
+      .delete('/host')
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .send({
+        list: [newHostId]
+      });
+    assert(res.status === 200);
+    assert(res.body.success);
+  });
+
+  it('继续创建网站（恢复软删除）', async () => {
+    const res = await request(Test.Instance.app)
+      .post('/host/create')
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken)
+      .send({
+        domain,
+        timezone: 'Asia/Shanghai'
+      });
+    assert(res.status === 200);
+    assert(res.body.id === newHostId);
   });
 });
