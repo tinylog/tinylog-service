@@ -75,7 +75,7 @@ class DataGenerator {
 
       await new Promise(resolve => {
         request(Test.Instance.app)
-          .post(`/log/alive/${pageId}`)
+          .get(`/log/alive/${pageId}`)
           .set('authorization', token)
           .timeout(faker.random.number({ min: 2000, max: 8000 }))
           .then(() => resolve())
@@ -117,7 +117,7 @@ class DataGenerator {
 
     await new Promise(resolve => {
       request(Test.Instance.app)
-        .post(`/log/alive/${pageId}`)
+        .get(`/log/alive/${pageId}`)
         .set('authorization', token)
         .timeout(faker.random.number({ min: 2000, max: 8000 }))
         .then(() => resolve())
