@@ -183,10 +183,10 @@ describe('HostController', () => {
       .set('xsrf-token', xsrfToken)
       .send({
         domain,
-        timezone: 'Asia/Shanghai'
+        timezone: '+08:00'
       });
     assert(res.body.domain === domain);
-    assert(res.body.timezone === 'Asia/Shanghai');
+    assert(res.body.timezone === '+08:00');
     newHostId = res.body.id;
   });
 
@@ -197,7 +197,7 @@ describe('HostController', () => {
       .set('xsrf-token', xsrfToken)
       .send({
         domain,
-        timezone: 'Asia/Shanghai'
+        timezone: '+08:00'
       });
     assert(res.status === 400);
   });
@@ -242,12 +242,12 @@ describe('HostController', () => {
       .set('xsrf-token', xsrfToken)
       .send({
         domain,
-        timezone: 'Asia/Shanghai'
+        timezone: '+08:00'
       });
     assert(res.status === 200);
     assert(res.body.id === newHostId);
     const host2 = await Test.Instance.hostRepository.findOneById(newHostId);
-    assert(host2!.timezone === 'Asia/Shanghai');
+    assert(host2!.timezone === '+08:00');
   });
 
   it('获取单个网站信息', async () => {
@@ -256,6 +256,6 @@ describe('HostController', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(res.status === 200);
-    assert(res.body.timezone === 'Asia/Shanghai');
+    assert(res.body.timezone === '+08:00');
   });
 });

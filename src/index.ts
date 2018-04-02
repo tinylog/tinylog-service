@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import './utils/env';
+import './libraries/sub';
 import * as Koa from 'koa';
 import * as logger from 'koa-logger';
 import * as config from 'config';

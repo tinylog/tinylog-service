@@ -91,10 +91,11 @@ describe('LogController', () => {
     nextPageId = res.body.pageId;
   });
 
-  it.skip('会话保持', async () => {
-    const res = await request(Test.Instance.app)
-      .post(`/log/alive/${nextPageId}`)
-      .set('authorization', token);
-    console.log('哈哈哈哈');
+  it('会话保持（TODO 难以测试）', async () => {
+    await request(Test.Instance.app)
+      .get(`/log/alive/${nextPageId}`)
+      .set('authorization', token)
+      .timeout(1000)
+      .catch(e => e);
   });
 });

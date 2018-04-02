@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-import { JsonController, Post, Body, State, UseBefore, Ctx, Param } from 'routing-controllers';
+import { JsonController, Post, Body, State, UseBefore, Ctx, Param, Get } from 'routing-controllers';
 import { IInitialize, IPageInfo, IAssetsInfo } from '../interfaces/Log';
 import { Description, ResType } from 'routing-controllers-openapi-v3';
 import { LogService } from '../services/LogService';
@@ -40,7 +40,7 @@ export class LogController {
   }
 
   @Description('会话保持')
-  @Post('/alive/:pageId')
+  @Get('/alive/:pageId')
   @UseBefore(sessionInject())
   async exit(
     @Ctx() ctx: Context,

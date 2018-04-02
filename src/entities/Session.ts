@@ -28,7 +28,7 @@ export class Session {
 
   /** 会话结束时间（客户端传递） */
   @Column({ type: 'datetime', nullable: true })
-  endAt?: Date;
+  endAt: Date | null;
 
   /**
    * 用户指纹（用来辨识是不是同一个主机访问）

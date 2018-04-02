@@ -106,7 +106,7 @@
             }
         },
         "/log/alive/{pageId}": {
-            "post": {
+            "get": {
                 "description": "会话保持",
                 "tags": [
                     "log"

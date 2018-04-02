@@ -6,7 +6,6 @@ import { Test } from './Test';
 import * as request from 'supertest';
 import * as faker from 'faker';
 import { Host } from '../entities/Host';
-import * as moment from 'moment';
 
 class DataGenerator {
   static host: Host;
@@ -19,12 +18,10 @@ class DataGenerator {
   /**
    * 一连串随机请求
    */
-  static async fake() {
-    // 随机一个伪造时间
-    let date = faker.date.recent(30).toISOString();
+  static async ping() {
     const url = (suffix: string = '') => this.host.domain + '/' + faker.lorem.word() + suffix;
 
-    // 会话 start
+    // 建立会话
     const initializeRes = await request(Test.Instance.app)
       .post('/log/initialize')
       .send({
@@ -34,23 +31,26 @@ class DataGenerator {
         ua: faker.internet.userAgent(),
         os: ['windows', 'linux', 'mac'][faker.random.number({ min: 0, max: 2 })],
         fingerprint: faker.internet.mac(),
-        createdAt: date
+        createdAt: new Date().toISOString()
       });
+    console.log(`Start a new connection to domain: ${this.host.domain}`);
 
     const token = initializeRes.body.token;
 
+    const url1 = url();
     // 首屏数据
     const pageRes = await request(Test.Instance.app)
       .post('/log/page')
       .set('authorization', token)
       .send(
         Test.Instance.mockPage({
-          url: url(),
-          createdAt: new Date(date)
+          url: url1,
+          createdAt: new Date()
         })
       );
 
     let pageId = pageRes.body.pageId;
+    console.log(`Visit url: ${url1}`);
 
     // 首屏资源数据
     await request(Test.Instance.app)
@@ -60,35 +60,44 @@ class DataGenerator {
         pageId,
         assets: new Array(10).fill(undefined).map(i =>
           Test.Instance.mockAsset({
-            name: url()
+            name: url(['.jpg', '.png', '.js', '.css', '.webp'][faker.random.number({ min: 0, max: 4 })])
           })
         )
       });
 
-    // 继续浏览其他页面
-
-    // 继续浏览 n 页
+    // 接下来准备浏览 n 个页面
     let n = faker.random.number({ min: 0, max: 6 });
 
     // 会话退出
     while (n--) {
-      // 逗留 1-60 秒
-      date = moment(date)
-        .add(faker.random.number({ min: 1, max: 60 }), 's')
-        .format();
+      // 下个页面之前先要停留一会
+      console.log(`Keep-alive connection start: ${pageId}`);
 
-      const newAssetsRes = await request(Test.Instance.app)
+      await new Promise(resolve => {
+        request(Test.Instance.app)
+          .post(`/log/alive/${pageId}`)
+          .set('authorization', token)
+          .timeout(faker.random.number({ min: 2000, max: 8000 }))
+          .then(() => resolve())
+          .catch(() => resolve());
+      });
+
+      console.log(`Keep-alive connection end: ${pageId}`);
+
+      const url2 = url();
+      const newPageRes = await request(Test.Instance.app)
         .post('/log/page')
         .set('authorization', token)
         .send(
           Test.Instance.mockPage({
             prePageId: pageId,
-            url: url(),
-            createdAt: new Date(date)
+            url: url2,
+            createdAt: new Date()
           })
         );
 
-      pageId = newAssetsRes.body.pageId;
+      pageId = newPageRes.body.pageId;
+      console.log(`Visit url: ${url2}`);
 
       await request(Test.Instance.app)
         .post('/log/assets')
@@ -97,24 +106,25 @@ class DataGenerator {
           pageId,
           assets: new Array(faker.random.number({ min: 1, max: 3 })).fill(undefined).map(i =>
             Test.Instance.mockAsset({
-              name: url()
+              name: url(['.jpg', '.png', '.js', '.css', '.webp'][faker.random.number({ min: 0, max: 4 })])
             })
           )
         });
     }
 
-    // 逗留 1-60 秒
-    date = moment(date)
-      .add(faker.random.number({ min: 1, max: 60 }), 's')
-      .format();
+    // 下个页面之前先要停留一会
+    console.log(`Keep-alive connection start: ${pageId}`);
 
-    await request(Test.Instance.app)
-      .post('/log/exit')
-      .set('authorization', token)
-      .send({
-        pageId,
-        exitTime: date
-      });
+    await new Promise(resolve => {
+      request(Test.Instance.app)
+        .post(`/log/alive/${pageId}`)
+        .set('authorization', token)
+        .timeout(faker.random.number({ min: 2000, max: 8000 }))
+        .then(() => resolve())
+        .catch(() => resolve());
+    });
+
+    console.log(`Keep-alive connection end: ${pageId}`);
   }
 }
 
@@ -123,16 +133,16 @@ class DataGenerator {
   let n = 5;
   while (n--) {
     await Promise.all([
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake(),
-      DataGenerator.fake()
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping(),
+      DataGenerator.ping()
     ]);
   }
   process.exit(0);

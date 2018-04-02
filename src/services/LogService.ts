@@ -95,7 +95,6 @@ export class LogService {
     const page = await this.pageRepository.getPage({
       id: pageId
     });
-
     // 发布连接通告
     await getCache().publish(
       SESSION_CONNECT,

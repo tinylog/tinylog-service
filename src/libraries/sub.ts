@@ -30,33 +30,38 @@ sub.on('error', (e: Error) => {
   console.error('[REDIS] pub Disconnected');
 });
 
-sub.subscribe(SESSION_DISCONNECT);
+sub.subscribe([SESSION_CONNECT, SESSION_DISCONNECT], (err: Error, count: number) => {
+  console.log(`[REDIS] subscribe to event: ${SESSION_CONNECT}`);
+  console.log(`[REDIS] subscribe to event: ${SESSION_DISCONNECT}`);
+});
 
 /**
- * TODO: subscribe 模式会导致重复的 timer 创建和数据库更新操作（不过重复更新不影响业务）
+ * TODO: subscribe 模式
  * 1 分钟后会话重新建立了怎么办（虽然不太可能）
+ * 避免更新导致 timer 丢失
  */
 sub.on('message', async (channel: string, message: string) => {
   // Receive message Hello world! from channel news
   // Receive message Hello again! from channel music
-  console.log('Receive message %s from channel %s', message, channel);
+  // console.log('Receive message %s from channel %s', message, channel);
   switch (channel) {
     // 失联
     case SESSION_DISCONNECT:
       const { pageId, sessionId } = JSON.parse(message);
       // 会话失联，启动 60 秒（1分钟）退出操作处理
       const timer = setTimeout(async () => {
+        console.log(`[APP] session ${sessionId} end at page ${pageId}`);
         await Promise.all([
           getCustomRepository(PageRepository).exitPage(
             pageId,
             moment()
-              .subtract('m', 1)
+              .subtract(1, 'm')
               .toISOString()
           ),
           getCustomRepository(SessionRepository).endSession(
             sessionId,
             moment()
-              .subtract('m', 1)
+              .subtract(1, 'm')
               .toISOString()
           )
         ]);
