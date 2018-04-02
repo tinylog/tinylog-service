@@ -65,8 +65,8 @@ export class SessionRepository extends Repository<Session> {
       FROM session
       WHERE hostId = ?
         AND endAt IS NOT NULL
-
-      `
+      `,
+      [hostId]
     );
   }
 

@@ -1,5 +1,5 @@
 import 'mocha';
-// import * as assert from 'power-assert';
+import * as assert from 'power-assert';
 import * as request from 'supertest';
 import { Test } from '../../src/utils/Test';
 import { Host } from '../../src/entities/Host';
@@ -8,7 +8,7 @@ let host: Host;
 let xsrfToken: string;
 let token: string;
 
-describe.skip('RealTimeController', () => {
+describe('RealTimeController', () => {
   before(async () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 
@@ -28,6 +28,7 @@ describe.skip('RealTimeController', () => {
       .get(`/realtime/${host.id}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
-    console.log(res.body);
+    assert(typeof res.body.count === 'number');
+    assert(Array.isArray(res.body.referrer));
   });
 });
