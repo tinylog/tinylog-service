@@ -567,6 +567,35 @@
                 }
             }
         },
+        "/realtime/{id}/vv": {
+            "get": {
+                "tags": [
+                    "realtime"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IDefaultSuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "用户登录，服务端返回的 xsrf-token 需要前端设置到名为 xsrf-token 的头部中",

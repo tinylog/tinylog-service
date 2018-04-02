@@ -41,4 +41,13 @@ describe('RealTimeController', () => {
     assert(res.body[0].url);
     assert(typeof res.body[0].count === 'number');
   });
+
+  it('获取近三十分钟会话数的分布', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/realtime/${host.id}/vv`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken);
+    assert(Array.isArray(res.body));
+    assert(typeof res.body[0].vv === 'number');
+  });
 });

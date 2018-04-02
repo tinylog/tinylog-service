@@ -54,4 +54,13 @@ export class RealTimeService {
 
     return await this.pageRepository.getCurrentMostActivePage(hostId);
   }
+
+  async getRealTimeVV(userId: number, hostId: number) {
+    const host = await this.hostRepository.getHostOrThrow({
+      userId,
+      id: hostId
+    });
+
+    return await this.sessionRepository.getRealTimeVV(host);
+  }
 }

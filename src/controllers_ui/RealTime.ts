@@ -21,4 +21,9 @@ export class RealTimeController {
   async getCurrentMostActivePage(@State('user') user: IContextState, @Param('id') id: number): Promise<IActivePage> {
     return await this.realTimeService.getCurrentMostActivePage(user.id, id);
   }
+
+  @Get('/:id/vv')
+  async getRealTimeVV(@State('user') user: IContextState, @Param('id') id: number) {
+    return await this.realTimeService.getRealTimeVV(user.id, id);
+  }
 }

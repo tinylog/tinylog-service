@@ -49,6 +49,23 @@ export class SessionRepository extends Repository<Session> {
     return token;
   }
 
+  /**
+   * 最近30分钟的 VV 分布（按分钟计）
+   */
+  async getRealTimeVV(host: Host) {
+    return await this.query(
+      `
+      SELECT count(session.id) as vv, 
+             DATE_FORMAT(CONVERT_TZ(session.createdAt, 'UTC', ?), '%Y-%m-%d %H:%i') as time
+      FROM session
+      WHERE session.hostId = ?
+        AND session.createdAt BETWEEN DATE_SUB(NOW(), INTERVAL 30 MINUTE) AND NOW()
+      GROUP BY time
+      `,
+      [host.timezone, host.id]
+    );
+  }
+
   async getCurrentActiveSession(
     hostId: number
   ): Promise<
