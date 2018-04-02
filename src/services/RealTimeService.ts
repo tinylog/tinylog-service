@@ -26,6 +26,8 @@ export class RealTimeService {
         browserName: [],
         deviceType: [],
         city: [],
+        org: [],
+        country: [],
         count: 0
       } as IActiveSession;
     }

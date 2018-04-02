@@ -8,6 +8,8 @@ export class IPair {
 export class IActiveSession {
   count: number;
   referrer: IPair[];
+  country: IPair[];
+  org: IPair[];
   browserName: IPair[];
   deviceType: IPair[];
   city: IPair[];

@@ -57,11 +57,13 @@ export class SessionRepository extends Repository<Session> {
       browserName: string;
       deviceType: string;
       city: string;
+      org: string;
+      country: string;
     }>
   > {
     return await this.query(
       `
-      SELECT referrer, browserName, deviceType, city
+      SELECT referrer, browserName, deviceType, city, country, org
       FROM session
       WHERE hostId = ?
         AND endAt IS NULL

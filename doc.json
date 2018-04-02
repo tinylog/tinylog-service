@@ -1106,6 +1106,18 @@
                             "$ref": "#/components/schemas/IPair"
                         }
                     },
+                    "country": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IPair"
+                        }
+                    },
+                    "org": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IPair"
+                        }
+                    },
                     "browserName": {
                         "type": "array",
                         "items": {
@@ -1129,7 +1141,9 @@
                     "browserName",
                     "city",
                     "count",
+                    "country",
                     "deviceType",
+                    "org",
                     "referrer"
                 ]
             },
