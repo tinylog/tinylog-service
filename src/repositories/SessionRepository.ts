@@ -64,7 +64,7 @@ export class SessionRepository extends Repository<Session> {
       SELECT referrer, browserName, deviceType, city
       FROM session
       WHERE hostId = ?
-        AND endAt IS NOT NULL
+        AND endAt IS NULL
       `,
       [hostId]
     );

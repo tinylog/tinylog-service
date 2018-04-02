@@ -3,6 +3,7 @@ import { Page } from '../entities/Page';
 import { BadRequestError } from 'routing-controllers';
 import { ISimpleFilter, ISlowestPageItem } from '../interfaces/Host';
 import { Host } from '../entities/Host';
+import { IActivePage } from '../interfaces/RealTime';
 
 @EntityRepository(Page)
 export class PageRepository extends Repository<Page> {
@@ -88,6 +89,30 @@ export class PageRepository extends Repository<Page> {
       LIMIT 0, 10
       `,
       [host.id, filter.from, filter.to]
+    );
+  }
+
+  /**
+   * 当前最活跃的网页
+   */
+  async getCurrentMostActivePage(hostId: number): Promise<IActivePage> {
+    return await this.query(
+      `
+      SELECT page.url as url,
+             COUNT(page.id) as count
+      FROM session
+      LEFT JOIN page ON page.id = (
+        SELECT MAX(p.id) as pid
+        FROM page p
+        WHERE p.sessionId = session.id
+      )
+      WHERE session.hostId = ?
+        AND session.endAt IS NULL 
+      GROUP BY url
+      ORDER BY count DESC
+      LIMIT 0, 20
+      `,
+      [hostId]
     );
   }
 }

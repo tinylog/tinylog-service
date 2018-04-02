@@ -1,12 +1,14 @@
 import { SessionRepository } from '../repositories/SessionRepository';
 import { HostRepository } from '../repositories/HostRepository';
 import { groupBy } from 'lodash';
-import { IActiveSession } from '../interfaces/RealTime';
+import { IActiveSession, IActivePage } from '../interfaces/RealTime';
 import { getCustomRepository } from 'typeorm';
+import { PageRepository } from '../repositories/PageRepository';
 
 export class RealTimeService {
   sessionRepository: SessionRepository = getCustomRepository(SessionRepository);
   hostRepository: HostRepository = getCustomRepository(HostRepository);
+  pageRepository: PageRepository = getCustomRepository(PageRepository);
 
   async getCurrentActiveSession(userId: number, hostId: number): Promise<IActiveSession> {
     await this.hostRepository.getHostOrThrow({
@@ -40,5 +42,14 @@ export class RealTimeService {
       count: currentSessionCount,
       ...data
     } as IActiveSession;
+  }
+
+  async getCurrentMostActivePage(userId: number, hostId: number): Promise<IActivePage> {
+    await this.hostRepository.getHostOrThrow({
+      userId,
+      id: hostId
+    });
+
+    return await this.pageRepository.getCurrentMostActivePage(hostId);
   }
 }

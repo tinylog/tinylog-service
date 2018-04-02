@@ -130,7 +130,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(() => resolve(
   await DataGenerator.connect();
   for (;;) {
     // 每 0-240 秒就有一个会话建立
-    await delay(faker.random.number({ min: 0, max: 240000 }));
+    await delay(faker.random.number({ min: 0, max: 5000 }));
     DataGenerator.ping().catch(e => e);
   }
 })();

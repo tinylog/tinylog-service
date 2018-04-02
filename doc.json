@@ -509,7 +509,7 @@
                 }
             }
         },
-        "/realtime/{id}": {
+        "/realtime/{id}/overview": {
             "get": {
                 "tags": [
                     "realtime"
@@ -531,6 +531,35 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/IActiveSession"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/realtime/{id}/page": {
+            "get": {
+                "tags": [
+                    "realtime"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IActivePage"
                                 }
                             }
                         }
@@ -602,228 +631,6 @@
         }
     },
     "tags": [
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
-        {
-            "name": "log"
-        },
-        {
-            "name": "host"
-        },
-        {
-            "name": "realtime"
-        },
-        {
-            "name": "user"
-        },
         {
             "name": "log"
         },
@@ -1324,6 +1131,21 @@
                     "count",
                     "deviceType",
                     "referrer"
+                ]
+            },
+            "IActivePage": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "number"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "count",
+                    "url"
                 ]
             },
             "ILoginOrRegisterRes": {

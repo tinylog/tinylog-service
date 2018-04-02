@@ -12,3 +12,8 @@ export class IActiveSession {
   deviceType: IPair[];
   city: IPair[];
 }
+
+export class IActivePage {
+  count: number;
+  url: string;
+}

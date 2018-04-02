@@ -25,10 +25,20 @@ describe('RealTimeController', () => {
 
   it('获取实时会话数据', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/realtime/${host.id}`)
+      .get(`/realtime/${host.id}/overview`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(typeof res.body.count === 'number');
     assert(Array.isArray(res.body.referrer));
+  });
+
+  it('获取实时页面数据', async () => {
+    const res = await request(Test.Instance.app)
+      .get(`/realtime/${host.id}/page`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('xsrf-token', xsrfToken);
+    assert(Array.isArray(res.body));
+    assert(res.body[0].url);
+    assert(typeof res.body[0].count === 'number');
   });
 });
