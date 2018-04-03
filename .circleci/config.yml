@@ -2,7 +2,7 @@ image_config: &image_config
 
   IMAGE_NAME: tinylog-service
 
-  IMAGE_TAG: latest
+  IMAGE_TAG: data
 
 version: 2
 jobs:

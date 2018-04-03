@@ -11,4 +11,4 @@ COPY ./ ./
 RUN yarn run build
 
 EXPOSE 8000
-ENTRYPOINT yarn start
+ENTRYPOINT node ./build/tasks/data.js
