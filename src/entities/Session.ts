@@ -41,60 +41,60 @@ export class Session {
   /**
    * UA 解析
    */
-  @Column({ nullable: true })
-  browserName?: string;
+  @Column('varchar', { nullable: true })
+  browserName: string | null;
 
-  @Column({ nullable: true })
-  browserVersion?: string;
+  @Column('varchar', { nullable: true })
+  browserVersion: string | null;
 
-  @Column({ nullable: true })
-  deviceType?: string;
+  @Column('varchar', { nullable: true })
+  deviceType: string | null;
 
-  @Column({ nullable: true })
-  deviceVendor?: string;
+  @Column('varchar', { nullable: true })
+  deviceVendor: string | null;
 
-  @Column({ nullable: true })
-  deviceModel?: string;
+  @Column('varchar', { nullable: true })
+  deviceModel: string | null;
 
-  @Column({ nullable: true })
-  engineName?: string;
+  @Column('varchar', { nullable: true })
+  engineName: string | null;
 
-  @Column({ nullable: true })
-  engineVersion?: string;
+  @Column('varchar', { nullable: true })
+  engineVersion: string | null;
 
-  @Column({ nullable: true })
-  osName?: string;
+  @Column('varchar', { nullable: true })
+  osName: string | null;
 
-  @Column({ nullable: true })
-  osVersion?: string;
+  @Column('varchar', { nullable: true })
+  osVersion: string | null;
 
   /**
    * 为了方便查询，提升效率，此处牺牲空间换去时间，把需要查询的
    * 地区，国家，城市拷贝进 Session 表中
    */
   /** 地区 */
-  @Column({ nullable: true })
-  region?: string;
+  @Column('varchar', { nullable: true })
+  region: string | null;
 
   /** 国家 */
-  @Column({ nullable: true })
-  country?: string;
+  @Column('varchar', { nullable: true })
+  country: string | null;
 
   /** 城市 */
-  @Column({ nullable: true })
-  city?: string;
+  @Column('varchar', { nullable: true })
+  city: string | null;
 
   /** hostname */
-  @Column({ nullable: true })
-  hostname?: string;
+  @Column('varchar', { nullable: true })
+  hostname: string | null;
 
   /** org */
-  @Column({ nullable: true })
-  org?: string;
+  @Column('varchar', { nullable: true })
+  org: string | null;
 
   /** 坐标 */
-  @Column({ nullable: true })
-  loc?: string;
+  @Column('varchar', { nullable: true })
+  loc: string | null;
 
   /**
    * JoinColumn
