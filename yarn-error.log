@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/bin/yarn remove @types/moment
+  /usr/bin/node /usr/bin/yarn add @types/i18n-iso-countries -D
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/ruiming/.yarn/bin:/home/ruiming/.yarn/bin
@@ -46,6 +46,7 @@ npm manifest:
       "config": "^1.30.0",
       "crypto-js": "^3.1.9-1",
       "geoip-lite": "^1.2.1",
+      "i18n-iso-countries": "^3.6.1",
       "ioredis": "^3.2.2",
       "ipinfo": "^1.3.8",
       "jsonwebtoken": "^8.2.0",
@@ -56,7 +57,7 @@ npm manifest:
       "koa-logger": "^3.1.0",
       "koa-router": "^7.1.1",
       "lodash": "^4.17.5",
-      "moment": "^2.21.0",
+      "moment": "^2.22.0",
       "moment-timezone": "^0.5.14",
       "mysql": "^2.15.0",
       "reflect-metadata": "^0.1.12",
@@ -110,8 +111,15 @@ npm manifest:
       "validate-commit-msg": "^2.12.2"
     },
     "lint-staged": {
-      "*.ts": ["tslint --fix", "prettier --write", "git add"],
-      "*.{js,json}": ["prettier --write", "git add"]
+      "*.ts": [
+        "tslint --fix",
+        "prettier --write",
+        "git add"
+      ],
+      "*.{js,json}": [
+        "prettier --write",
+        "git add"
+      ]
     },
     "config": {
       "commitizen": {
@@ -123,9 +131,17 @@ npm manifest:
     },
     "nyc": {
       "cache": true,
-      "reporter": ["lcov", "text"],
-      "extension": [".js", ".ts"],
-      "exclude": ["test"]
+      "reporter": [
+        "lcov",
+        "text"
+      ],
+      "extension": [
+        ".js",
+        ".ts"
+      ],
+      "exclude": [
+        "test"
+      ]
     }
   }
 
@@ -2569,6 +2585,10 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/hyperlinker/-/hyperlinker-1.0.0.tgz#23dc9e38a206b208ee49bc2d6c8ef47027df0c0e"
   
+  i18n-iso-countries@^3.6.1:
+    version "3.6.1"
+    resolved "https://registry.yarnpkg.com/i18n-iso-countries/-/i18n-iso-countries-3.6.1.tgz#1d72ae4866755011b423e26c15c9696a5c80a207"
+  
   iconv-lite@0.4.19, iconv-lite@^0.4.13, iconv-lite@^0.4.17:
     version "0.4.19"
     resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
@@ -3994,9 +4014,13 @@ Lockfile:
     dependencies:
       moment ">= 2.9.0"
   
-  moment@2.x.x, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.21.0:
+  moment@2.x.x, "moment@>= 2.9.0", moment@>=2.14.0:
     version "2.21.0"
     resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
+  
+  moment@^2.22.0:
+    version "2.22.0"
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.0.tgz#7921ade01017dd45186e7fee5f424f0b8663a730"
   
   ms@2.0.0:
     version "2.0.0"
@@ -6261,10 +6285,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yn/-/yn-2.0.0.tgz#e5adabc8acf408f6385fc76495684c88e6af689a"
 
 Trace: 
-  Error: This module isn't specified in a manifest.
+  Error: Couldn't find package "@types/i18n-iso-countries" on the "npm" registry.
       at new MessageError (/usr/lib/node_modules/yarn/lib/cli.js:186:110)
-      at Object.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:60445:15)
+      at NpmResolver.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:51625:15)
       at Generator.next (<anonymous>)
       at step (/usr/lib/node_modules/yarn/lib/cli.js:98:30)
       at /usr/lib/node_modules/yarn/lib/cli.js:109:13
       at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:118:7)
