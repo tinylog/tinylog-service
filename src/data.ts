@@ -7,7 +7,7 @@ class DataGenerator {
   static host: Host;
 
   static async connect() {
-    await Test.Instance.connect();
+    await Test.Instance.connectToCurrent();
     this.host = (await Test.Instance.hostRepository.findOne())!;
   }
 

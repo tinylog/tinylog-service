@@ -33,6 +33,14 @@ export class Test {
     await getConnection().close();
   }
 
+  async connectToCurrent(): Promise<void> {
+    const { Database } = await import('../libraries/Database');
+    const { cache } = await import('../libraries/cache');
+    this.app = process.env.NODE_ENV === 'production' ? process.env.API_HOST : 'localhost:8080';
+    await Promise.all([Database.Instance, cache]);
+    await this.setCustomRepository();
+  }
+
   async connect(): Promise<void> {
     const { connection } = await import('../index');
     this.app = await connection;
