@@ -7,11 +7,16 @@ import * as request from 'supertest';
 import * as faker from 'faker';
 import { Host } from '../entities/Host';
 
-class DataGenerator {
+export class DataGenerator {
   static host: Host;
 
   static async connect() {
     await Test.Instance.connect();
+    this.host = (await Test.Instance.hostRepository.findOne())!;
+  }
+
+  static async connectToCurrent() {
+    await Test.Instance.connectToCurrent();
     this.host = (await Test.Instance.hostRepository.findOne())!;
   }
 
@@ -48,7 +53,6 @@ class DataGenerator {
           createdAt: new Date()
         })
       );
-
     let pageId = pageRes.body.pageId;
     console.log(`Visit url: ${url1}`);
 
@@ -127,23 +131,3 @@ class DataGenerator {
     console.log(`Keep-alive connection end: ${pageId}`);
   }
 }
-
-(async () => {
-  await DataGenerator.connect();
-  let n = 5;
-  while (n--) {
-    await Promise.all([
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping(),
-      DataGenerator.ping()
-    ]);
-  }
-  process.exit(0);
-})();

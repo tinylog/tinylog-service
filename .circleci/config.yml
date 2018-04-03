@@ -33,7 +33,7 @@ jobs:
           paths:
             - node_modules
       
-      - run: npx ts-node ./src/utils/DataGenerator.ts
+      - run: npx ts-node ./src/tasks/test.ts
 
       - run: yarn run test:ci
 
