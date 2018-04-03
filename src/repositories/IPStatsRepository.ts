@@ -45,7 +45,7 @@ export class IPStatsRepository extends Repository<IPStats> {
         org: orgList[faker.random.number({ min: 0, max: 9 })],
         city: faker.address.city(),
         region: faker.address.state(),
-        country: countries.getName(faker.address.countryCode(), 'zh')
+        country: countries.getName(faker.address.countryCode(), 'en')
       })
     );
   }
