@@ -9,10 +9,12 @@ export class Asset {
   @PrimaryGeneratedColumn() id: number;
 
   /** 请求文件 */
-  @Column() name: string;
+  @Column('varchar', { length: 36 })
+  name: string;
 
   /** 请求的类型 */
-  @Column() entryType: string;
+  @Column('varchar', { length: 36 })
+  entryType: string;
 
   /** 资源类型 */
   @Column() initiatorType: number;

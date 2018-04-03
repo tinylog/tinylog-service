@@ -10,7 +10,8 @@ export class Page {
   @PrimaryGeneratedColumn() id: number;
 
   /** 当前页面 */
-  @Column() url: string;
+  @Column('varchar', { length: 36 })
+  url: string;
 
   /** 来源 */
   @Column() referrer: string;
@@ -45,7 +46,7 @@ export class Page {
 
   /** 当前页面的访问结束时间 */
   @Column({ type: 'datetime', nullable: true })
-  endAt: Date;
+  endAt: Date | null;
 
   @Column({ nullable: true })
   prePageId: number;

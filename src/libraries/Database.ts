@@ -64,6 +64,9 @@ export class Database {
       },
       charset: 'utf8mb4_general_ci',
       logging: dbConfig.logging
+    }).then(c => {
+      console.log('[MySQL] MySQL Connected');
+      return c;
     });
   }
 
