@@ -165,6 +165,7 @@ export class SessionRepository extends Repository<Session> {
         AND session.createdAt between ? and ?
       GROUP BY ${item}
       ORDER BY count DESC
+      LIMIT 0, 10
       `,
       [host.id, filter.from, filter.to]
     );
