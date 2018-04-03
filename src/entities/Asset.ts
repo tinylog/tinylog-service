@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { Session } from './Session';
 import { Host } from './Host';
 import { Page } from './Page';
 
 @Entity()
+@Index(['name', 'entryType'])
 export class Asset {
   @PrimaryGeneratedColumn() id: number;
 

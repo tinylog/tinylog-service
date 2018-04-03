@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn, OneToMany, Index } from 'typeorm';
 import { IPStats } from './IPStats';
 import { Host } from './Host';
 import { Page } from './Page';
 import { Exclude } from 'class-transformer';
 
 @Entity()
+@Index(['createdAt'])
 export class Session {
   @PrimaryGeneratedColumn() id: number;
 

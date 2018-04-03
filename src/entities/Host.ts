@@ -5,11 +5,13 @@ import {
   OneToOne,
   JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  Index
 } from 'typeorm';
 import { User } from './User';
 
 @Entity()
+@Index(['deletedAt'])
 export class Host {
   @PrimaryGeneratedColumn() id: number;
 

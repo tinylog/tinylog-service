@@ -1,9 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, ManyToOne, Index } from 'typeorm';
 import { Asset } from './Asset';
 import { Session } from './Session';
 import { Host } from './Host';
 
 @Entity()
+@Index(['url'])
+@Index(['createdAt'])
 export class Page {
   @PrimaryGeneratedColumn() id: number;
 
