@@ -33,7 +33,7 @@ export class PageRepository extends Repository<Page> {
    * @param pageId 页面 ID
    * @param time 客户端时间
    */
-  async exitPage(pageId: number, time: string): Promise<void> {
+  async updatePageEndAt(pageId: number, time: string | null): Promise<void> {
     return await this.updateById(pageId, {
       endAt: time
     });

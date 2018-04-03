@@ -44,7 +44,6 @@ class DataGenerator {
           createdAt: new Date()
         })
       );
-
     let pageId = pageRes.body.pageId;
     console.log(`Visit url: ${url1}`);
 

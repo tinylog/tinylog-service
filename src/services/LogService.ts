@@ -7,9 +7,10 @@ import { IToken, IPageId } from '../interfaces/Helper';
 import { PageRepository } from '../repositories/PageRepository';
 import { HostRepository } from '../repositories/HostRepository';
 import { AssetRepository } from '../repositories/AssetRepository';
-import { getCache } from '../libraries/cache';
-import { SESSION_DISCONNECT, SESSION_CONNECT } from '../constants';
+// import { getCache } from '../libraries/cache';
+// import { SESSION_DISCONNECT, SESSION_CONNECT } from '../constants';
 import { Context } from 'koa';
+import * as moment from 'moment';
 
 @Service()
 export class LogService {
@@ -43,13 +44,11 @@ export class LogService {
    * @param hostId 网站 ID
    */
   async savePageInfo(body: IPageInfo, sessionId: number, hostId: number): Promise<IPageId> {
-    if (body.prePageId !== undefined) {
-      const prePage = await this.pageRepository.getPage({
+    if (body.prePageId) {
+      await this.pageRepository.getPage({
         id: body.prePageId,
         sessionId
       });
-      prePage.endAt = body.createdAt;
-      await this.pageRepository.save(prePage);
     }
 
     const page = await this.pageRepository.createPage({
@@ -92,29 +91,21 @@ export class LogService {
    * @param hostId 当前所访问的网站 ID
    */
   async alive(pageId: number, sessionId: number, hostId: number, ctx: Context) {
-    const page = await this.pageRepository.getPage({
+    await this.pageRepository.getPage({
       id: pageId
     });
-    // 发布连接通告
-    await getCache().publish(
-      SESSION_CONNECT,
-      JSON.stringify({
-        hostId,
-        pageId,
-        sessionId
-      })
-    );
+
+    await Promise.all([
+      getCustomRepository(PageRepository).updatePageEndAt(pageId, null),
+      getCustomRepository(SessionRepository).updateSessionEndAt(sessionId, null)
+    ]);
+
     await new Promise((resolve, reject) => {
       ctx.req.on('close', async () => {
-        // 发布失联通告
-        await getCache().publish(
-          SESSION_DISCONNECT,
-          JSON.stringify({
-            hostId,
-            pageId: page.id,
-            sessionId
-          })
-        );
+        await Promise.all([
+          getCustomRepository(PageRepository).updatePageEndAt(pageId, moment().toISOString()),
+          getCustomRepository(SessionRepository).updateSessionEndAt(sessionId, moment().toISOString())
+        ]);
         resolve();
       });
     });

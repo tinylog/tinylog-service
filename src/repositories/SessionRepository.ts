@@ -89,7 +89,7 @@ export class SessionRepository extends Repository<Session> {
     );
   }
 
-  async endSession(sessioId: number, time: string) {
+  async updateSessionEndAt(sessioId: number, time: string | null) {
     return await this.updateById(sessioId, {
       endAt: time
     });
