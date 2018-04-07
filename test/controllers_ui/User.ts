@@ -10,7 +10,7 @@ const password = faker.internet.password();
 describe('UserController', () => {
   it('注册用户', async () => {
     const res = await request(Test.Instance.app)
-      .post('/user/register')
+      .post('/api/user/register')
       .send({
         email,
         password
@@ -22,7 +22,7 @@ describe('UserController', () => {
 
   it('注册用户，重复注册，已被注册', async () => {
     const res = await request(Test.Instance.app)
-      .post('/user/register')
+      .post('/api/user/register')
       .send({
         email,
         password
@@ -32,7 +32,7 @@ describe('UserController', () => {
 
   it('登录', async () => {
     const res = await request(Test.Instance.app)
-      .post('/user/login')
+      .post('/api/user/login')
       .send({
         email,
         password
@@ -45,7 +45,7 @@ describe('UserController', () => {
 
   it('登录，邮箱不存在', async () => {
     const res = await request(Test.Instance.app)
-      .post('/user/login')
+      .post('/api/user/login')
       .send({
         email: faker.internet.email(),
         password
@@ -56,7 +56,7 @@ describe('UserController', () => {
 
   it('登录，密码错误', async () => {
     const res = await request(Test.Instance.app)
-      .post('/user/login')
+      .post('/api/user/login')
       .send({
         email,
         password: faker.internet.password()

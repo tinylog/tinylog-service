@@ -13,7 +13,7 @@ describe('RealTimeController', () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 
     const res = await request(Test.Instance.app)
-      .post('/user/login')
+      .post('/api/user/login')
       .send({
         email: 'admin@tinylog.com',
         password: '12345678'
@@ -25,7 +25,7 @@ describe('RealTimeController', () => {
 
   it('获取实时会话数据', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/realtime/${host.id}/overview`)
+      .get(`/api/realtime/${host.id}/overview`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(typeof res.body.count === 'number');
@@ -34,7 +34,7 @@ describe('RealTimeController', () => {
 
   it('获取实时页面数据', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/realtime/${host.id}/page`)
+      .get(`/api/realtime/${host.id}/page`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(Array.isArray(res.body));
@@ -44,7 +44,7 @@ describe('RealTimeController', () => {
 
   it('获取近三十分钟会话数的分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/realtime/${host.id}/vv`)
+      .get(`/api/realtime/${host.id}/vv`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(Array.isArray(res.body));

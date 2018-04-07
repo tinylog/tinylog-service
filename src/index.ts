@@ -41,15 +41,16 @@ app.use(
     // cookie: 'jwt'
   }).unless({
     path: [
-      /^\/log/, // ignore controller_scripts
-      /^\/user\/register/, // register page
-      /^\/user\/login/ // login page
+      /^\/api\/log/, // ignore controller_scripts
+      /^\/api\/user\/register/, // register page
+      /^\/api\/user\/login/ // login page
     ]
   })
 );
 
 useKoaServer(app, {
   cors: true,
+  routePrefix: '/api',
   controllers: [`${__dirname}/controllers*/*.{js,ts}`],
   defaultErrorHandler: true
 });

@@ -17,7 +17,7 @@ describe('LogController', () => {
 
   it('建立会话', async () => {
     const res = await request(Test.Instance.app)
-      .post('/log/initialize')
+      .post('/api/log/initialize')
       .send({
         referrer: 'https://ruiming.me',
         lang: 'zh-cn',
@@ -35,7 +35,7 @@ describe('LogController', () => {
 
   it('发送页面数据，没有 TOKEN', async () => {
     const res = await request(Test.Instance.app)
-      .post('/log/page')
+      .post('/api/log/page')
       .send(Test.Instance.mockPage());
 
     assert(res.status === 400);
@@ -43,7 +43,7 @@ describe('LogController', () => {
 
   it('正确发送页面数据', async () => {
     const res = await request(Test.Instance.app)
-      .post('/log/page')
+      .post('/api/log/page')
       .set('authorization', token)
       .send(
         Test.Instance.mockPage({
@@ -59,7 +59,7 @@ describe('LogController', () => {
   it('发送页面资源数据', async () => {
     const [name1, name2] = [faker.lorem.word(), faker.lorem.word()];
     const res = await request(Test.Instance.app)
-      .post('/log/assets')
+      .post('/api/log/assets')
       .set('authorization', token)
       .send({
         pageId,
@@ -77,7 +77,7 @@ describe('LogController', () => {
 
   it('跳转下一个页面', async () => {
     const res = await request(Test.Instance.app)
-      .post('/log/page')
+      .post('/api/log/page')
       .set('authorization', token)
       .send(
         Test.Instance.mockPage({
@@ -93,7 +93,7 @@ describe('LogController', () => {
 
   it('会话保持（TODO 难以测试）', async () => {
     await request(Test.Instance.app)
-      .get(`/log/alive/${nextPageId}`)
+      .get(`/api/log/alive/${nextPageId}`)
       .set('authorization', token)
       .timeout(1000)
       .catch(e => e);

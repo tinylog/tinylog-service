@@ -17,7 +17,7 @@ describe('HostController', () => {
     host = (await Test.Instance.hostRepository.findOne())!;
 
     const res = await request(Test.Instance.app)
-      .post('/user/login')
+      .post('/api/user/login')
       .send({
         email: 'admin@tinylog.com',
         password: '12345678'
@@ -29,7 +29,7 @@ describe('HostController', () => {
 
   it('获取网站列表', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host`)
+      .get(`/api/host`)
       // .set('Cookie', `jwt=${token}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
@@ -42,7 +42,7 @@ describe('HostController', () => {
 
   it('获取网站基本数据信息', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/overview`)
+      .get(`/api/host/${host.id}/overview`)
       // .set('Cookie', `jwt=${token}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
@@ -61,7 +61,7 @@ describe('HostController', () => {
 
   it('获取会话的语言分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/lang`)
+      .get(`/api/host/${host.id}/distribution/lang`)
       .set('Authorization', `Bearer ${token}`)
       // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
@@ -78,7 +78,7 @@ describe('HostController', () => {
 
   it('获取会话的 referrer 分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/referrer`)
+      .get(`/api/host/${host.id}/distribution/referrer`)
       .set('Authorization', `Bearer ${token}`)
       // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
@@ -95,7 +95,7 @@ describe('HostController', () => {
 
   it('获取会话的城市分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/city`)
+      .get(`/api/host/${host.id}/distribution/city`)
       .set('Authorization', `Bearer ${token}`)
       // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
@@ -112,7 +112,7 @@ describe('HostController', () => {
 
   it('获取会话的地区分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/region`)
+      .get(`/api/host/${host.id}/distribution/region`)
       // .set('Cookie', `jwt=${token}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
@@ -129,7 +129,7 @@ describe('HostController', () => {
 
   it('获取会话的 ORG 分布', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/distribution/org`)
+      .get(`/api/host/${host.id}/distribution/org`)
       .set('Authorization', `Bearer ${token}`)
       // .set('Cookie', `jwt=${token}`)
       .set('xsrf-token', xsrfToken)
@@ -146,7 +146,7 @@ describe('HostController', () => {
 
   it('获取资源慢连接', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/assets/slow`)
+      .get(`/api/host/${host.id}/assets/slow`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -162,7 +162,7 @@ describe('HostController', () => {
 
   it('获取页面慢连接', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${host.id}/pages/slow`)
+      .get(`/api/host/${host.id}/pages/slow`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .query({
@@ -178,7 +178,7 @@ describe('HostController', () => {
 
   it('创建网站', async () => {
     const res = await request(Test.Instance.app)
-      .post('/host/create')
+      .post('/api/host/create')
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .send({
@@ -192,7 +192,7 @@ describe('HostController', () => {
 
   it('重复创建网站', async () => {
     const res = await request(Test.Instance.app)
-      .post('/host/create')
+      .post('/api/host/create')
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .send({
@@ -204,7 +204,7 @@ describe('HostController', () => {
 
   it('更新网站', async () => {
     const res = await request(Test.Instance.app)
-      .patch(`/host/${newHostId}`)
+      .patch(`/api/host/${newHostId}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .send({
@@ -217,7 +217,7 @@ describe('HostController', () => {
 
   it('删除网站（Soft Delete）', async () => {
     const res = await request(Test.Instance.app)
-      .delete('/host')
+      .delete('/api/host')
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .send({
@@ -229,7 +229,7 @@ describe('HostController', () => {
 
   it('获取单个网站信息', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${newHostId}`)
+      .get(`/api/host/${newHostId}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(res.status === 400);
@@ -237,7 +237,7 @@ describe('HostController', () => {
 
   it('继续创建网站（恢复软删除）', async () => {
     const res = await request(Test.Instance.app)
-      .post('/host/create')
+      .post('/api/host/create')
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken)
       .send({
@@ -252,7 +252,7 @@ describe('HostController', () => {
 
   it('获取单个网站信息', async () => {
     const res = await request(Test.Instance.app)
-      .get(`/host/${newHostId}`)
+      .get(`/api/host/${newHostId}`)
       .set('Authorization', `Bearer ${token}`)
       .set('xsrf-token', xsrfToken);
     assert(res.status === 200);

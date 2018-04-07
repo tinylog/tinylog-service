@@ -28,7 +28,7 @@ export class DataGenerator {
 
     // 建立会话
     const initializeRes = await request(Test.Instance.app)
-      .post('/log/initialize')
+      .post('/api/log/initialize')
       .send({
         referrer: faker.internet.url(),
         lang: ['zh-cn', 'en', 'ru'][faker.random.number({ min: 0, max: 2 })],
@@ -45,7 +45,7 @@ export class DataGenerator {
     const url1 = url();
     // 首屏数据
     const pageRes = await request(Test.Instance.app)
-      .post('/log/page')
+      .post('/api/log/page')
       .set('authorization', token)
       .send(
         Test.Instance.mockPage({
@@ -58,7 +58,7 @@ export class DataGenerator {
 
     // 首屏资源数据
     await request(Test.Instance.app)
-      .post('/log/assets')
+      .post('/api/log/assets')
       .set('authorization', token)
       .send({
         pageId,
@@ -79,7 +79,7 @@ export class DataGenerator {
 
       await new Promise(resolve => {
         request(Test.Instance.app)
-          .get(`/log/alive/${pageId}`)
+          .get(`/api/log/alive/${pageId}`)
           .set('authorization', token)
           .timeout(faker.random.number({ min: 2000, max: 8000 }))
           .then(() => resolve())
@@ -90,7 +90,7 @@ export class DataGenerator {
 
       const url2 = url();
       const newPageRes = await request(Test.Instance.app)
-        .post('/log/page')
+        .post('/api/log/page')
         .set('authorization', token)
         .send(
           Test.Instance.mockPage({
@@ -104,7 +104,7 @@ export class DataGenerator {
       console.log(`Visit url: ${url2}`);
 
       await request(Test.Instance.app)
-        .post('/log/assets')
+        .post('/api/log/assets')
         .set('authorization', token)
         .send({
           pageId,
@@ -121,7 +121,7 @@ export class DataGenerator {
 
     await new Promise(resolve => {
       request(Test.Instance.app)
-        .get(`/log/alive/${pageId}`)
+        .get(`/api/log/alive/${pageId}`)
         .set('authorization', token)
         .timeout(faker.random.number({ min: 2000, max: 8000 }))
         .then(() => resolve())
