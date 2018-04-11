@@ -59,7 +59,7 @@ export class Test {
   mockAsset(data?: Partial<Asset>): Partial<Asset> {
     return {
       name: faker.internet.url(),
-      entryType: faker.lorem.word(),
+      entryType: ['js', 'css', 'png', 'jpeg', 'webp', 'gif', 'mp3', 'avi'][faker.random.number(7)],
       initiatorType: faker.random.number(1000),
       redirect: faker.random.number(1000),
       lookupDomain: faker.random.number(1000),
