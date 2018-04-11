@@ -6,42 +6,6 @@ image_config: &image_config
 
 version: 2
 jobs:
-  test:
-    working_directory: ~/app
-    docker:
-      - image: circleci/node:8.9
-      - image: mysql:5.7.8
-        environment:
-          - MYSQL_DATABASE: tinylog
-          - MYSQL_ALLOW_EMPTY_PASSWORD: yes
-      - image: redis:3.0.7
-
-    environment: 
-      - NODE_ENV: test
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-      
-      - run: yarn install
-      
-      - save_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-      
-      - run: npx ts-node ./src/tasks/test.ts
-
-      - run: yarn run test:ci
-
-      - run: yarn run report-coverage
-
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
 
   build:
     machine: true
@@ -61,11 +25,3 @@ jobs:
       - store_artifacts:
           path: Dockerfile
 
-workflows:
-  version: 2
-  test_and_build:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test

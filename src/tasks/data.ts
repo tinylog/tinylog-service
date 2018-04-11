@@ -6,8 +6,8 @@ const delay = (time: number) => new Promise(resolve => setTimeout(() => resolve(
 (async () => {
   await DataGenerator.connectToCurrent();
   for (;;) {
-    // 每 0-240 秒就有一个会话建立
-    await delay(faker.random.number({ min: 0, max: 5000 }));
+    // 每 0-480 秒就有一个会话建立
+    await delay(faker.random.number({ min: 0, max: 480000 }));
     DataGenerator.ping().catch(e => e);
   }
 })();
