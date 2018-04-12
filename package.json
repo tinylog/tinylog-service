@@ -110,6 +110,6 @@
     "cache": true,
     "reporter": ["lcov", "text"],
     "extension": [".js", ".ts"],
-    "exclude": ["test"]
+    "exclude": ["test", "src/migrations", "src/tasks"]
   }
 }
